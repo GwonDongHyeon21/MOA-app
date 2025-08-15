@@ -35,7 +35,8 @@ kotlin {
             implementation(libs.koin.compose)
         }
         androidMain.dependencies {
-            implementation(compose.uiTooling)
+            implementation(compose.ui)
+            implementation(libs.androidx.activity.compose)
 
             // Koin
             implementation(libs.koin.android)
