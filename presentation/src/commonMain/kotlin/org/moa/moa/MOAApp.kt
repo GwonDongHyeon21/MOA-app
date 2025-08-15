@@ -8,7 +8,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.calendar_button_icon
 import moa.presentation.generated.resources.home_button_icon
@@ -33,7 +32,7 @@ import org.moa.moa.presentation.todo.TodoScreen
 import org.moa.moa.presentation.ui.theme.MOAColorScheme
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.user.UserScreen
-import org.moa.moa.utils.PopBackStackHandler
+import org.moa.moa.platform.backhandler.PopBackStackHandler
 
 @Composable
 fun MOAApp() {
