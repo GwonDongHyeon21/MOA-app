@@ -35,12 +35,21 @@ kotlin {
 
             // Koin
             implementation(libs.koin.core)
+
+            // Ktor
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
         }
         androidMain.dependencies {
             implementation(libs.koin.android)
+
+            // Ktor
+            implementation(libs.ktor.client.okhttp)
         }
         iosMain.dependencies {
-
+            // Ktor
+            implementation(libs.ktor.client.darwin)
         }
     }
 }
