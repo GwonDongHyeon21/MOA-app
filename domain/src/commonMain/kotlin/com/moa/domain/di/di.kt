@@ -1,8 +1,8 @@
 package com.moa.domain.di
 
-import com.moa.domain.usecase.GetUserUseCase
+import com.moa.domain.usecase.SignUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
-    factory { GetUserUseCase(get()) }
+    factory { SignUseCase(get()) }
 }
