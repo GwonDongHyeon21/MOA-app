@@ -9,6 +9,7 @@ import com.moa.domain.di.domainModule
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.moa.moa.di.platformModule
+import org.moa.moa.presentation.di.presentationModule
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +31,7 @@ fun initKoin() {
         modules(
             dataModule,
             domainModule,
+            presentationModule,
             platformModule
         )
     }
