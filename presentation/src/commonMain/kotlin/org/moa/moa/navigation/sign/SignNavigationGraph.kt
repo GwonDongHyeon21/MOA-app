@@ -7,11 +7,7 @@ import org.moa.moa.navigation.home.HomeNavigationItem
 import org.moa.moa.presentation.sign.OnBoardingScreen
 import org.moa.moa.presentation.sign.SignUpScreen
 
-fun NavGraphBuilder.signNavigationGraph(
-    navController: NavController,
-    signUpTabIndex: Int,
-    onTabIndexPlus: () -> Int,
-) {
+fun NavGraphBuilder.signNavigationGraph(navController: NavController) {
     composable(SignNavigationItem.OnBoarding.route) {
         OnBoardingScreen(
             onNavigateToSignUp = { navController.navigate(SignNavigationItem.SignUp.route) },
@@ -19,10 +15,7 @@ fun NavGraphBuilder.signNavigationGraph(
         )
     }
     composable(SignNavigationItem.SignUp.route) {
-        SignUpScreen(
-            signUpTabIndex = signUpTabIndex,
-            onTabIndexPlus = { onTabIndexPlus() }
-        )
+        SignUpScreen { navController.popBackStack() }
     }
     composable(SignNavigationItem.SignIn.route) {
         //

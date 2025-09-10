@@ -31,17 +31,11 @@ fun MOAApp() {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentScreen = navBackStackEntry?.destination?.route
 
-        var signUpTabIndex by remember { mutableIntStateOf(1) }
-
-        BackStackHandler(currentScreen != null) { navController.popBackStack() }
-
         Scaffold(
             topBar = {
                 MOATopBar(
                     currentScreen = currentScreen,
-                    selectedTabIndex = signUpTabIndex,
-                    onTabIndexMinus = { signUpTabIndex -= 1 },
-                    onBack = { navController.popBackStack() }
+                    onClickPopBack = { navController.popBackStack() }
                 )
             },
             bottomBar = { MOABottomBar(navController, currentScreen) }
@@ -51,7 +45,7 @@ fun MOAApp() {
                 startDestination = SignNavigationItem.OnBoarding.route,
                 modifier = Modifier.padding(innerPadding)
             ) {
-                signNavigationGraph(navController, signUpTabIndex) { signUpTabIndex++ }
+                signNavigationGraph(navController)
                 homeNavigationGraph(navController)
                 calendarNavigationGraph(navController)
                 recordNavigationGraph(navController)
