@@ -7,6 +7,6 @@ import org.moa.moa.presentation.home.HomeScreen
 
 fun NavGraphBuilder.homeNavigationGraph(navController: NavController) {
     composable(HomeNavigationItem.Home.route) {
-        HomeScreen(navController)
+        HomeScreen()
     }
 }

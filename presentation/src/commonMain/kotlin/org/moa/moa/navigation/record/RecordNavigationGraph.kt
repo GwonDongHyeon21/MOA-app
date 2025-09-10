@@ -9,12 +9,12 @@ import org.moa.moa.presentation.record.RecordTextScreen
 
 fun NavGraphBuilder.recordNavigationGraph(navController: NavController) {
     composable(RecordNavigationItem.RecordText.route) {
-        RecordTextScreen(navController)
+        RecordTextScreen()
     }
     composable(RecordNavigationItem.RecordRecord.route) {
-        RecordRecordScreen(navController)
+        RecordRecordScreen()
     }
     composable(RecordNavigationItem.RecordCamera.route) {
-        RecordCameraScreen(navController)
+        RecordCameraScreen()
     }
 }

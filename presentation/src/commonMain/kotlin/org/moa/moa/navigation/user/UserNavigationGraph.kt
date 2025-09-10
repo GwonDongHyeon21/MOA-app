@@ -7,6 +7,6 @@ import org.moa.moa.presentation.user.UserScreen
 
 fun NavGraphBuilder.userNavigationGraph(navController: NavController) {
     composable(UserNavigationItem.User.route) {
-        UserScreen(navController)
+        UserScreen()
     }
 }

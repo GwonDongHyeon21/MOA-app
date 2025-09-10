@@ -7,6 +7,6 @@ import org.moa.moa.presentation.calendar.CalendarScreen
 
 fun NavGraphBuilder.calendarNavigationGraph(navController: NavController) {
     composable(CalendarNavigationItem.Calendar.route) {
-        CalendarScreen(navController)
+        CalendarScreen()
     }
 }

@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.onboarding_image1
 import moa.presentation.generated.resources.onboarding_image2
@@ -28,7 +27,10 @@ import org.moa.moa.presentation.sign.component.SignButton
 import org.moa.moa.presentation.ui.theme.Strings
 
 @Composable
-fun OnBoardingScreen(navController: NavController) {
+fun OnBoardingScreen(
+    onNavigateToSignUp: () -> Unit,
+    onNavigateToHome: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -86,10 +88,10 @@ fun OnBoardingScreen(navController: NavController) {
             verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
             SignButton("${Strings.kakaotalk} ${Strings.login}") {
-                navController.navigate(SignNavigationItem.SignUp.route)
+                onNavigateToSignUp()
             }
             SignButton("${Strings.google} ${Strings.login}") {
-                navController.navigate(HomeNavigationItem.Home.route)
+                onNavigateToHome()
             }
             SignButton("${Strings.apple} ${Strings.login}") {
 

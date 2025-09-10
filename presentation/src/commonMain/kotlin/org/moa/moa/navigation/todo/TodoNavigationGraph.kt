@@ -7,6 +7,6 @@ import org.moa.moa.presentation.todo.TodoScreen
 
 fun NavGraphBuilder.todoNavigationGraph(navController: NavController) {
     composable(TodoNavigationItem.Todo.route) {
-        TodoScreen(navController)
+        TodoScreen()
     }
 }
