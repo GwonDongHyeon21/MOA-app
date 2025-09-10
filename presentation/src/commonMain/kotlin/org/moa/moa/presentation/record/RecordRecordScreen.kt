@@ -1,9 +1,9 @@
 package org.moa.moa.presentation.record
 
 import androidx.compose.runtime.Composable
-import org.moa.moa.navigation.Navigator
+import androidx.navigation.NavController
 
 @Composable
-fun RecordRecordScreen(navigator: Navigator) {
+fun RecordRecordScreen(navController: NavController) {
 
 }

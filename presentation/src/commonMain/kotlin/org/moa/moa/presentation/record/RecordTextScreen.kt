@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import org.moa.moa.navigation.Navigator
+import androidx.navigation.NavController
 
 @Composable
-fun RecordTextScreen(navigator: Navigator) {
+fun RecordTextScreen(navController: NavController) {
     Column(modifier = Modifier.fillMaxSize()) {
 
     }

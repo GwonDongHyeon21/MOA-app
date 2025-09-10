@@ -1,8 +1,8 @@
 package org.moa.moa.presentation.user
 
 import androidx.compose.runtime.Composable
-import org.moa.moa.navigation.Navigator
+import androidx.navigation.NavController
 
 @Composable
-fun UserScreen(navigator: Navigator) {
+fun UserScreen(navController: NavController) {
 }

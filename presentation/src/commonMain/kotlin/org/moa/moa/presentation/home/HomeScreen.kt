@@ -1,8 +1,8 @@
 package org.moa.moa.presentation.home
 
 import androidx.compose.runtime.Composable
-import org.moa.moa.navigation.Navigator
+import androidx.navigation.NavController
 
 @Composable
-fun HomeScreen(navigator: Navigator) {
+fun HomeScreen(navController: NavController) {
 }

@@ -1,8 +1,8 @@
 package org.moa.moa.presentation.calendar
 
 import androidx.compose.runtime.Composable
-import org.moa.moa.navigation.Navigator
+import androidx.navigation.NavController
 
 @Composable
-fun CalendarScreen(navigator: Navigator) {
+fun CalendarScreen(navController: NavController) {
 }

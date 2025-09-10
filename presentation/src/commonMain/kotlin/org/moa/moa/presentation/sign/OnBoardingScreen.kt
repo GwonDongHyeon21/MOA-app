@@ -1,7 +1,6 @@
 package org.moa.moa.presentation.sign
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.onboarding_image1
 import moa.presentation.generated.resources.onboarding_image2
@@ -22,18 +22,16 @@ import moa.presentation.generated.resources.onboarding_image3
 import moa.presentation.generated.resources.onboarding_text1
 import moa.presentation.generated.resources.onboarding_text2
 import org.jetbrains.compose.resources.painterResource
-import org.moa.moa.navigation.Navigator
-import org.moa.moa.navigation.screen.SignUp
+import org.moa.moa.navigation.home.HomeNavigationItem
+import org.moa.moa.navigation.sign.SignNavigationItem
 import org.moa.moa.presentation.sign.component.SignButton
-import org.moa.moa.presentation.ui.theme.IVORY3
 import org.moa.moa.presentation.ui.theme.Strings
 
 @Composable
-fun OnBoardingScreen(navigator: Navigator) {
+fun OnBoardingScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(IVORY3)
             .padding(vertical = 80.dp)
     ) {
         Row(
@@ -88,10 +86,10 @@ fun OnBoardingScreen(navigator: Navigator) {
             verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
             SignButton("${Strings.kakaotalk} ${Strings.login}") {
-                navigator.navigateTo(SignUp)
+                navController.navigate(SignNavigationItem.SignUp.route)
             }
             SignButton("${Strings.google} ${Strings.login}") {
-
+                navController.navigate(HomeNavigationItem.Home.route)
             }
             SignButton("${Strings.apple} ${Strings.login}") {
 
