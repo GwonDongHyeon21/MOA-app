@@ -1,14 +1,25 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.buildconfig)
+}
+
+buildConfig {
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localProperties.load(localPropertiesFile.inputStream())
+    }
+
+    packageName("com.moa.data")
+    buildConfigField("String", "BASE_URL", localProperties.getProperty("BASE_URL"))
 }
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
@@ -24,12 +35,21 @@ kotlin {
 
             // Koin
             implementation(libs.koin.core)
+
+            // Ktor
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
         }
         androidMain.dependencies {
             implementation(libs.koin.android)
+
+            // Ktor
+            implementation(libs.ktor.client.okhttp)
         }
         iosMain.dependencies {
-
+            // Ktor
+            implementation(libs.ktor.client.darwin)
         }
     }
 }

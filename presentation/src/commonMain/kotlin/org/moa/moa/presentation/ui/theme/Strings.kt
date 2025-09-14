@@ -1,0 +1,24 @@
+package org.moa.moa.presentation.ui.theme
+
+object Strings {
+    const val moa = "MOA"
+    const val home = "HOME"
+    const val calendar = "CALENDAR"
+    const val todo = "TO-DO"
+    const val user = "MY"
+    const val kakaotalk = "카카오톡"
+    const val google = "구글"
+    const val apple = "애플"
+    const val login = "간편 로그인"
+    const val continueText = "계속하기"
+    const val pleaseEnterId = "닉네임을 작성해주세요"
+    const val pleaseEnterId2 = "모아가 닉네임으로 불러줄 거예요!"
+    const val enterPlaceholder = "입력해주세요"
+    const val pleaseEnterBirthDate = "생일을 입력해주세요"
+    const val pleaseEnterBirthDate2 = "모아가 생일이 되면 축하해줄게!"
+    const val birthDatePlaceholder = "YYYY.MM.DD"
+    const val pleaseEnterGender = "성별을 알려주세요"
+    const val pleaseEnterGender2 = "모아가 참고하도록 할게요!"
+    const val men = "남성"
+    const val wemen = "여성"
+}
