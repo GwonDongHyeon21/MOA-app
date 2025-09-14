@@ -9,7 +9,8 @@ import com.moa.domain.di.domainModule
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.moa.moa.di.platformModule
-import org.moa.moa.presentation.di.presentationModule
+import org.moa.moa.platform.haptic.Haptic
+import org.moa.moa.di.presentationModule
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         enableEdgeToEdge()
 
+        Haptic.initialize(this)
         initKoin()
 
         setContent {
