@@ -5,9 +5,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -19,7 +16,6 @@ import org.moa.moa.navigation.sign.SignNavigationItem
 import org.moa.moa.navigation.sign.signNavigationGraph
 import org.moa.moa.navigation.todo.todoNavigationGraph
 import org.moa.moa.navigation.user.userNavigationGraph
-import org.moa.moa.platform.backhandler.BackStackHandler
 import org.moa.moa.presentation.component.MOABottomBar
 import org.moa.moa.presentation.component.MOATopBar
 import org.moa.moa.presentation.ui.theme.MOAColorScheme
@@ -35,7 +31,7 @@ fun MOAApp() {
             topBar = {
                 MOATopBar(
                     currentScreen = currentScreen,
-                    onClickPopBack = { navController.popBackStack() }
+                    onClickBack = { navController.popBackStack() }
                 )
             },
             bottomBar = { MOABottomBar(navController, currentScreen) }

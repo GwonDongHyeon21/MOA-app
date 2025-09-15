@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.moa.moa.presentation.sign.Gender
 import org.moa.moa.presentation.ui.theme.BLACK
 import org.moa.moa.presentation.ui.theme.GRAY2
 import org.moa.moa.presentation.ui.theme.GRAY7
@@ -27,8 +28,8 @@ import org.moa.moa.presentation.ui.theme.transparent
 
 @Composable
 fun GenderInput(
-    gender: Int,
-    onValueChange: (Int) -> Unit,
+    gender: Gender?,
+    onValueChange: (Gender) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -51,7 +52,7 @@ fun GenderInput(
         Spacer(Modifier.height(40.dp))
         Row(modifier = Modifier.fillMaxWidth()) {
             TextButton(
-                onClick = { onValueChange(1) },
+                onClick = { onValueChange(Gender.MEN) },
                 content = {
                     Text(
                         text = Strings.men,
@@ -62,15 +63,15 @@ fun GenderInput(
                 modifier = Modifier
                     .weight(1f)
                     .clip(RoundedCornerShape(15.dp))
-                    .background(if (gender == 1) MAIN else transparent)
+                    .background(if (gender == Gender.MEN) MAIN else transparent)
                     .border(
                         width = 1.dp,
-                        color = if (gender == 1) MAIN else GRAY2,
+                        color = if (gender == Gender.MEN) MAIN else GRAY2,
                         shape = RoundedCornerShape(15.dp)
                     )
             )
             TextButton(
-                onClick = { onValueChange(2) },
+                onClick = { onValueChange(Gender.WOMEN) },
                 content = {
                     Text(
                         text = Strings.wemen,
@@ -81,10 +82,10 @@ fun GenderInput(
                 modifier = Modifier
                     .weight(1f)
                     .clip(RoundedCornerShape(15.dp))
-                    .background(if (gender == 2) MAIN else transparent)
+                    .background(if (gender == Gender.WOMEN) MAIN else transparent)
                     .border(
                         width = 1.dp,
-                        color = if (gender == 2) MAIN else GRAY2,
+                        color = if (gender == Gender.WOMEN) MAIN else GRAY2,
                         shape = RoundedCornerShape(15.dp)
                     )
             )

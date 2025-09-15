@@ -7,13 +7,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.left_arrow_icon
 import moa.presentation.generated.resources.top_logo
@@ -25,16 +28,11 @@ import org.moa.moa.presentation.ui.theme.TOP_BAR_HEIGHT
 @Composable
 fun MOATopBar(
     currentScreen: String?,
-    selectedTabIndex: Int,
-    onTabIndexMinus: () -> Unit,
-    onBack: () -> Unit,
+    onClickBack: () -> Unit,
 ) {
     when (currentScreen) {
-        SignNavigationItem.SignUp.route -> MOABackTopBar(Modifier) {
-            if (selectedTabIndex > 1) onTabIndexMinus() else onBack()
-        }
-
         SignNavigationItem.OnBoarding.route -> {}
+        SignNavigationItem.SignUp.route -> {}
         else -> MOADefaultTopBar(Modifier)
     }
 }
@@ -63,11 +61,10 @@ fun MOABackTopBar(
     onClickBack: () -> Unit,
 ) {
     Box(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
-            .height(TOP_BAR_HEIGHT)
-            .padding(horizontal = APP_VERTICAL_PADDING1)
-            .windowInsetsPadding(WindowInsets.safeDrawing)
+            .wrapContentHeight()
+            .padding(horizontal = 10.dp)
     ) {
         IconButton(
             onClick = { onClickBack() },
@@ -81,8 +78,10 @@ fun MOABackTopBar(
         Image(
             painter = painterResource(Res.drawable.top_logo),
             contentDescription = "top_logo",
-            contentScale = ContentScale.Fit,
-            modifier = modifier.align(Alignment.Center)
+            modifier = modifier
+                .align(Alignment.Center)
+                .size(50.dp),
+            contentScale = ContentScale.Fit
         )
     }
 }
