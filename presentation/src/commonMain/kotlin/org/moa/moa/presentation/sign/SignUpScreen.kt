@@ -33,7 +33,7 @@ import org.moa.moa.presentation.component.MOALoadingScreen
 import org.moa.moa.presentation.sign.component.BirthDateInput
 import org.moa.moa.presentation.sign.component.GenderInput
 import org.moa.moa.presentation.sign.component.UserIdInput
-import org.moa.moa.presentation.ui.theme.APP_VERTICAL_PADDING2
+import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING2
 import org.moa.moa.presentation.ui.theme.IVORY
 import org.moa.moa.presentation.ui.theme.MAIN
 import org.moa.moa.presentation.ui.theme.Strings
@@ -103,7 +103,7 @@ private fun SignUpScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(4.dp)
-                    .padding(horizontal = APP_VERTICAL_PADDING2)
+                    .padding(horizontal = APP_HORIZONTAL_PADDING2)
                     .clip(RoundedCornerShape(100.dp)),
                 color = MAIN,
                 trackColor = IVORY,

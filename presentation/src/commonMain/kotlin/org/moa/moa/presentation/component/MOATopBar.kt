@@ -22,7 +22,7 @@ import moa.presentation.generated.resources.left_arrow_icon
 import moa.presentation.generated.resources.top_logo
 import org.jetbrains.compose.resources.painterResource
 import org.moa.moa.navigation.sign.SignNavigationItem
-import org.moa.moa.presentation.ui.theme.APP_VERTICAL_PADDING1
+import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.TOP_BAR_HEIGHT
 
 @Composable
@@ -43,7 +43,7 @@ fun MOADefaultTopBar(modifier: Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .height(TOP_BAR_HEIGHT)
-            .padding(horizontal = APP_VERTICAL_PADDING1)
+            .padding(horizontal = APP_HORIZONTAL_PADDING1)
             .windowInsetsPadding(WindowInsets.safeDrawing)
     ) {
         Image(
