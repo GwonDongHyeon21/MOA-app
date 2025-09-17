@@ -21,30 +21,16 @@ import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.left_arrow_icon
 import moa.presentation.generated.resources.top_logo
 import org.jetbrains.compose.resources.painterResource
-import org.moa.moa.navigation.sign.SignNavigationItem
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.TOP_BAR_HEIGHT
 
 @Composable
-fun MOATopBar(
-    currentScreen: String?,
-    onClickBack: () -> Unit,
-) {
-    when (currentScreen) {
-        SignNavigationItem.OnBoarding.route -> {}
-        SignNavigationItem.SignUp.route -> {}
-        else -> MOADefaultTopBar(Modifier)
-    }
-}
-
-@Composable
-fun MOADefaultTopBar(modifier: Modifier) {
+fun MOATopBar(modifier: Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .height(TOP_BAR_HEIGHT)
             .padding(horizontal = APP_HORIZONTAL_PADDING1)
-            .windowInsetsPadding(WindowInsets.safeDrawing)
     ) {
         Image(
             painter = painterResource(Res.drawable.top_logo),

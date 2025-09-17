@@ -10,11 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,6 +25,7 @@ import org.koin.compose.koinInject
 import org.moa.moa.platform.backhandler.BackStackHandler
 import org.moa.moa.presentation.UiState
 import org.moa.moa.presentation.component.MOABackTopBar
+import org.moa.moa.presentation.component.MOAButton
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOALoadingScreen
 import org.moa.moa.presentation.sign.component.BirthDateInput
@@ -82,18 +80,17 @@ private fun SignUpScreen(
             )
         },
         bottomBar = {
-            Button(
-                onClick = {
-                    when (signUpTabIndex) {
-                        1 -> if (uiState.userId.isNotEmpty()) signUpTabIndex++
-                        2 -> if (uiState.birthDate.isNotEmpty()) signUpTabIndex++
-                        3 -> uiState.gender?.let { onSignUp() }
-                    }
-                },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = MAIN)
+            MOAButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                text = Strings.continueText
             ) {
-                Text(text = Strings.continueText)
+                when (signUpTabIndex) {
+                    1 -> if (uiState.userId.isNotEmpty()) signUpTabIndex++
+                    2 -> if (uiState.birthDate.isNotEmpty()) signUpTabIndex++
+                    3 -> uiState.gender?.let { onSignUp() }
+                }
             }
         }
     ) { innerPadding ->
