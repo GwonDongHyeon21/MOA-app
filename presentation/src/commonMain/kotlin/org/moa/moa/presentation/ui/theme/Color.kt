@@ -30,7 +30,7 @@ val GRAY7 = Color(0xFF474747)
 
 @Composable
 fun MOAColorScheme() = ColorScheme(
-    primary = WHITE,
+    primary = MAIN,
     onPrimary = BLACK,
     primaryContainer = WHITE,
     onPrimaryContainer = BLACK,

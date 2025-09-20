@@ -21,4 +21,8 @@ object Strings {
     const val pleaseEnterGender2 = "모아가 참고하도록 할게요!"
     const val men = "남성"
     const val wemen = "여성"
+    const val record = "기록하기"
+    const val record_text_guidline = "어떤 일이 있었는지\n기록해주세요"
+    const val text_input_placeholder = "글을 입력해주세요"
+    const val image_guideline = "이미지를 추가할 수 있어요"
 }

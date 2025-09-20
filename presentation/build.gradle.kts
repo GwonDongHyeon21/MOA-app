@@ -34,13 +34,14 @@ kotlin {
             // Koin
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+
+            // Coil
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor3)
         }
         androidMain.dependencies {
             implementation(compose.ui)
             implementation(libs.androidx.activity.compose)
-
-            // Koin
-            implementation(libs.koin.android)
         }
         iosMain.dependencies {
         }

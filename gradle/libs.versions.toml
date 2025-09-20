@@ -6,17 +6,20 @@ android-targetSdk = "35"
 androidx-activity = "1.9.3"
 androidx-appcompat = "1.7.1"
 buildconfig = "5.3.5"
+coil = "3.0.0"
 composeMultiplatform = "1.8.2"
 composeNavigation = "2.9.0-rc01"
 koinAndroid = "4.1.0"
 koinCore = "4.1.0"
 koinCompose = "4.1.0"
-kotlin = "2.0.21"
+kotlin = "2.2.10"
 jetbrainsKotlinJvm = "2.0.0"
 ktorClientCore = "2.3.12"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "composeNavigation" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
