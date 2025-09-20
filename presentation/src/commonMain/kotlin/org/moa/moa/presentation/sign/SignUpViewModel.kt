@@ -18,7 +18,7 @@ class SignUpViewModel(
             userId = "",
             birthDate = "",
             gender = null,
-            screenState = UiState.SUCCESS
+            screenState = UiState.DEFAULT
         )
     )
     val uiState: StateFlow<SignUpUiState> = _uiState
@@ -35,7 +35,7 @@ class SignUpViewModel(
         _uiState.value = _uiState.value.copy(gender = gender)
     }
 
-    fun signUp(onSignUp: () -> Unit) {
+    fun signUp() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(screenState = UiState.LOADING)
             runCatching {
@@ -48,7 +48,7 @@ class SignUpViewModel(
                 )
             }.onSuccess {
                 // 회원가입 성공
-                onSignUp()
+                _uiState.value = _uiState.value.copy(screenState = UiState.SUCCESS)
             }.onFailure {
                 _uiState.value = _uiState.value.copy(screenState = UiState.ERROR)
                 it.printStackTrace()

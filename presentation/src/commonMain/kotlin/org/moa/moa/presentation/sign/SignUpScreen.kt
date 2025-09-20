@@ -38,22 +38,23 @@ import org.moa.moa.presentation.ui.theme.Strings
 
 @Composable
 fun SignUpScreen(
-    onClickPopBack: () -> Unit,
-    onNavigateToHome: () -> Unit,
     viewModel: SignUpViewModel = koinInject(),
+    onNavigateToHome: () -> Unit,
+    onClickBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     when (uiState.screenState) {
-        UiState.SUCCESS -> SignUpScreen(
+        UiState.DEFAULT -> SignUpScreen(
             uiState = uiState,
-            onSignUp = { viewModel.signUp { onNavigateToHome() } },
+            onSignUp = { viewModel.signUp() },
             onUserIdChanged = { viewModel.userIdChange(it) },
             onBirthDateChanged = { viewModel.birthDateChange(it) },
             onGenderChanged = { viewModel.genderChange(it) },
-            onClickPopBack = { onClickPopBack() }
+            onClickPopBack = { onClickBack() }
         )
 
+        UiState.SUCCESS -> onNavigateToHome()
         UiState.LOADING -> MOALoadingScreen(Modifier)
         UiState.ERROR -> MOAErrorScreen(Modifier)
     }
