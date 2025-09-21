@@ -40,7 +40,7 @@ import org.moa.moa.presentation.ui.theme.Strings
 fun SignUpScreen(
     viewModel: SignUpViewModel = koinInject(),
     onNavigateToHome: () -> Unit,
-    onClickBack: () -> Unit,
+    onBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -51,7 +51,7 @@ fun SignUpScreen(
             onUserIdChanged = { viewModel.userIdChange(it) },
             onBirthDateChanged = { viewModel.birthDateChange(it) },
             onGenderChanged = { viewModel.genderChange(it) },
-            onClickPopBack = { onClickBack() }
+            onBack = { onBack() }
         )
 
         UiState.SUCCESS -> onNavigateToHome()
@@ -67,17 +67,17 @@ private fun SignUpScreen(
     onUserIdChanged: (String) -> Unit,
     onBirthDateChanged: (String) -> Unit,
     onGenderChanged: (Gender) -> Unit,
-    onClickPopBack: () -> Unit,
+    onBack: () -> Unit,
 ) {
     var signUpTabIndex by remember { mutableIntStateOf(1) }
 
-    BackStackHandler { if (signUpTabIndex > 1) signUpTabIndex-- else onClickPopBack() }
+    BackStackHandler { if (signUpTabIndex > 1) signUpTabIndex-- else onBack() }
 
     Scaffold(
         topBar = {
             MOABackTopBar(
                 modifier = Modifier,
-                onClickBack = { if (signUpTabIndex > 1) signUpTabIndex-- else onClickPopBack() },
+                onBack = { if (signUpTabIndex > 1) signUpTabIndex-- else onBack() },
             )
         },
         bottomBar = {

@@ -5,5 +5,5 @@ import org.moa.moa.presentation.UiState
 data class RecordUiState(
     val recordText: String,
     val imageBytes: ByteArray?,
-    val screeState: UiState,
+    val screenState: UiState,
 )

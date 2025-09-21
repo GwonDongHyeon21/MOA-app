@@ -2,13 +2,10 @@ package org.moa.moa.presentation.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,7 +41,7 @@ fun MOATopBar(modifier: Modifier) {
 @Composable
 fun MOABackTopBar(
     modifier: Modifier,
-    onClickBack: () -> Unit,
+    onBack: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -53,7 +50,7 @@ fun MOABackTopBar(
             .padding(horizontal = 10.dp)
     ) {
         IconButton(
-            onClick = { onClickBack() },
+            onClick = { onBack() },
             modifier = modifier.align(Alignment.CenterStart)
         ) {
             Icon(

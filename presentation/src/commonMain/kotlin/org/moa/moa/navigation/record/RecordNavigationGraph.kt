@@ -8,7 +8,7 @@ import org.moa.moa.presentation.record.RecordScreen
 fun NavGraphBuilder.recordNavigationGraph(navController: NavController) {
     composable(RecordNavigationItem.RecordText.route) {
         RecordScreen(
-            onClickBack = { navController.popBackStack() }
+            onBack = { navController.popBackStack() }
         )
     }
 }

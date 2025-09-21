@@ -62,7 +62,7 @@ fun RecordScreen(
         topBar = {
             MOABackTopBar(
                 modifier = Modifier,
-                onClickBack = { onClickBack() }
+                onBack = { onBack() }
             )
         },
         bottomBar = {

@@ -15,7 +15,7 @@ class RecordViewModel(
         RecordUiState(
             recordText = "",
             imageBytes = null,
-            screeState = UiState.DEFAULT
+            screenState = UiState.DEFAULT
         )
     )
     val uiState: StateFlow<RecordUiState> = _uiState
@@ -30,13 +30,13 @@ class RecordViewModel(
 
     fun addRecordData() {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(screeState = UiState.LOADING)
+            _uiState.value = _uiState.value.copy(screenState = UiState.LOADING)
             runCatching {
 //                recordUseCase.addRecordData()
             }.onSuccess {
-                _uiState.value = _uiState.value.copy(screeState = UiState.SUCCESS)
+                _uiState.value = _uiState.value.copy(screenState = UiState.SUCCESS)
             }.onFailure {
-                _uiState.value = _uiState.value.copy(screeState = UiState.ERROR)
+                _uiState.value = _uiState.value.copy(screenState = UiState.ERROR)
             }
         }
     }
