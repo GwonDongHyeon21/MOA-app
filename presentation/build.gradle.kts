@@ -38,6 +38,9 @@ kotlin {
             // Coil
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor3)
+
+            // DateTime
+            implementation(libs.kotlinx.datetime)
         }
         androidMain.dependencies {
             implementation(compose.ui)
