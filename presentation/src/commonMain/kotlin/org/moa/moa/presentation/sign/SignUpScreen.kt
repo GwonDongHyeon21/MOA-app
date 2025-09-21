@@ -32,6 +32,7 @@ import org.moa.moa.presentation.sign.component.BirthDateInput
 import org.moa.moa.presentation.sign.component.GenderInput
 import org.moa.moa.presentation.sign.component.UserIdInput
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING2
+import org.moa.moa.presentation.ui.theme.BIRTHDATE_LENGTH
 import org.moa.moa.presentation.ui.theme.IVORY
 import org.moa.moa.presentation.ui.theme.MAIN
 import org.moa.moa.presentation.ui.theme.Strings
@@ -89,7 +90,7 @@ private fun SignUpScreen(
             ) {
                 when (signUpTabIndex) {
                     1 -> if (uiState.userId.isNotEmpty()) signUpTabIndex++
-                    2 -> if (uiState.birthDate.isNotEmpty()) signUpTabIndex++
+                    2 -> if (uiState.birthDate.length == BIRTHDATE_LENGTH) signUpTabIndex++
                     3 -> uiState.gender?.let { onSignUp() }
                 }
             }

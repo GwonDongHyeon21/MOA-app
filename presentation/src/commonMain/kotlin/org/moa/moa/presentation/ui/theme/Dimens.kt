@@ -8,3 +8,5 @@ val APP_HORIZONTAL_PADDING2 = 32.dp
 val TOP_BAR_HEIGHT = 84.dp
 
 val CORNER_RADIUS = 20.dp
+
+const val BIRTHDATE_LENGTH = 8
