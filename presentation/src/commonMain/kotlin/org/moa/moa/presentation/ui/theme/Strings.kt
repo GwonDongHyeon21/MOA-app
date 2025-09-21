@@ -25,4 +25,7 @@ object Strings {
     const val record_text_guidline = "어떤 일이 있었는지\n기록해주세요"
     const val text_input_placeholder = "글을 입력해주세요"
     const val image_guideline = "이미지를 추가할 수 있어요"
+    const val add_record_text = "조각이 생성되었어요!"
+    const val confirm = "확인"
+    const val date_time_format = "M.d (E) HH:mm"
 }

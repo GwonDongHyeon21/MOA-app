@@ -22,8 +22,12 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -36,9 +40,14 @@ import moa.presentation.generated.resources.record_text_background_left
 import moa.presentation.generated.resources.record_text_background_right
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
+import org.moa.moa.presentation.UiState
 import org.moa.moa.presentation.component.MOABackTopBar
 import org.moa.moa.presentation.component.MOAButton
+import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOAFloatingActionButton
+import org.moa.moa.presentation.component.MOALoadingScreen
+import org.moa.moa.presentation.record.component.ImageDialog
+import org.moa.moa.presentation.record.component.RecordSuccessScreen
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING2
 import org.moa.moa.presentation.ui.theme.CORNER_RADIUS
@@ -50,13 +59,35 @@ import org.moa.moa.util.rememberImagePicker
 
 @Composable
 fun RecordScreen(
-    onClickBack: () -> Unit,
     viewModel: RecordViewModel = koinInject(),
+    onBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val imagePicker = rememberImagePicker {
-        viewModel.changeImageBytes(it)
+
+    when (uiState.screenState) {
+        UiState.DEFAULT -> RecordScreen(
+            uiState = uiState,
+            onImageBytesChange = { viewModel.changeImageBytes(it) },
+            onAddRecordData = { viewModel.addRecordData() },
+            onTextChange = { viewModel.changeRecordText(it) },
+            onBack = { onBack() }
+        )
+
+        UiState.SUCCESS -> RecordSuccessScreen { onBack() }
+        UiState.LOADING -> MOALoadingScreen(Modifier)
+        UiState.ERROR -> MOAErrorScreen(Modifier)
     }
+}
+
+@Composable
+private fun RecordScreen(
+    uiState: RecordUiState,
+    onImageBytesChange: (ByteArray?) -> Unit,
+    onAddRecordData: () -> Unit,
+    onTextChange: (String) -> Unit,
+    onBack: () -> Unit,
+) {
+    val imagePicker = rememberImagePicker { onImageBytesChange(it) }
 
     Scaffold(
         topBar = {
@@ -73,7 +104,7 @@ fun RecordScreen(
                 text = Strings.record,
                 enabled = uiState.recordText.isNotBlank()
             ) {
-                viewModel.addRecordData()
+                onAddRecordData()
             }
         },
         floatingActionButton = {
@@ -110,9 +141,8 @@ fun RecordScreen(
                     modifier = Modifier,
                     uiState = uiState,
                     imageBytes = uiState.imageBytes,
-                    onValueChange = { viewModel.changeRecordText(it) },
-                    onImageClick = { imagePicker.pickImage() },
-                    onImageCancel = { viewModel.changeImageBytes(null) }
+                    onValueChange = { onTextChange(it) },
+                    onImageCancel = { onImageBytesChange(null) }
                 )
             }
         }
@@ -148,7 +178,6 @@ fun RecordInputSection(
     uiState: RecordUiState,
     imageBytes: ByteArray?,
     onValueChange: (String) -> Unit,
-    onImageClick: () -> Unit,
     onImageCancel: () -> Unit,
 ) {
     Column(
@@ -175,31 +204,12 @@ fun RecordInputSection(
             .padding(top = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        imageBytes?.let {
-            Box {
-                AsyncImage(
-                    model = it,
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .fillMaxHeight(0.3f)
-                        .clickable { onImageClick() }
-                )
-                Icon(
-                    painter = painterResource(Res.drawable.cancel),
-                    contentDescription = "CancelImage",
-                    modifier = modifier
-                        .align(Alignment.TopEnd)
-                        .padding(5.dp)
-                        .clickable(
-                            onClick = { onImageCancel() },
-                            interactionSource = null,
-                            indication = null
-                        ),
-                    tint = WHITE
-                )
-            }
-        }
+        RecordImageSection(
+            modifier = modifier,
+            imageBytes = imageBytes,
+            onImageCancel = { onImageCancel() },
+        )
+
         OutlinedTextField(
             value = uiState.recordText,
             onValueChange = { if (it.length < 500) onValueChange(it) },
@@ -218,7 +228,53 @@ fun RecordInputSection(
                 unfocusedContainerColor = transparent,
                 focusedIndicatorColor = transparent,
                 unfocusedIndicatorColor = transparent
+            ),
+            maxLines = 20,
+        )
+    }
+}
+
+@Composable
+fun RecordImageSection(
+    modifier: Modifier,
+    imageBytes: ByteArray?,
+    onImageCancel: () -> Unit,
+) {
+    var isImageDialogExpanded by remember { mutableStateOf(false) }
+    val roundedCornerShape = RoundedCornerShape(15.dp)
+
+    imageBytes?.let {
+        Box {
+            AsyncImage(
+                model = it,
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .fillMaxHeight(0.3f)
+                    .clip(roundedCornerShape)
+                    .clickable { isImageDialogExpanded = true }
             )
+            Icon(
+                painter = painterResource(Res.drawable.cancel),
+                contentDescription = "CancelImage",
+                modifier = modifier
+                    .align(Alignment.TopEnd)
+                    .padding(5.dp)
+                    .clickable(
+                        onClick = { onImageCancel() },
+                        interactionSource = null,
+                        indication = null
+                    ),
+                tint = WHITE
+            )
+        }
+
+        ImageDialog(
+            modifier = modifier,
+            imageBytes = it,
+            roundedCornerShape = roundedCornerShape,
+            isImageDialogExpanded = isImageDialogExpanded,
+            onDismissRequest = { isImageDialogExpanded = false }
         )
     }
 }
