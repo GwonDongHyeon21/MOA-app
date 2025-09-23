@@ -4,9 +4,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,12 +16,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,19 +51,37 @@ import org.moa.moa.presentation.component.MOAButton
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOAFloatingActionButton
 import org.moa.moa.presentation.component.MOALoadingScreen
+import org.moa.moa.presentation.record.RecordDimens.RECORD_MAX_LENGTH
+import org.moa.moa.presentation.record.RecordDimens.RECORD_MAX_LINES
+import org.moa.moa.presentation.record.RecordDimens.imagePadding
+import org.moa.moa.presentation.record.RecordDimens.roundedCornerShape
+import org.moa.moa.presentation.record.RecordDimens.shadow
+import org.moa.moa.presentation.record.RecordDimens.textFieldPadding
 import org.moa.moa.presentation.record.component.ImageDialog
 import org.moa.moa.presentation.record.component.RecordSuccessScreen
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING2
 import org.moa.moa.presentation.ui.theme.CORNER_RADIUS
 import org.moa.moa.presentation.ui.theme.GRAY2
+import org.moa.moa.presentation.ui.theme.GRAY6
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
 import org.moa.moa.presentation.ui.theme.transparent
+import org.moa.moa.util.rememberCameraController
 import org.moa.moa.util.rememberImagePicker
+
+object RecordDimens {
+    const val RECORD_MAX_LENGTH = 500
+    const val RECORD_MAX_LINES = 20
+    val imagePadding = 20.dp
+    val textFieldPadding = 4.dp
+    val shadow = 4.dp
+    val roundedCornerShape = RoundedCornerShape(15.dp)
+}
 
 @Composable
 fun RecordScreen(
+    isCamera: Boolean = false,
     viewModel: RecordViewModel = koinInject(),
     onBack: () -> Unit,
 ) {
@@ -66,11 +89,12 @@ fun RecordScreen(
 
     when (uiState.screenState) {
         UiState.DEFAULT -> RecordScreen(
+            isCamera = isCamera,
             uiState = uiState,
             onImageBytesChange = { viewModel.changeImageBytes(it) },
             onAddRecordData = { viewModel.addRecordData() },
             onTextChange = { viewModel.changeRecordText(it) },
-            onBack = { onBack() }
+            onBack = { onBack() },
         )
 
         UiState.SUCCESS -> RecordSuccessScreen { onBack() }
@@ -81,13 +105,23 @@ fun RecordScreen(
 
 @Composable
 private fun RecordScreen(
+    isCamera: Boolean,
     uiState: RecordUiState,
     onImageBytesChange: (ByteArray?) -> Unit,
     onAddRecordData: () -> Unit,
     onTextChange: (String) -> Unit,
     onBack: () -> Unit,
 ) {
+    var isCameraMode by remember { mutableStateOf(isCamera) }
     val imagePicker = rememberImagePicker { onImageBytesChange(it) }
+    val camera = rememberCameraController()
+    var cameraPhoto by remember { mutableStateOf<ByteArray?>(null) }
+
+    LaunchedEffect(Unit) {
+        if (isCamera) {
+            cameraPhoto = camera.takePicture()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -108,11 +142,13 @@ private fun RecordScreen(
             }
         },
         floatingActionButton = {
-            MOAFloatingActionButton(
-                modifier = Modifier,
-                imageBytes = uiState.imageBytes
-            ) {
-                imagePicker.pickImage()
+            if (!isCameraMode) {
+                MOAFloatingActionButton(
+                    modifier = Modifier,
+                    imageBytes = uiState.imageBytes
+                ) {
+                    imagePicker.pickImage()
+                }
             }
         }
     ) { innerPadding ->
@@ -139,9 +175,15 @@ private fun RecordScreen(
                 Spacer(modifier = Modifier.height(50.dp))
                 RecordInputSection(
                     modifier = Modifier,
+                    cameraPhoto = cameraPhoto,
+                    innerPadding = innerPadding,
                     uiState = uiState,
-                    imageBytes = uiState.imageBytes,
                     onValueChange = { onTextChange(it) },
+                    onImageBytesChange = {
+                        onImageBytesChange(cameraPhoto)
+                        cameraPhoto = null
+                        isCameraMode = false
+                    },
                     onImageCancel = { onImageBytesChange(null) }
                 )
             }
@@ -175,9 +217,11 @@ fun RecordBackgroundSection(
 @Composable
 fun RecordInputSection(
     modifier: Modifier,
+    cameraPhoto: ByteArray?,
+    innerPadding: PaddingValues,
     uiState: RecordUiState,
-    imageBytes: ByteArray?,
     onValueChange: (String) -> Unit,
+    onImageBytesChange: () -> Unit,
     onImageCancel: () -> Unit,
 ) {
     Column(
@@ -192,45 +236,102 @@ fun RecordInputSection(
                 )
             )
             .padding(horizontal = APP_HORIZONTAL_PADDING2)
-            .padding(bottom = 4.dp)
+            .padding(bottom = shadow)
             .shadow(
-                4.dp,
+                shadow,
                 RoundedCornerShape(
                     topStart = CORNER_RADIUS,
                     topEnd = CORNER_RADIUS
                 )
             )
             .background(WHITE)
-            .padding(top = 20.dp),
+            .padding(vertical = imagePadding),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        RecordImageSection(
-            modifier = modifier,
-            imageBytes = imageBytes,
-            onImageCancel = { onImageCancel() },
+        cameraPhoto?.let {
+            RecordCameraSection(
+                modifier = modifier,
+                innerPadding = innerPadding,
+                imageBytes = it,
+                onSelectedImage = { onImageBytesChange() }
+            )
+        } ?: run {
+            RecordImageSection(
+                modifier = modifier,
+                imageBytes = uiState.imageBytes,
+                onImageCancel = { onImageCancel() },
+            )
+
+            OutlinedTextField(
+                value = uiState.recordText,
+                onValueChange = { if (it.length < RECORD_MAX_LENGTH) onValueChange(it) },
+                modifier = modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .padding(textFieldPadding),
+                placeholder = {
+                    Text(
+                        text = Strings.text_input_placeholder,
+                        color = GRAY2
+                    )
+                },
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = transparent,
+                    unfocusedContainerColor = transparent,
+                    focusedIndicatorColor = transparent,
+                    unfocusedIndicatorColor = transparent
+                ),
+                maxLines = RECORD_MAX_LINES,
+            )
+        }
+    }
+}
+
+@Composable
+fun RecordCameraSection(
+    modifier: Modifier,
+    innerPadding: PaddingValues,
+    imageBytes: ByteArray,
+    onSelectedImage: () -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = imagePadding)
+            .padding(bottom = innerPadding.calculateBottomPadding()),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        AsyncImage(
+            model = imageBytes,
+            contentDescription = null,
+            modifier = modifier
+                .fillMaxWidth()
+                .clip(roundedCornerShape),
+            contentScale = ContentScale.Fit,
         )
 
-        OutlinedTextField(
-            value = uiState.recordText,
-            onValueChange = { if (it.length < 500) onValueChange(it) },
+        Row(
             modifier = modifier
-                .weight(1f)
                 .fillMaxWidth()
-                .padding(4.dp),
-            placeholder = {
-                Text(
-                    text = Strings.text_input_placeholder,
-                    color = GRAY2
-                )
-            },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = transparent,
-                unfocusedContainerColor = transparent,
-                focusedIndicatorColor = transparent,
-                unfocusedIndicatorColor = transparent
-            ),
-            maxLines = 20,
-        )
+                .padding(top = imagePadding)
+        ) {
+            Button(
+                onClick = {},
+                modifier = modifier.weight(1f).height(46.dp),
+                shape = roundedCornerShape,
+                colors = ButtonDefaults.buttonColors(containerColor = GRAY6)
+            ) {
+
+            }
+            Button(
+                onClick = { onSelectedImage() },
+                modifier = modifier.weight(1f).height(46.dp),
+                shape = roundedCornerShape,
+                colors = ButtonDefaults.buttonColors(containerColor = GRAY6)
+            ) {
+
+            }
+        }
     }
 }
 
@@ -241,7 +342,6 @@ fun RecordImageSection(
     onImageCancel: () -> Unit,
 ) {
     var isImageDialogExpanded by remember { mutableStateOf(false) }
-    val roundedCornerShape = RoundedCornerShape(15.dp)
 
     imageBytes?.let {
         Box {

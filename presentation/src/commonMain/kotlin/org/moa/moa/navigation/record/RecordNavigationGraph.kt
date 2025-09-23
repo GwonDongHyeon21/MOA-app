@@ -11,4 +11,10 @@ fun NavGraphBuilder.recordNavigationGraph(navController: NavController) {
             onBack = { navController.popBackStack() }
         )
     }
+    composable(RecordNavigationItem.RecordCamera.route) {
+        RecordScreen(
+            isCamera = true,
+            onBack = { navController.popBackStack() }
+        )
+    }
 }
