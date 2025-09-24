@@ -19,8 +19,8 @@ object Strings {
     const val birthDatePlaceholder = "YYYY.MM.DD"
     const val pleaseEnterGender = "성별을 알려주세요"
     const val pleaseEnterGender2 = "모아가 참고하도록 할게요!"
-    const val men = "남성"
-    const val wemen = "여성"
+    const val man = "남성"
+    const val woman = "여성"
     const val record = "기록하기"
     const val record_text_guidline = "어떤 일이 있었는지\n기록해주세요"
     const val text_input_placeholder = "글을 입력해주세요"
@@ -28,4 +28,6 @@ object Strings {
     const val add_record_text = "조각이 생성되었어요!"
     const val confirm = "확인"
     const val date_time_format = "M.d (E) HH:mm"
+    const val retake_picture = "다시 촬영"
+    const val write = "글 쓰기"
 }

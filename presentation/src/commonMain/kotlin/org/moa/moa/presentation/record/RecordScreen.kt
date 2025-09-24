@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -29,6 +30,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import kotlinx.coroutines.launch
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.cancel
 import moa.presentation.generated.resources.record_text_background_left
@@ -56,7 +59,6 @@ import org.moa.moa.presentation.record.RecordDimens.RECORD_MAX_LINES
 import org.moa.moa.presentation.record.RecordDimens.imagePadding
 import org.moa.moa.presentation.record.RecordDimens.roundedCornerShape
 import org.moa.moa.presentation.record.RecordDimens.shadow
-import org.moa.moa.presentation.record.RecordDimens.textFieldPadding
 import org.moa.moa.presentation.record.component.ImageDialog
 import org.moa.moa.presentation.record.component.RecordSuccessScreen
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
@@ -74,7 +76,6 @@ object RecordDimens {
     const val RECORD_MAX_LENGTH = 500
     const val RECORD_MAX_LINES = 20
     val imagePadding = 20.dp
-    val textFieldPadding = 4.dp
     val shadow = 4.dp
     val roundedCornerShape = RoundedCornerShape(15.dp)
 }
@@ -116,11 +117,10 @@ private fun RecordScreen(
     val imagePicker = rememberImagePicker { onImageBytesChange(it) }
     val camera = rememberCameraController()
     var cameraPhoto by remember { mutableStateOf<ByteArray?>(null) }
+    val coroutine = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        if (isCamera) {
-            cameraPhoto = camera.takePicture()
-        }
+        if (isCamera) cameraPhoto = camera.takePicture()
     }
 
     Scaffold(
@@ -134,7 +134,8 @@ private fun RecordScreen(
             MOAButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = APP_HORIZONTAL_PADDING1),
+                    .padding(horizontal = APP_HORIZONTAL_PADDING1)
+                    .imePadding(),
                 text = Strings.record,
                 enabled = uiState.recordText.isNotBlank()
             ) {
@@ -152,7 +153,11 @@ private fun RecordScreen(
             }
         }
     ) { innerPadding ->
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .imePadding()
+        ) {
             RecordBackgroundSection(
                 modifier = Modifier,
                 innerPadding = innerPadding
@@ -184,7 +189,12 @@ private fun RecordScreen(
                         cameraPhoto = null
                         isCameraMode = false
                     },
-                    onImageCancel = { onImageBytesChange(null) }
+                    onImageCancel = { onImageBytesChange(null) },
+                    onRetakePicture = {
+                        coroutine.launch {
+                            cameraPhoto = camera.takePicture()
+                        }
+                    }
                 )
             }
         }
@@ -223,6 +233,7 @@ fun RecordInputSection(
     onValueChange: (String) -> Unit,
     onImageBytesChange: () -> Unit,
     onImageCancel: () -> Unit,
+    onRetakePicture: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -244,8 +255,7 @@ fun RecordInputSection(
                     topEnd = CORNER_RADIUS
                 )
             )
-            .background(WHITE)
-            .padding(vertical = imagePadding),
+            .background(WHITE),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         cameraPhoto?.let {
@@ -253,7 +263,8 @@ fun RecordInputSection(
                 modifier = modifier,
                 innerPadding = innerPadding,
                 imageBytes = it,
-                onSelectedImage = { onImageBytesChange() }
+                onSelectedImage = { onImageBytesChange() },
+                onRetakePicture = { onRetakePicture() }
             )
         } ?: run {
             RecordImageSection(
@@ -268,7 +279,7 @@ fun RecordInputSection(
                 modifier = modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .padding(textFieldPadding),
+                    .padding(bottom = imagePadding * 2),
                 placeholder = {
                     Text(
                         text = Strings.text_input_placeholder,
@@ -293,11 +304,12 @@ fun RecordCameraSection(
     innerPadding: PaddingValues,
     imageBytes: ByteArray,
     onSelectedImage: () -> Unit,
+    onRetakePicture: () -> Unit,
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = imagePadding)
+            .padding(imagePadding)
             .padding(bottom = innerPadding.calculateBottomPadding()),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -313,15 +325,20 @@ fun RecordCameraSection(
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(top = imagePadding)
+                .padding(top = imagePadding),
+            horizontalArrangement = Arrangement.spacedBy(imagePadding)
         ) {
             Button(
-                onClick = {},
+                onClick = { onRetakePicture() },
                 modifier = modifier.weight(1f).height(46.dp),
                 shape = roundedCornerShape,
                 colors = ButtonDefaults.buttonColors(containerColor = GRAY6)
             ) {
-
+                Text(
+                    text = Strings.retake_picture,
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.Normal
+                )
             }
             Button(
                 onClick = { onSelectedImage() },
@@ -329,7 +346,11 @@ fun RecordCameraSection(
                 shape = roundedCornerShape,
                 colors = ButtonDefaults.buttonColors(containerColor = GRAY6)
             ) {
-
+                Text(
+                    text = Strings.write,
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.Normal
+                )
             }
         }
     }
@@ -344,7 +365,7 @@ fun RecordImageSection(
     var isImageDialogExpanded by remember { mutableStateOf(false) }
 
     imageBytes?.let {
-        Box {
+        Box(modifier = modifier.padding(top = imagePadding)) {
             AsyncImage(
                 model = it,
                 contentDescription = null,
