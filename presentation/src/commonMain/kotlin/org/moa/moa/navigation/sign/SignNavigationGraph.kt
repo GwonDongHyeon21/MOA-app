@@ -16,8 +16,8 @@ fun NavGraphBuilder.signNavigationGraph(navController: NavController) {
     }
     composable(SignNavigationItem.SignUp.route) {
         SignUpScreen(
-            onClickPopBack = { navController.popBackStack() },
-            onNavigateToHome = { navController.navigate(HomeNavigationItem.Home.route) }
+            onNavigateToHome = { navController.navigate(HomeNavigationItem.Home.route) },
+            onBack = { navController.popBackStack() }
         )
     }
     composable(SignNavigationItem.SignIn.route) {

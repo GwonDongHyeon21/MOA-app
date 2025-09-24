@@ -55,7 +55,7 @@ fun GenderInput(
                 onClick = { onValueChange(Gender.MEN) },
                 content = {
                     Text(
-                        text = Strings.men,
+                        text = Strings.man,
                         fontSize = 15.sp,
                         color = BLACK
                     )
@@ -74,7 +74,7 @@ fun GenderInput(
                 onClick = { onValueChange(Gender.WOMEN) },
                 content = {
                     Text(
-                        text = Strings.wemen,
+                        text = Strings.woman,
                         fontSize = 15.sp,
                         color = BLACK
                     )

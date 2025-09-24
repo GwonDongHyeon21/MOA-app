@@ -17,7 +17,6 @@ import org.moa.moa.navigation.sign.signNavigationGraph
 import org.moa.moa.navigation.todo.todoNavigationGraph
 import org.moa.moa.navigation.user.userNavigationGraph
 import org.moa.moa.presentation.component.MOABottomBar
-import org.moa.moa.presentation.component.MOATopBar
 import org.moa.moa.presentation.ui.theme.MOAColorScheme
 
 @Composable
@@ -28,12 +27,6 @@ fun MOAApp() {
         val currentScreen = navBackStackEntry?.destination?.route
 
         Scaffold(
-            topBar = {
-                MOATopBar(
-                    currentScreen = currentScreen,
-                    onClickBack = { navController.popBackStack() }
-                )
-            },
             bottomBar = { MOABottomBar(navController, currentScreen) }
         ) { innerPadding ->
             NavHost(

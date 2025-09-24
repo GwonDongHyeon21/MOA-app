@@ -10,11 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,34 +25,37 @@ import org.koin.compose.koinInject
 import org.moa.moa.platform.backhandler.BackStackHandler
 import org.moa.moa.presentation.UiState
 import org.moa.moa.presentation.component.MOABackTopBar
+import org.moa.moa.presentation.component.MOAButton
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOALoadingScreen
 import org.moa.moa.presentation.sign.component.BirthDateInput
 import org.moa.moa.presentation.sign.component.GenderInput
 import org.moa.moa.presentation.sign.component.UserIdInput
-import org.moa.moa.presentation.ui.theme.APP_VERTICAL_PADDING2
+import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING2
+import org.moa.moa.presentation.ui.theme.BIRTHDATE_LENGTH
 import org.moa.moa.presentation.ui.theme.IVORY
 import org.moa.moa.presentation.ui.theme.MAIN
 import org.moa.moa.presentation.ui.theme.Strings
 
 @Composable
 fun SignUpScreen(
-    onClickPopBack: () -> Unit,
-    onNavigateToHome: () -> Unit,
     viewModel: SignUpViewModel = koinInject(),
+    onNavigateToHome: () -> Unit,
+    onBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     when (uiState.screenState) {
-        UiState.SUCCESS -> SignUpScreen(
+        UiState.DEFAULT -> SignUpScreen(
             uiState = uiState,
-            onSignUp = { viewModel.signUp { onNavigateToHome() } },
+            onSignUp = { viewModel.signUp() },
             onUserIdChanged = { viewModel.userIdChange(it) },
             onBirthDateChanged = { viewModel.birthDateChange(it) },
             onGenderChanged = { viewModel.genderChange(it) },
-            onClickPopBack = { onClickPopBack() }
+            onBack = { onBack() }
         )
 
+        UiState.SUCCESS -> onNavigateToHome()
         UiState.LOADING -> MOALoadingScreen(Modifier)
         UiState.ERROR -> MOAErrorScreen(Modifier)
     }
@@ -68,32 +68,31 @@ private fun SignUpScreen(
     onUserIdChanged: (String) -> Unit,
     onBirthDateChanged: (String) -> Unit,
     onGenderChanged: (Gender) -> Unit,
-    onClickPopBack: () -> Unit,
+    onBack: () -> Unit,
 ) {
     var signUpTabIndex by remember { mutableIntStateOf(1) }
 
-    BackStackHandler { if (signUpTabIndex > 1) signUpTabIndex-- else onClickPopBack() }
+    BackStackHandler { if (signUpTabIndex > 1) signUpTabIndex-- else onBack() }
 
     Scaffold(
         topBar = {
             MOABackTopBar(
                 modifier = Modifier,
-                onClickBack = { if (signUpTabIndex > 1) signUpTabIndex-- else onClickPopBack() },
+                onBack = { if (signUpTabIndex > 1) signUpTabIndex-- else onBack() },
             )
         },
         bottomBar = {
-            Button(
-                onClick = {
-                    when (signUpTabIndex) {
-                        1 -> if (uiState.userId.isNotEmpty()) signUpTabIndex++
-                        2 -> if (uiState.birthDate.isNotEmpty()) signUpTabIndex++
-                        3 -> uiState.gender?.let { onSignUp() }
-                    }
-                },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = MAIN)
+            MOAButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                text = Strings.continueText
             ) {
-                Text(text = Strings.continueText)
+                when (signUpTabIndex) {
+                    1 -> if (uiState.userId.isNotEmpty()) signUpTabIndex++
+                    2 -> if (uiState.birthDate.length == BIRTHDATE_LENGTH) signUpTabIndex++
+                    3 -> uiState.gender?.let { onSignUp() }
+                }
             }
         }
     ) { innerPadding ->
@@ -103,7 +102,7 @@ private fun SignUpScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(4.dp)
-                    .padding(horizontal = APP_VERTICAL_PADDING2)
+                    .padding(horizontal = APP_HORIZONTAL_PADDING2)
                     .clip(RoundedCornerShape(100.dp)),
                 color = MAIN,
                 trackColor = IVORY,

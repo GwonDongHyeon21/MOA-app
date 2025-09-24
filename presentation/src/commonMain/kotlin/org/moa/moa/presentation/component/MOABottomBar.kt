@@ -82,7 +82,9 @@ fun MOABottomBar(
 ) {
     val isBottomBar = currentScreen !in listOf(
         SignNavigationItem.OnBoarding.route,
-        SignNavigationItem.SignUp.route
+        SignNavigationItem.SignUp.route,
+        RecordNavigationItem.RecordText.route,
+        RecordNavigationItem.RecordCamera.route
     )
     val bottomItems = listOf(
         Triple(Strings.home, Res.drawable.home_button_icon, HomeNavigationItem.Home.route),
