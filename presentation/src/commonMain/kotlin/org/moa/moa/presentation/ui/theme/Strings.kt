@@ -22,7 +22,8 @@ object Strings {
     const val man = "남성"
     const val woman = "여성"
     const val record = "기록하기"
-    const val record_text_guidline = "어떤 일이 있었는지\n기록해주세요"
+    const val record_text_guidline1 = "어떤 일이 있었는지"
+    const val record_text_guidline2 = "기록해주세요"
     const val text_input_placeholder = "글을 입력해주세요"
     const val image_guideline = "이미지를 추가할 수 있어요"
     const val add_record_text = "조각이 생성되었어요!"
@@ -30,4 +31,8 @@ object Strings {
     const val date_time_format = "M.d (E) HH:mm"
     const val retake_picture = "다시 촬영"
     const val write = "글 쓰기"
+    const val recording_guidline1 = "소리를"
+    const val recording_guidline2 = "녹음해주세요"
+    const val start = "시작"
+    const val pause = "일시정지"
 }
