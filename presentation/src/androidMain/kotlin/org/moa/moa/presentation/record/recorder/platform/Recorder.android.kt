@@ -1,4 +1,4 @@
-package org.moa.moa.util
+package org.moa.moa.presentation.record.recorder.platform
 
 import android.content.Context
 import android.media.MediaRecorder

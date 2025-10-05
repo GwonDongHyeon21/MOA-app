@@ -1,4 +1,4 @@
-package org.moa.moa.util
+package org.moa.moa.presentation.record.recorder.platform
 
 import android.Manifest
 import android.content.pm.PackageManager

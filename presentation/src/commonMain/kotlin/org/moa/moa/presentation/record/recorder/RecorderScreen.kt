@@ -61,16 +61,16 @@ import org.moa.moa.presentation.record.component.RecordSuccessScreen
 import org.moa.moa.presentation.record.recorder.component.RecordVisualizer
 import org.moa.moa.presentation.record.recorder.model.RecordMode
 import org.moa.moa.presentation.record.recorder.model.RecorderState
+import org.moa.moa.presentation.record.recorder.platform.PermissionStatus
+import org.moa.moa.presentation.record.recorder.platform.rememberPermissionState
+import org.moa.moa.presentation.record.recorder.platform.rememberRecorderController
 import org.moa.moa.presentation.ui.theme.GRAY1
 import org.moa.moa.presentation.ui.theme.GRAY2
 import org.moa.moa.presentation.ui.theme.RED
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
 import org.moa.moa.presentation.ui.theme.transparent
-import org.moa.moa.util.PermissionStatus
 import org.moa.moa.util.formatRecordTime
-import org.moa.moa.util.rememberPermissionState
-import org.moa.moa.util.rememberRecorderController
 
 @Composable
 fun RecorderScreen(

@@ -1,4 +1,4 @@
-package org.moa.moa.util
+package org.moa.moa.presentation.record.textimage.platform
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
