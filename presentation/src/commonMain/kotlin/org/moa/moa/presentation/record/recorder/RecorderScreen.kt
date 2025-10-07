@@ -3,11 +3,12 @@ package org.moa.moa.presentation.record.recorder
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,10 +16,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -41,17 +44,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.mic_fill
-import moa.presentation.generated.resources.mic_light
 import moa.presentation.generated.resources.pause
 import moa.presentation.generated.resources.record_start
-import moa.presentation.generated.resources.record_text_background_right
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import org.moa.moa.presentation.component.MOABackTopBar
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOALoadingScreen
 import org.moa.moa.presentation.record.RecordDimens.RECORD_TIME_DELAY
-import org.moa.moa.presentation.record.RecordDimens.RECORD_VISUALIZER_WIDTH
 import org.moa.moa.presentation.record.RecordDimens.bottomPadding
 import org.moa.moa.presentation.record.RecordDimens.recordGuideText
 import org.moa.moa.presentation.record.RecordDimens.recorderButton
@@ -59,8 +59,11 @@ import org.moa.moa.presentation.record.RecordDimens.recorderStopButton
 import org.moa.moa.presentation.record.RecordDimens.topPadding
 import org.moa.moa.presentation.record.component.RecordSuccessScreen
 import org.moa.moa.presentation.record.recorder.component.RecordVisualizer
+import org.moa.moa.presentation.record.recorder.component.RecorderBackgroundSection
+import org.moa.moa.presentation.record.recorder.component.VisualizerDimens.MAX_BAR_HEIGHT
 import org.moa.moa.presentation.record.recorder.model.RecordMode
 import org.moa.moa.presentation.record.recorder.model.RecorderState
+import org.moa.moa.presentation.record.recorder.platform.AppSetting
 import org.moa.moa.presentation.record.recorder.platform.PermissionStatus
 import org.moa.moa.presentation.record.recorder.platform.rememberPermissionState
 import org.moa.moa.presentation.record.recorder.platform.rememberRecorderController
@@ -88,7 +91,13 @@ fun RecorderScreen(
             onStopRecord = { viewModel.stopRecord(it) }
         )
 
-        is RecorderState.PLAYING -> RecorderPlayingScreen(recordPath = state.recordFile)
+        is RecorderState.PLAYING -> RecorderPlayingScreen(
+            recordPath = state.recordFile,
+            onBack = { onBack() },
+            onSaveRecord = { viewModel.saveRecord() },
+            onRecordState = { viewModel.resetRecord() }
+        )
+
         RecorderState.SUCCESS -> RecordSuccessScreen { onBack() }
         RecorderState.LOADING -> MOALoadingScreen(Modifier)
         RecorderState.ERROR -> MOAErrorScreen(Modifier)
@@ -107,14 +116,31 @@ private fun RecorderScreen(
     val recorderController = rememberRecorderController()
     val recordState = recorderController.state.value
 
+    var showPermissionDialog by remember { mutableStateOf(false) }
+    var isAppSetting by remember { mutableStateOf(false) }
+
     LaunchedEffect(Unit) {
         when (micPermission.status) {
             PermissionStatus.Granted -> Unit
             PermissionStatus.Denied, PermissionStatus.ShouldShowRationale -> {
-                micPermission.launchPermissionRequest()
+                micPermission.launchPermissionRequest {
+                    showPermissionDialog = it
+                }
             }
         }
     }
+
+    if (showPermissionDialog) {
+        PermissionDialog(
+            onAppSetting = { isAppSetting = true },
+            onBack = {
+                showPermissionDialog = false
+                onBack()
+            }
+        )
+    }
+
+    AppSetting(isAppSetting) { isAppSetting = false }
 
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
@@ -156,8 +182,8 @@ private fun RecorderScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .align(Alignment.BottomCenter)
                     .padding(top = topPadding, bottom = bottomPadding),
+                verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -179,54 +205,40 @@ private fun RecorderScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.weight(2f))
-                RecordVisualizer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(RECORD_VISUALIZER_WIDTH),
-                    isTicking = recordState.isRecording && !recordState.isPaused,
-                    currentLevel = recordState.amplitude
-                )
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    RecordVisualizer(
+                        modifier = Modifier.height(MAX_BAR_HEIGHT),
+                        isTicking = recordState.isRecording && !recordState.isPaused,
+                        currentLevel = recordState.amplitude
+                    )
 
-                Spacer(modifier = Modifier.weight(1f))
-                RecorderButtonSection(
-                    modifier = Modifier,
-                    recordMode = recordMode,
-                    onStartRecord = {
-                        recorderController.start()
-                        onStartRecord()
-                    },
-                    onPauseRecord = {
-                        recorderController.pause()
-                        onPauseRecord()
-                    },
-                    onResumeRecord = {
-                        recorderController.resume()
-                        onStartRecord()
-                    },
-                    onStopRecord = {
-                        recorderController.stop()
-                        recordState.filePath?.let { onStopRecord(it) }
-                    }
-                )
+                    Spacer(modifier = Modifier.height(90.dp))
+                    RecorderButtonSection(
+                        modifier = Modifier,
+                        recordMode = recordMode,
+                        onStartRecord = {
+                            recorderController.start()
+                            onStartRecord()
+                        },
+                        onPauseRecord = {
+                            recorderController.pause()
+                            onPauseRecord()
+                        },
+                        onResumeRecord = {
+                            recorderController.resume()
+                            onStartRecord()
+                        },
+                        onStopRecord = {
+                            recorderController.stop()
+                            recordState.filePath?.let { onStopRecord(it) }
+                        }
+                    )
+                }
             }
         }
-    }
-}
-
-@Composable
-fun RecorderBackgroundSection(modifier: Modifier) {
-    Box(modifier = modifier.fillMaxWidth()) {
-        Image(
-            painter = painterResource(Res.drawable.mic_light),
-            contentDescription = null,
-            modifier = modifier.align(Alignment.TopStart)
-        )
-        Image(
-            painter = painterResource(Res.drawable.record_text_background_right),
-            contentDescription = null,
-            modifier = modifier.align(Alignment.TopEnd)
-        )
     }
 }
 
@@ -286,39 +298,70 @@ fun RecorderButtonSection(
         RecordMode.PAUSE -> Pair(onResumeRecord, Res.drawable.record_start)
     }
 
-    Text(text = text, fontSize = 15.sp, color = textColor)
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = text, fontSize = 15.sp, color = textColor)
 
-    Spacer(modifier = modifier.height(8.dp))
-    Box(modifier = modifier.fillMaxWidth(0.8f)) {
-        Button(
-            onClick = { onClickListener() },
-            modifier = modifier
-                .align(Alignment.Center)
-                .size(recorderButton),
-            shape = CircleShape,
-            colors = ButtonDefaults.buttonColors(containerColor = GRAY1)
-        ) {
-            Image(
-                painter = painterResource(recordButtonImage),
-                contentDescription = "RecordButton"
-            )
-        }
-
-        if (recordMode != RecordMode.DEFAULT) {
+        Spacer(modifier = Modifier.height(8.dp))
+        Box(modifier = Modifier.fillMaxWidth(0.8f)) {
             Button(
-                onClick = { onStopRecord() },
-                modifier = modifier
-                    .align(Alignment.CenterEnd)
-                    .size(recorderStopButton),
-                colors = ButtonDefaults.buttonColors(containerColor = WHITE),
-                border = BorderStroke(1.dp, GRAY2)
+                onClick = { onClickListener() },
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(recorderButton),
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(containerColor = GRAY1)
             ) {
-                Box(
-                    modifier = modifier
-                        .size(19.dp)
-                        .background(GRAY2, RectangleShape)
+                Image(
+                    painter = painterResource(recordButtonImage),
+                    contentDescription = "RecordButton",
                 )
+            }
+
+            if (recordMode != RecordMode.DEFAULT) {
+                Button(
+                    onClick = { onStopRecord() },
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .size(recorderStopButton),
+                    colors = ButtonDefaults.buttonColors(containerColor = WHITE),
+                    border = BorderStroke(1.dp, GRAY2)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(19.dp)
+                            .aspectRatio(1f)
+                            .background(GRAY2, RectangleShape)
+                    )
+                }
             }
         }
     }
+}
+
+@Composable
+fun PermissionDialog(
+    onAppSetting: () -> Unit,
+    onBack: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = { onBack() },
+        title = { Text(text = Strings.mic_permission) },
+        text = { Text(text = Strings.mic_permission_guideline) },
+        confirmButton = {
+            TextButton(onClick = {
+                onAppSetting()
+                onBack()
+            }) {
+                Text(text = Strings.setting)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = { onBack() }) {
+                Text(text = Strings.cancel)
+            }
+        }
+    )
 }

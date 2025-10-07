@@ -6,7 +6,7 @@ enum class PermissionStatus { Granted, Denied, ShouldShowRationale }
 
 interface PermissionState {
     val status: PermissionStatus
-    fun launchPermissionRequest()
+    fun launchPermissionRequest(onResult: (Boolean) -> Unit)
 }
 
 @Composable

@@ -8,7 +8,6 @@ object RecordDimens {
     const val RECORD_MAX_LENGTH = 500
     const val RECORD_MAX_LINES = 20
     const val CAMERA_IMAGE_FRACTION = 0.3f
-    const val RECORD_VISUALIZER_WIDTH = 0.5f
     const val RECORD_TIME_DELAY = 500L
     val recorderButton = 86.dp
     val recorderStopButton = 60.dp

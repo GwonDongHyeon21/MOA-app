@@ -39,4 +39,8 @@ object Strings {
     const val pause = "일시정지"
     const val delete = "삭제"
     const val redo = "다시"
+    const val mic_permission = "마이크 권한이 필요합니다"
+    const val mic_permission_guideline = "녹음을 사용하려면 설정에서 마이크 권한을 허용해 주세요."
+    const val setting = "설정"
+    const val cancel = "취소"
 }

@@ -13,22 +13,30 @@ import androidx.core.content.ContextCompat
 
 @Composable
 actual fun rememberPermissionState(): PermissionState {
-    val ctx = androidx.compose.ui.platform.LocalContext.current
+    val context = androidx.compose.ui.platform.LocalContext.current
     var granted by remember {
         mutableStateOf(
-            ContextCompat.checkSelfPermission(ctx, Manifest.permission.RECORD_AUDIO)
+            ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
                     == PackageManager.PERMISSION_GRANTED
         )
     }
+
+    var lastCallback by remember { mutableStateOf<((Boolean) -> Unit)?>(null) }
+
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { ok -> granted = ok }
+    ) { ok ->
+        granted = ok
+        lastCallback?.invoke(!ok)
+        lastCallback = null
+    }
 
     return object : PermissionState {
         override val status: PermissionStatus
             get() = if (granted) PermissionStatus.Granted else PermissionStatus.Denied
 
-        override fun launchPermissionRequest() {
+        override fun launchPermissionRequest(onResult: (Boolean) -> Unit) {
+            lastCallback = onResult
             launcher.launch(Manifest.permission.RECORD_AUDIO)
         }
     }
