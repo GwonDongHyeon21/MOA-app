@@ -1,4 +1,4 @@
-package org.moa.moa.presentation.record
+package org.moa.moa.presentation.record.textimage
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,7 +39,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import kotlinx.coroutines.launch
 import moa.presentation.generated.resources.Res
@@ -54,13 +53,20 @@ import org.moa.moa.presentation.component.MOAButton
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOAFloatingActionButton
 import org.moa.moa.presentation.component.MOALoadingScreen
+import org.moa.moa.presentation.record.RecordDimens.CAMERA_IMAGE_FRACTION
 import org.moa.moa.presentation.record.RecordDimens.RECORD_MAX_LENGTH
 import org.moa.moa.presentation.record.RecordDimens.RECORD_MAX_LINES
+import org.moa.moa.presentation.record.RecordDimens.cameraButton
+import org.moa.moa.presentation.record.RecordDimens.cameraButtonText
 import org.moa.moa.presentation.record.RecordDimens.imagePadding
+import org.moa.moa.presentation.record.RecordDimens.recordGuideText
 import org.moa.moa.presentation.record.RecordDimens.roundedCornerShape
 import org.moa.moa.presentation.record.RecordDimens.shadow
+import org.moa.moa.presentation.record.RecordDimens.topPadding
 import org.moa.moa.presentation.record.component.ImageDialog
 import org.moa.moa.presentation.record.component.RecordSuccessScreen
+import org.moa.moa.presentation.record.textimage.platform.rememberCameraController
+import org.moa.moa.presentation.record.textimage.platform.rememberImagePicker
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING2
 import org.moa.moa.presentation.ui.theme.CORNER_RADIUS
@@ -69,16 +75,6 @@ import org.moa.moa.presentation.ui.theme.GRAY6
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
 import org.moa.moa.presentation.ui.theme.transparent
-import org.moa.moa.util.rememberCameraController
-import org.moa.moa.util.rememberImagePicker
-
-object RecordDimens {
-    const val RECORD_MAX_LENGTH = 500
-    const val RECORD_MAX_LINES = 20
-    val imagePadding = 20.dp
-    val shadow = 4.dp
-    val roundedCornerShape = RoundedCornerShape(15.dp)
-}
 
 @Composable
 fun RecordScreen(
@@ -167,15 +163,24 @@ private fun RecordScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .align(Alignment.BottomCenter)
-                    .padding(top = 30.dp),
+                    .padding(top = topPadding),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = Strings.record_text_guidline,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(top = innerPadding.calculateTopPadding())
-                )
+                Column(
+                    modifier = Modifier.padding(top = innerPadding.calculateTopPadding()),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = Strings.record_text_guidline1,
+                        fontSize = recordGuideText,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                    Text(
+                        text = Strings.record_text_guidline2,
+                        fontSize = recordGuideText,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(50.dp))
                 RecordInputSection(
@@ -330,25 +335,29 @@ fun RecordCameraSection(
         ) {
             Button(
                 onClick = { onRetakePicture() },
-                modifier = modifier.weight(1f).height(46.dp),
+                modifier = modifier
+                    .weight(1f)
+                    .height(cameraButton),
                 shape = roundedCornerShape,
                 colors = ButtonDefaults.buttonColors(containerColor = GRAY6)
             ) {
                 Text(
                     text = Strings.retake_picture,
-                    fontSize = 17.sp,
+                    fontSize = cameraButtonText,
                     fontWeight = FontWeight.Normal
                 )
             }
             Button(
                 onClick = { onSelectedImage() },
-                modifier = modifier.weight(1f).height(46.dp),
+                modifier = modifier
+                    .weight(1f)
+                    .height(cameraButton),
                 shape = roundedCornerShape,
                 colors = ButtonDefaults.buttonColors(containerColor = GRAY6)
             ) {
                 Text(
                     text = Strings.write,
-                    fontSize = 17.sp,
+                    fontSize = cameraButtonText,
                     fontWeight = FontWeight.Normal
                 )
             }
@@ -371,7 +380,7 @@ fun RecordImageSection(
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
-                    .fillMaxHeight(0.3f)
+                    .fillMaxHeight(CAMERA_IMAGE_FRACTION)
                     .clip(roundedCornerShape)
                     .clickable { isImageDialogExpanded = true }
             )

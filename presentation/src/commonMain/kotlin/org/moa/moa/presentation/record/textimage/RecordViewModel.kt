@@ -1,4 +1,4 @@
-package org.moa.moa.presentation.record
+package org.moa.moa.presentation.record.textimage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

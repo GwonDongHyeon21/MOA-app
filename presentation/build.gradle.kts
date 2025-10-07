@@ -45,6 +45,9 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.ui)
             implementation(libs.androidx.activity.compose)
+
+            // Permission
+            implementation(libs.accompanist.permissions)
         }
         iosMain.dependencies {
         }

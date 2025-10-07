@@ -1,4 +1,4 @@
-package org.moa.moa.util
+package org.moa.moa.presentation.record.textimage.platform
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

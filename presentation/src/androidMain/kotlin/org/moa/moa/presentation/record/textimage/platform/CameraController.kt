@@ -1,4 +1,4 @@
-package org.moa.moa.util
+package org.moa.moa.presentation.record.textimage.platform
 
 import android.Manifest
 import android.content.Context

@@ -60,6 +60,7 @@ import org.moa.moa.navigation.record.RecordNavigationItem
 import org.moa.moa.navigation.sign.SignNavigationItem
 import org.moa.moa.navigation.todo.TodoNavigationItem
 import org.moa.moa.navigation.user.UserNavigationItem
+import org.moa.moa.presentation.component.BottomCenter.PROGRESS_DURATION_MILLS
 import org.moa.moa.presentation.ui.theme.IVORY
 import org.moa.moa.presentation.ui.theme.IVORY4
 import org.moa.moa.presentation.ui.theme.MAIN
@@ -84,7 +85,8 @@ fun MOABottomBar(
         SignNavigationItem.OnBoarding.route,
         SignNavigationItem.SignUp.route,
         RecordNavigationItem.RecordText.route,
-        RecordNavigationItem.RecordCamera.route
+        RecordNavigationItem.RecordCamera.route,
+        RecordNavigationItem.Recorder.route
     )
     val bottomItems = listOf(
         Triple(Strings.home, Res.drawable.home_button_icon, HomeNavigationItem.Home.route),
@@ -116,7 +118,7 @@ fun BottomBar(
     val progress by animateFloatAsState(
         targetValue = if (centerExpanded) 1f else 0f,
         animationSpec = tween(
-            durationMillis = BottomCenter.PROGRESS_DURATION_MILLS,
+            durationMillis = PROGRESS_DURATION_MILLS,
             easing = FastOutSlowInEasing
         ),
         label = "bottom_center_button"
@@ -128,7 +130,7 @@ fun BottomBar(
             when (it) {
                 0 -> navController.navigate(RecordNavigationItem.RecordText.route)
                 1 -> navController.navigate(RecordNavigationItem.RecordCamera.route)
-                2 -> navController.navigate(RecordNavigationItem.RecordRecord.route)
+                2 -> navController.navigate(RecordNavigationItem.Recorder.route)
             }
         }
         CustomBottomBar()
