@@ -29,11 +29,11 @@ import org.moa.moa.presentation.record.recorder.component.VisualizerDimens.MAX_B
 import org.moa.moa.presentation.record.recorder.component.VisualizerDimens.VISUALIZER_TWEEN
 
 object VisualizerDimens {
-    const val BAR_COUNT = 14
+    const val BAR_COUNT = 10
     const val BASELINE = 0.1f
     const val EMA_ALPHA = 0.5f
     const val VISUALIZER_TWEEN = 100
-    val MAX_BAR_HEIGHT = 300.dp
+    val MAX_BAR_HEIGHT = 200.dp
 }
 
 @Composable

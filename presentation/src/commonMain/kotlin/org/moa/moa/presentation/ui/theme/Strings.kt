@@ -33,6 +33,10 @@ object Strings {
     const val write = "글 쓰기"
     const val recording_guidline1 = "소리를"
     const val recording_guidline2 = "녹음해주세요"
+    const val playing_guidline1 = "녹음을"
+    const val playing_guidline2 = "완료했어요!"
     const val start = "시작"
     const val pause = "일시정지"
+    const val delete = "삭제"
+    const val redo = "다시"
 }
