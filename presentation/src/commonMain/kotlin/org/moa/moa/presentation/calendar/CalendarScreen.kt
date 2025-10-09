@@ -3,7 +3,6 @@ package org.moa.moa.presentation.calendar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,8 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -57,7 +54,6 @@ import kotlinx.datetime.atTime
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import moa.presentation.generated.resources.Res
-import moa.presentation.generated.resources.bottom_sheet_content_background
 import moa.presentation.generated.resources.left_arrow_icon
 import moa.presentation.generated.resources.right_arrow_icon
 import moa.presentation.generated.resources.top_logo
@@ -69,12 +65,12 @@ import org.moa.moa.presentation.calendar.CalendarDimens.CALENDAR_FRACTION
 import org.moa.moa.presentation.calendar.CalendarDimens.TOTAL_DAY_CELLS
 import org.moa.moa.presentation.calendar.CalendarDimens.horizontalPadding
 import org.moa.moa.presentation.calendar.CalendarDimens.roundCornerShape
-import org.moa.moa.presentation.calendar.CalendarDimens.sheetDragHandleHeight
-import org.moa.moa.presentation.calendar.CalendarDimens.sheetDragHandleRoundedCornerShape
-import org.moa.moa.presentation.calendar.CalendarDimens.sheetDragHandleTopPadding
-import org.moa.moa.presentation.calendar.CalendarDimens.sheetDragHandleWidth
 import org.moa.moa.presentation.calendar.CalendarDimens.sheetShadowElevation
 import org.moa.moa.presentation.calendar.CalendarDimens.verticalPadding
+import org.moa.moa.presentation.calendar.component.BottomSheetContentBackground
+import org.moa.moa.presentation.calendar.component.BottomSheetContentPlaceholder
+import org.moa.moa.presentation.calendar.component.BottomSheetDragHandle
+import org.moa.moa.presentation.calendar.component.DayCell
 import org.moa.moa.presentation.calendar.model.DayInfo
 import org.moa.moa.presentation.component.MOABackTopBar
 import org.moa.moa.presentation.component.MOAButton
@@ -87,10 +83,8 @@ import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING
 import org.moa.moa.presentation.ui.theme.GRAY1
 import org.moa.moa.presentation.ui.theme.GRAY3
 import org.moa.moa.presentation.ui.theme.GRAY4
-import org.moa.moa.presentation.ui.theme.GRAY8
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
-import org.moa.moa.presentation.ui.theme.textStyle1
 import org.moa.moa.util.emotionRes
 import org.moa.moa.util.formatDateTime
 
@@ -139,21 +133,6 @@ private fun CalendarScreen(
     onNavigateToDetail: (Record) -> Unit,
     onBack: () -> Unit,
 ) {
-    val today = uiState.today
-    val year = uiState.year
-    val month = uiState.month
-    val startOn = uiState.startOn
-
-    val dayLabels = listOf(
-        Strings.sunday,
-        Strings.monday,
-        Strings.tuesday,
-        Strings.wednesday,
-        Strings.thursday,
-        Strings.friday,
-        Strings.saturday
-    )
-
     val sheetState = rememberStandardBottomSheetState(
         initialValue = SheetValue.Hidden,
         skipHiddenState = false
@@ -168,7 +147,7 @@ private fun CalendarScreen(
 
     BottomSheetScaffold(
         sheetContent = {
-            BottomSheetContent(
+            BottomSheetContentSection(
                 modifier = Modifier,
                 record = selectedRecord,
                 onNavigateToDetail = { onNavigateToDetail(it) }
@@ -177,7 +156,7 @@ private fun CalendarScreen(
         scaffoldState = scaffoldState,
         sheetPeekHeight = 0.dp,
         sheetShadowElevation = sheetShadowElevation,
-        sheetDragHandle = { BottomSheetDragHandle() },
+        sheetDragHandle = { BottomSheetDragHandle(modifier = Modifier) },
         topBar = {
             MOABackTopBar(
                 modifier = Modifier.background(WHITE),
@@ -203,67 +182,33 @@ private fun CalendarScreen(
                     .padding(vertical = verticalPadding * 2, horizontal = horizontalPadding),
                 verticalArrangement = Arrangement.Center
             ) {
-                CalendarMonthHeader(
-                    year = year,
-                    month = month,
+                CalendarMonthHeaderSection(
+                    year = uiState.year,
+                    month = uiState.month,
                     onMonthChange = { onMonthChange(it) }
                 )
 
                 Spacer(Modifier.height(20.dp))
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    dayLabels.forEach { day ->
-                        Text(
-                            text = day,
-                            modifier = Modifier.weight(1f),
-                            fontSize = 17.sp,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
+                CalendarDayLabelsSection(modifier = Modifier)
 
                 Spacer(Modifier.height(12.dp))
-                remember(year, month, startOn, uiState.recordsByMonth) {
-                    buildMonthCells(
-                        year = year,
-                        month = month,
-                        startOn = startOn,
-                        recordsByMonth = uiState.recordsByMonth,
-                        mapper = { date, record ->
-                            DayInfo(
-                                date = date,
-                                isToday = (date == today),
-                                isCurrentMonth = (date.month == month),
-                                record = record
-                            )
-                        }
-                    )
-                }.chunked(7).forEach { week ->
-                    Row(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth()
-                    ) {
-                        week.forEach { dayInfo ->
-                            DayWithRecord(
-                                modifier = Modifier.weight(1f),
-                                dayInfo = dayInfo,
-                                onClickDay = { record ->
-                                    coroutineScope.launch {
-                                        selectedRecord = record
-                                        scaffoldState.bottomSheetState.expand()
-                                    }
-                                }
-                            )
+                CalendarDaysSection(
+                    modifier = Modifier.weight(1f),
+                    uiState = uiState,
+                    onSelectedRecord = {
+                        coroutineScope.launch {
+                            selectedRecord = it
+                            scaffoldState.bottomSheetState.expand()
                         }
                     }
-                }
+                )
             }
         }
     }
 }
 
 @Composable
-fun CalendarMonthHeader(
+fun CalendarMonthHeaderSection(
     year: Int,
     month: Month,
     onMonthChange: (Int) -> Unit,
@@ -302,42 +247,65 @@ fun CalendarMonthHeader(
 }
 
 @Composable
-fun DayWithRecord(
-    modifier: Modifier,
-    dayInfo: DayInfo,
-    onClickDay: (Record?) -> Unit,
-) {
-    val dateColor = when {
-        dayInfo.isToday -> MaterialTheme.colorScheme.primary
-        dayInfo.isCurrentMonth -> MaterialTheme.colorScheme.onSurface
-        else -> GRAY8
-    }
+fun CalendarDayLabelsSection(modifier: Modifier) {
+    val dayLabels = listOf(
+        Strings.sunday,
+        Strings.monday,
+        Strings.tuesday,
+        Strings.wednesday,
+        Strings.thursday,
+        Strings.friday,
+        Strings.saturday
+    )
 
-    Column(
-        modifier = modifier.clickable(
-            indication = null,
-            interactionSource = null,
-            onClick = { onClickDay(dayInfo.record) }
-        ),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = dayInfo.date.dayOfMonth.toString(),
-            color = dateColor,
-            fontSize = 17.sp,
-        )
-
-        dayInfo.record?.emotion?.let { emotion ->
-            Image(
-                painter = painterResource(emotionRes(emotion)),
-                contentDescription = null,
+    Row(modifier = modifier.fillMaxWidth()) {
+        dayLabels.forEach { day ->
+            Text(
+                text = day,
+                modifier = Modifier.weight(1f),
+                fontSize = 17.sp,
+                textAlign = TextAlign.Center
             )
         }
     }
 }
 
 @Composable
-fun BottomSheetContent(
+fun CalendarDaysSection(
+    modifier: Modifier,
+    uiState: CalendarUiState,
+    onSelectedRecord: (Record?) -> Unit,
+) {
+    remember(uiState.today, uiState.year, uiState.month, uiState.startOn, uiState.recordsByMonth) {
+        buildMonthCells(
+            year = uiState.year,
+            month = uiState.month,
+            startOn = uiState.startOn,
+            recordsByMonth = uiState.recordsByMonth,
+            mapper = { date, record ->
+                DayInfo(
+                    date = date,
+                    isToday = (date == uiState.today),
+                    isCurrentMonth = (date.month == uiState.month),
+                    record = record
+                )
+            }
+        )
+    }.chunked(7).forEach { week ->
+        Row(modifier = modifier.fillMaxWidth()) {
+            week.forEach { dayInfo ->
+                DayCell(
+                    modifier = Modifier.weight(1f),
+                    dayInfo = dayInfo,
+                    onClickDay = { onSelectedRecord(it) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun BottomSheetContentSection(
     modifier: Modifier,
     record: Record?,
     onNavigateToDetail: (Record) -> Unit,
@@ -360,21 +328,7 @@ fun BottomSheetContent(
                     .weight(1f)
                     .padding(vertical = 10.dp)
             ) {
-                Card(
-                    shape = RoundedCornerShape(10.dp),
-                    elevation = CardDefaults.cardElevation(6.dp),
-                    modifier = Modifier.padding(
-                        vertical = verticalPadding,
-                        horizontal = APP_HORIZONTAL_PADDING1
-                    )
-                ) {
-                    Image(
-                        painter = painterResource(Res.drawable.bottom_sheet_content_background),
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
-                    )
-                }
+                BottomSheetContentBackground(modifier = Modifier)
 
                 Column(
                     modifier = Modifier
@@ -438,29 +392,9 @@ fun BottomSheetContent(
                 onClick = { onNavigateToDetail(it) }
             )
         } ?: run {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = Strings.empty_record_placeholder,
-                    style = textStyle1,
-                    color = GRAY1
-                )
-            }
+            BottomSheetContentPlaceholder(modifier = Modifier)
         }
     }
-}
-
-@Composable
-fun BottomSheetDragHandle() {
-    Box(
-        modifier = Modifier
-            .padding(top = sheetDragHandleTopPadding)
-            .size(sheetDragHandleWidth, sheetDragHandleHeight)
-            .clip(sheetDragHandleRoundedCornerShape)
-            .background(GRAY3)
-    )
 }
 
 private fun buildMonthCells(
