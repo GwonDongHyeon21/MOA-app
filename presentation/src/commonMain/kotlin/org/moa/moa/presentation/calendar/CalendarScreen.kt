@@ -88,6 +88,7 @@ import org.moa.moa.presentation.ui.theme.GRAY4
 import org.moa.moa.presentation.ui.theme.GRAY8
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
+import org.moa.moa.presentation.ui.theme.textStyle1
 import org.moa.moa.util.emotionRes
 import org.moa.moa.util.formatDateTime
 
@@ -437,8 +438,7 @@ fun BottomSheetContent(
             ) {
                 Text(
                     text = Strings.empty_record_placeholder,
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.Medium,
+                    style = textStyle1,
                     color = GRAY1
                 )
             }

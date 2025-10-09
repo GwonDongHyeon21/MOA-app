@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.moa.moa.presentation.ui.theme.GRAY2
 import org.moa.moa.presentation.ui.theme.GRAY3
+import org.moa.moa.presentation.ui.theme.textStyle1
 
 @Composable
 fun MOAButton(
@@ -28,6 +29,9 @@ fun MOAButton(
             disabledContentColor = GRAY2
         )
     ) {
-        Text(text = text)
+        Text(
+            text = text,
+            style = textStyle1
+        )
     }
 }

@@ -72,6 +72,7 @@ import org.moa.moa.presentation.ui.theme.GRAY2
 import org.moa.moa.presentation.ui.theme.RED
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
+import org.moa.moa.presentation.ui.theme.textStyle1
 import org.moa.moa.presentation.ui.theme.transparent
 import org.moa.moa.util.formatRecordTime
 
@@ -271,8 +272,7 @@ fun RecordTime(
         Spacer(modifier = Modifier.width(10.dp))
         Text(
             text = formatRecordTime(recordTime),
-            fontSize = 17.sp,
-            fontWeight = FontWeight.Medium,
+            style = textStyle1,
             color = if (isRecording) GRAY1 else transparent
         )
     }
