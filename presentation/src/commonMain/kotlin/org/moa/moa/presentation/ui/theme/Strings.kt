@@ -43,4 +43,15 @@ object Strings {
     const val mic_permission_guideline = "녹음을 사용하려면 설정에서 마이크 권한을 허용해 주세요."
     const val setting = "설정"
     const val cancel = "취소"
+    const val see_all = "전체 보기"
+    const val empty_record_placeholder = "아직 작성된 일기가 없어요!"
+    const val dateYearMonth = "yyyy년 M월"
+
+    const val monday = "월"
+    const val tuesday = "화"
+    const val wednesday = "수"
+    const val thursday = "목"
+    const val friday = "금"
+    const val saturday = "토"
+    const val sunday = "일"
 }

@@ -4,5 +4,10 @@ enum class Emotion(val label: String) {
     SMILE("smile"),
     SOSO("soso"),
     SAD("sad"),
-    BAD("bad"),
+    BAD("bad");
+
+    companion object {
+        fun fromLabel(label: String): Emotion? =
+            entries.find { it.label.equals(label, ignoreCase = true) }
+    }
 }

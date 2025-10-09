@@ -32,7 +32,7 @@ fun MOAApp() {
             NavHost(
                 navController = navController,
                 startDestination = SignNavigationItem.OnBoarding.route,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(top = innerPadding.calculateTopPadding())
             ) {
                 signNavigationGraph(navController)
                 homeNavigationGraph(navController)
