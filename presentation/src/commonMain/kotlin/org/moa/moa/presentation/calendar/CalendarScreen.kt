@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,6 +53,7 @@ import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.Month
+import kotlinx.datetime.atTime
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import moa.presentation.generated.resources.Res
@@ -160,17 +162,16 @@ private fun CalendarScreen(
     val coroutineScope = rememberCoroutineScope()
     var selectedRecord by remember { mutableStateOf<Record?>(null) }
 
+    LaunchedEffect(Unit) {
+        scaffoldState.bottomSheetState.hide()
+    }
+
     BottomSheetScaffold(
         sheetContent = {
             BottomSheetContent(
                 modifier = Modifier,
                 record = selectedRecord,
-                onNavigateToDetail = {
-                    coroutineScope.launch {
-                        scaffoldState.bottomSheetState.hide()
-                    }
-                    onNavigateToDetail(it)
-                }
+                onNavigateToDetail = { onNavigateToDetail(it) }
             )
         },
         scaffoldState = scaffoldState,
@@ -247,8 +248,8 @@ private fun CalendarScreen(
                                 modifier = Modifier.weight(1f),
                                 dayInfo = dayInfo,
                                 onClickDay = { record ->
-                                    selectedRecord = record
                                     coroutineScope.launch {
+                                        selectedRecord = record
                                         scaffoldState.bottomSheetState.expand()
                                     }
                                 }
@@ -269,7 +270,7 @@ fun CalendarMonthHeader(
 ) {
     val headerDate = formatDateTime(
         dateTime = LocalDateTime(year, month, 1, 0, 0),
-        pattern = Strings.dateYearMonth
+        pattern = Strings.date_year_month
     )
 
     Row(
@@ -349,6 +350,11 @@ fun BottomSheetContent(
             .padding(bottom = BOTTOM_PADDING + verticalPadding * 2),
     ) {
         record?.let {
+            val contentDate = formatDateTime(
+                dateTime = LocalDate.parse(it.date).atTime(0, 0),
+                pattern = Strings.date_year_month_date
+            )
+
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -380,7 +386,7 @@ fun BottomSheetContent(
                         )
                 ) {
                     Text(
-                        text = it.date,
+                        text = contentDate,
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Medium
                     )

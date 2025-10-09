@@ -21,7 +21,6 @@ import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.right_arrow_icon
 import org.jetbrains.compose.resources.painterResource
 import org.moa.moa.presentation.ui.theme.IVORY
-import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
 
 @Composable

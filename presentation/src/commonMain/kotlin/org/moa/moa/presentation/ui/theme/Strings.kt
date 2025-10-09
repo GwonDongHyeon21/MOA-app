@@ -45,7 +45,8 @@ object Strings {
     const val cancel = "취소"
     const val see_all = "전체 보기"
     const val empty_record_placeholder = "아직 작성된 일기가 없어요!"
-    const val dateYearMonth = "yyyy년 M월"
+    const val date_year_month = "yyyy년 M월"
+    const val date_year_month_date = "yyyy.MM.dd (E)"
 
     const val monday = "월"
     const val tuesday = "화"
