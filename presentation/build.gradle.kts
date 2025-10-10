@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.serialization)
 }
 
 kotlin {
@@ -41,6 +42,12 @@ kotlin {
 
             // DateTime
             implementation(libs.kotlinx.datetime)
+
+            // Serialization
+            implementation(libs.kotlinx.serialization.json)
+
+            // Ktor
+            implementation(libs.ktor.client.core)
         }
         androidMain.dependencies {
             implementation(compose.ui)
@@ -48,8 +55,13 @@ kotlin {
 
             // Permission
             implementation(libs.accompanist.permissions)
+
+            // Ktor
+            implementation(libs.ktor.client.okhttp)
         }
         iosMain.dependencies {
+            // Ktor
+            implementation(libs.ktor.client.darwin)
         }
     }
 }

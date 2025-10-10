@@ -91,7 +91,7 @@ import org.moa.moa.util.formatDateTime
 @Composable
 fun CalendarScreen(
     viewModel: CalendarViewModel = koinInject(),
-    onNavigateToDetail: () -> Unit,
+    onNavigateToDetail: (String) -> Unit,
     onBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -101,7 +101,7 @@ fun CalendarScreen(
         UiState.SUCCESS -> CalendarScreen(
             uiState = uiState,
             onMonthChange = { viewModel.changeYearMonth(it) },
-            onNavigateToDetail = { onNavigateToDetail() },
+            onNavigateToDetail = { record -> onNavigateToDetail(record.date) },
             onBack = { onBack() }
         )
 
@@ -135,7 +135,7 @@ private fun CalendarScreen(
             BottomSheetContentSection(
                 modifier = Modifier,
                 record = selectedRecord,
-                onNavigateToDetail = { onNavigateToDetail(it) }
+                onNavigateToDetail = { record -> onNavigateToDetail(record) }
             )
         },
         scaffoldState = scaffoldState,

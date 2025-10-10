@@ -47,6 +47,7 @@ object Strings {
     const val empty_record_placeholder = "아직 작성된 일기가 없어요!"
     const val date_year_month = "yyyy년 M월"
     const val date_year_month_date = "yyyy.MM.dd (E)"
+    const val todayRecord = "오늘의 일기"
 
     const val monday = "월"
     const val tuesday = "화"
