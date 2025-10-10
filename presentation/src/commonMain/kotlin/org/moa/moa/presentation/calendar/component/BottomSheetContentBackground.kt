@@ -21,10 +21,7 @@ fun BottomSheetContentBackground(modifier: Modifier) {
     Card(
         shape = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(6.dp),
-        modifier = modifier.padding(
-            vertical = verticalPadding,
-            horizontal = APP_HORIZONTAL_PADDING1
-        )
+        modifier = modifier
     ) {
         Image(
             painter = painterResource(Res.drawable.bottom_sheet_content_background),
