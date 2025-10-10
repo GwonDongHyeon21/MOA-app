@@ -38,16 +38,12 @@ kotlin {
 
             // Coil
             implementation(libs.coil.compose)
-            implementation(libs.coil.network.ktor3)
 
             // DateTime
             implementation(libs.kotlinx.datetime)
 
             // Serialization
             implementation(libs.kotlinx.serialization.json)
-
-            // Ktor
-            implementation(libs.ktor.client.core)
         }
         androidMain.dependencies {
             implementation(compose.ui)
@@ -56,12 +52,12 @@ kotlin {
             // Permission
             implementation(libs.accompanist.permissions)
 
-            // Ktor
-            implementation(libs.ktor.client.okhttp)
+            // Coil
+            implementation(libs.coil.network.okhttp)
         }
         iosMain.dependencies {
-            // Ktor
-            implementation(libs.ktor.client.darwin)
+            // Coil
+            implementation(libs.coil.network.ktor3)
         }
     }
 }

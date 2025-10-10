@@ -151,7 +151,7 @@ fun CalendarDetailHeaderSection(
             )
         }
 
-        Column {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = Strings.todayRecord,
                 fontSize = 17.sp,
@@ -185,30 +185,38 @@ fun CalendarDetailContentSection(
         CalendarDetailContentBackground(modifier = modifier)
 
         Column(modifier = Modifier.padding(horizontal = ContentHorizontalPadding)) {
-            Box(modifier = Modifier.padding(8.dp)) {
-                AsyncImage(
-                    model = record.imageUrl,
-                    contentDescription = "RecordImage",
-                    modifier = Modifier
-                        .fillMaxHeight(CONTENT_IMAGE_HEIGHT_FRACTION)
-                        .padding(vertical = 8.dp, horizontal = 25.dp)
-                        .clip(RoundedCornerShape(CORNER_RADIUS))
-                        .background(GRAY4)
-                        .border(1.dp, GRAY3, RoundedCornerShape(CORNER_RADIUS)),
-                    placeholder = painterResource(Res.drawable.top_logo),
-                    error = painterResource(Res.drawable.top_logo),
-                    contentScale = ContentScale.Fit,
-                )
-
-                record.emotion?.let { emotion ->
-                    Image(
-                        painter = painterResource(emotionRes(emotion)),
-                        contentDescription = null,
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Box {
+                    AsyncImage(
+                        model = record.imageUrl,
+                        contentDescription = "RecordImage",
                         modifier = Modifier
-                            .size(52.dp)
-                            .align(Alignment.TopStart)
-                            .rotate(-11f)
+                            .align(Alignment.Center)
+                            .fillMaxHeight(CONTENT_IMAGE_HEIGHT_FRACTION)
+                            .padding(vertical = 8.dp, horizontal = 25.dp)
+                            .clip(RoundedCornerShape(CORNER_RADIUS))
+                            .background(GRAY4)
+                            .border(1.dp, GRAY3, RoundedCornerShape(CORNER_RADIUS)),
+                        placeholder = painterResource(Res.drawable.top_logo),
+                        error = painterResource(Res.drawable.top_logo),
+                        contentScale = ContentScale.Fit
                     )
+
+                    record.emotion?.let { emotion ->
+                        Image(
+                            painter = painterResource(emotionRes(emotion)),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .align(Alignment.TopStart)
+                                .size(52.dp)
+                                .rotate(-11f)
+                        )
+                    }
                 }
             }
 
