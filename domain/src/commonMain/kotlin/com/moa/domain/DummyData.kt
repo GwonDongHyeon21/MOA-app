@@ -1,24 +1,58 @@
 package com.moa.domain
 
 import com.moa.domain.model.RecordResponse
+import com.moa.domain.model.RecordByDateResponse
 
 object DummyData {
     val sampleRecords = listOf(
-        RecordResponse("2025-10-01", "새 프로젝트 시작해서 설렘 😊", "", "smile"),
-        RecordResponse("2025-10-05", "시험 공부하느라 피곤하다", "", "sad"),
-        RecordResponse("2025-10-09", "날씨가 너무 좋아서 산책함", "https://picsum.photos/400/400", "smile"),
-        RecordResponse("2025-10-11", "조별과제 스트레스 폭발", "https://picsum.photos/400/400", "bad"),
-        RecordResponse("2025-10-13", "점심으로 먹은 국밥이 진짜 맛있었다", "", "soso"),
-        RecordResponse("2025-10-15", "친구랑 오랜만에 영화 봄 🎬", "", "smile"),
-        RecordResponse("2025-10-17", "하루 종일 비와서 우울했음", "https://picsum.photos/400/400", "sad"),
-        RecordResponse("2025-10-20", "시험 끝!! 이제 쉰다 🥳", "https://picsum.photos/400/400", "smile"),
-        RecordResponse("2025-10-22", "버스 놓쳐서 지각함...", "", "bad"),
-        RecordResponse(
-            "2025-10-25",
-            "새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환" +
-                    "\n\n새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환  새로운 노래 들으면서 기분 전환",
-            "https://picsum.photos/400/400",
-            "soso"
+        RecordByDateResponse(
+            date = "2025-10-12",
+            content = "주말이라 하루 종일 카페에서 공부했다 ☕️",
+            imageUrl = listOf(
+                "https://picsum.photos/400/400",
+                "https://picsum.photos/400/800",
+                "https://picsum.photos/800/400",
+                "https://picsum.photos/600/400",
+                "https://picsum.photos/400/600"
+            ),
+            records = listOf(
+                RecordResponse(
+                    date = "2025-10-11T09:30:00",
+                    content = "아침에 느긋하게 카페 도착 ☀️",
+                    imageUrl = "https://picsum.photos/400/400",
+                ),
+                RecordResponse(
+                    date = "2025-10-11T14:00:00",
+                    content = "점심 이후 집중 잘 됐다!",
+                    imageUrl = "https://picsum.photos/400/400",
+                ),
+                RecordResponse(
+                    date = "2025-10-11T20:00:00",
+                    content = "오늘 하루 만족 😊",
+                    imageUrl = null,
+                )
+            ),
+            emotion = "soso"
+        ),
+        RecordByDateResponse(
+            date = "2025-10-10",
+            content = "팀 프로젝트 회의로 하루 종일 정신없던 날 💻",
+            imageUrl = listOf("https://picsum.photos/400/400"),
+            records = listOf(
+                RecordResponse(
+                    date = "2025-10-10T15:00:00",
+                    content = "회의 중 새로운 아이디어 나옴!",
+                    imageUrl = null,
+                )
+            ),
+            emotion = "bad"
+        ),
+        RecordByDateResponse(
+            date = "2025-10-09",
+            content = "오늘은 쉬는 날. 아무 일도 안 했다 😴",
+            imageUrl = null,
+            records = emptyList(),
+            emotion = "smile"
         )
     )
 }

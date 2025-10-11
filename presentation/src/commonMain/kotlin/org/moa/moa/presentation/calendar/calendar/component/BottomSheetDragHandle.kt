@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import org.moa.moa.presentation.calendar.CalendarDimens.sheetDragHandleHeight
-import org.moa.moa.presentation.calendar.CalendarDimens.sheetDragHandleRoundedCornerShape
-import org.moa.moa.presentation.calendar.CalendarDimens.sheetDragHandleTopPadding
-import org.moa.moa.presentation.calendar.CalendarDimens.sheetDragHandleWidth
+import org.moa.moa.presentation.calendar.calendar.CalendarDimens.sheetDragHandleHeight
+import org.moa.moa.presentation.calendar.calendar.CalendarDimens.sheetDragHandleRoundedCornerShape
+import org.moa.moa.presentation.calendar.calendar.CalendarDimens.sheetDragHandleTopPadding
+import org.moa.moa.presentation.calendar.calendar.CalendarDimens.sheetDragHandleWidth
 import org.moa.moa.presentation.ui.theme.GRAY3
 
 @Composable

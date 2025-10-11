@@ -60,14 +60,14 @@ import moa.presentation.generated.resources.top_logo
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import org.moa.moa.presentation.UiState
-import org.moa.moa.presentation.calendar.CalendarDimens.BOTTOM_SHEET_CONTENT_HEIGHT
-import org.moa.moa.presentation.calendar.CalendarDimens.CALENDAR_FRACTION
-import org.moa.moa.presentation.calendar.CalendarDimens.TOTAL_DAY_CELLS
-import org.moa.moa.presentation.calendar.CalendarDimens.horizontalPadding
-import org.moa.moa.presentation.calendar.CalendarDimens.roundCornerShape
-import org.moa.moa.presentation.calendar.CalendarDimens.sheetShadowElevation
-import org.moa.moa.presentation.calendar.CalendarDimens.sheetVerticalPadding
-import org.moa.moa.presentation.calendar.CalendarDimens.verticalPadding
+import org.moa.moa.presentation.calendar.calendar.CalendarDimens.BOTTOM_SHEET_CONTENT_HEIGHT
+import org.moa.moa.presentation.calendar.calendar.CalendarDimens.CALENDAR_FRACTION
+import org.moa.moa.presentation.calendar.calendar.CalendarDimens.TOTAL_DAY_CELLS
+import org.moa.moa.presentation.calendar.calendar.CalendarDimens.horizontalPadding
+import org.moa.moa.presentation.calendar.calendar.CalendarDimens.roundCornerShape
+import org.moa.moa.presentation.calendar.calendar.CalendarDimens.sheetShadowElevation
+import org.moa.moa.presentation.calendar.calendar.CalendarDimens.sheetVerticalPadding
+import org.moa.moa.presentation.calendar.calendar.CalendarDimens.verticalPadding
 import org.moa.moa.presentation.calendar.calendar.component.BottomSheetContentBackground
 import org.moa.moa.presentation.calendar.calendar.component.BottomSheetContentPlaceholder
 import org.moa.moa.presentation.calendar.calendar.component.BottomSheetDragHandle
@@ -88,6 +88,22 @@ import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
 import org.moa.moa.util.emotionRes
 import org.moa.moa.util.formatDateTime
+
+object CalendarDimens {
+    const val TOTAL_DAY_CELLS = 42
+    const val CALENDAR_FRACTION = 0.8f
+    val verticalPadding = 40.dp
+    val horizontalPadding = 20.dp
+    val roundCornerShape = RoundedCornerShape(20.dp)
+
+    const val BOTTOM_SHEET_CONTENT_HEIGHT = 0.5f
+    val sheetVerticalPadding = 20.dp
+    val sheetDragHandleWidth = 68.dp
+    val sheetDragHandleHeight = 3.dp
+    val sheetDragHandleTopPadding = 5.dp
+    val sheetShadowElevation = 8.dp
+    val sheetDragHandleRoundedCornerShape = RoundedCornerShape(2.5.dp)
+}
 
 @Composable
 fun CalendarScreen(
@@ -267,7 +283,7 @@ fun CalendarDaysSection(
             year = uiState.year,
             month = uiState.month,
             startOn = uiState.startOn,
-            recordsByMonth = uiState.records,
+            records = uiState.records,
             mapper = { date, record ->
                 DayInfo(
                     date = date,
@@ -342,7 +358,7 @@ fun BottomSheetContentSection(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         AsyncImage(
-                            model = it.imageUrl,
+                            model = it.imageUrl?.first(),
                             contentDescription = "record_image",
                             modifier = Modifier
                                 .fillMaxHeight()
@@ -393,7 +409,7 @@ private fun buildMonthCells(
     year: Int,
     month: Month,
     startOn: DayOfWeek,
-    recordsByMonth: List<Record>,
+    records: List<Record>,
     mapper: (LocalDate, Record?) -> DayInfo,
 ): List<DayInfo> {
     val firstDateOfMonth = LocalDate(year, month, 1)
@@ -402,7 +418,7 @@ private fun buildMonthCells(
 
     return (0 until TOTAL_DAY_CELLS).map { dayDistance ->
         val date = startDate.plus(DatePeriod(days = dayDistance))
-        val record = recordsByMonth.find { it.date == date.toString() }
+        val record = records.find { it.date == date.toString() }
         mapper(date, record)
     }
 }
