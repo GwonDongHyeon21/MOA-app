@@ -66,6 +66,7 @@ import org.moa.moa.presentation.calendar.CalendarDimens.TOTAL_DAY_CELLS
 import org.moa.moa.presentation.calendar.CalendarDimens.horizontalPadding
 import org.moa.moa.presentation.calendar.CalendarDimens.roundCornerShape
 import org.moa.moa.presentation.calendar.CalendarDimens.sheetShadowElevation
+import org.moa.moa.presentation.calendar.CalendarDimens.sheetVerticalPadding
 import org.moa.moa.presentation.calendar.CalendarDimens.verticalPadding
 import org.moa.moa.presentation.calendar.calendar.component.BottomSheetContentBackground
 import org.moa.moa.presentation.calendar.calendar.component.BottomSheetContentPlaceholder
@@ -79,7 +80,7 @@ import org.moa.moa.presentation.component.MOALoadingScreen
 import org.moa.moa.presentation.record.model.Record
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING2
-import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING
+import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
 import org.moa.moa.presentation.ui.theme.GRAY1
 import org.moa.moa.presentation.ui.theme.GRAY3
 import org.moa.moa.presentation.ui.theme.GRAY4
@@ -154,7 +155,7 @@ private fun CalendarScreen(
                 .fillMaxSize()
                 .background(WHITE)
                 .padding(innerPadding)
-                .padding(bottom = BOTTOM_PADDING),
+                .padding(bottom = BOTTOM_PADDING_CENTER),
             verticalArrangement = Arrangement.Center
         ) {
             Column(
@@ -164,7 +165,7 @@ private fun CalendarScreen(
                     .padding(horizontal = APP_HORIZONTAL_PADDING1)
                     .clip(roundCornerShape)
                     .background(MaterialTheme.colorScheme.background)
-                    .padding(vertical = verticalPadding * 2, horizontal = horizontalPadding),
+                    .padding(vertical = verticalPadding, horizontal = horizontalPadding),
                 verticalArrangement = Arrangement.Center
             ) {
                 CalendarMonthHeaderSection(
@@ -300,7 +301,7 @@ fun BottomSheetContentSection(
             .fillMaxHeight(BOTTOM_SHEET_CONTENT_HEIGHT)
             .fillMaxWidth()
             .padding(horizontal = APP_HORIZONTAL_PADDING1)
-            .padding(bottom = BOTTOM_PADDING + verticalPadding * 2),
+            .padding(bottom = BOTTOM_PADDING_CENTER + sheetVerticalPadding * 2),
     ) {
         record?.let {
             val contentDate = formatDateTime(
@@ -315,7 +316,7 @@ fun BottomSheetContentSection(
             ) {
                 BottomSheetContentBackground(
                     modifier = Modifier.padding(
-                        vertical = verticalPadding,
+                        vertical = sheetVerticalPadding,
                         horizontal = APP_HORIZONTAL_PADDING1
                     )
                 )
@@ -325,7 +326,7 @@ fun BottomSheetContentSection(
                         .align(Alignment.Center)
                         .fillMaxSize()
                         .padding(
-                            vertical = verticalPadding * 2,
+                            vertical = verticalPadding,
                             horizontal = APP_HORIZONTAL_PADDING1 + APP_HORIZONTAL_PADDING2
                         )
                 ) {

@@ -43,7 +43,6 @@ import moa.presentation.generated.resources.top_logo
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import org.moa.moa.presentation.UiState
-import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.CONTENT_HEIGHT_FRACTION
 import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.CONTENT_IMAGE_HEIGHT_FRACTION
 import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.ContentHorizontalPadding
 import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.HEADER_WIDTH_FRACTION
@@ -55,6 +54,7 @@ import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOALoadingScreen
 import org.moa.moa.presentation.record.model.Record
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
+import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
 import org.moa.moa.presentation.ui.theme.CORNER_RADIUS
 import org.moa.moa.presentation.ui.theme.GRAY1
 import org.moa.moa.presentation.ui.theme.GRAY3
@@ -66,7 +66,6 @@ import org.moa.moa.util.formatDateTime
 
 object CalendarDetailDimens {
     const val HEADER_WIDTH_FRACTION = 0.6f
-    const val CONTENT_HEIGHT_FRACTION = 0.8f
     const val CONTENT_IMAGE_HEIGHT_FRACTION = 0.4f
     const val CONTENT_PLACEHOLDER_HEIGHT_FRACTION = 0.5f
 
@@ -201,8 +200,8 @@ fun CalendarDetailContentSection(
 ) {
     Box(
         modifier = modifier
-            .fillMaxHeight(CONTENT_HEIGHT_FRACTION)
-            .fillMaxWidth()
+            .fillMaxSize()
+            .padding(bottom = BOTTOM_PADDING_CENTER + 20.dp)
     ) {
         CalendarDetailContentBackground(modifier = modifier)
 
