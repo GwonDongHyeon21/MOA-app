@@ -42,6 +42,7 @@ import moa.presentation.generated.resources.right_arrow_icon
 import moa.presentation.generated.resources.top_logo
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
+import org.moa.moa.presentation.UiState
 import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.CONTENT_HEIGHT_FRACTION
 import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.CONTENT_IMAGE_HEIGHT_FRACTION
 import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.ContentHorizontalPadding
@@ -50,6 +51,8 @@ import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.HeaderRound
 import org.moa.moa.presentation.calendar.detail.component.CalendarDetailContentBackground
 import org.moa.moa.presentation.calendar.detail.component.CalendarDetailContentPlaceholder
 import org.moa.moa.presentation.component.MOABackTopBar
+import org.moa.moa.presentation.component.MOAErrorScreen
+import org.moa.moa.presentation.component.MOALoadingScreen
 import org.moa.moa.presentation.record.model.Record
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.CORNER_RADIUS
@@ -75,8 +78,8 @@ object CalendarDetailDimens {
 @Composable
 fun CalendarDetailScreen(
     date: String,
-    onBack: () -> Unit,
     viewModel: CalendarDetailViewModel = koinInject(),
+    onBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -84,6 +87,27 @@ fun CalendarDetailScreen(
         viewModel.findRecord(date)
     }
 
+    when (uiState.screenState) {
+        UiState.DEFAULT -> Unit
+        UiState.SUCCESS -> CalendarDetailScreen(
+            date = uiState.date,
+            record = uiState.record,
+            onChangeDay = { datePeriod -> viewModel.changeDay(datePeriod) },
+            onBack = { onBack() }
+        )
+
+        UiState.LOADING -> MOALoadingScreen(Modifier)
+        UiState.ERROR -> MOAErrorScreen(Modifier)
+    }
+}
+
+@Composable
+private fun CalendarDetailScreen(
+    date: String,
+    record: Record?,
+    onChangeDay: (Int) -> Unit,
+    onBack: () -> Unit,
+) {
     Scaffold(
         topBar = {
             MOABackTopBar(
@@ -101,15 +125,15 @@ fun CalendarDetailScreen(
         ) {
             CalendarDetailHeaderSection(
                 modifier = Modifier,
-                date = uiState.date,
-                onChangeDay = { viewModel.changeDay(it) }
+                date = date,
+                onChangeDay = { datePeriod -> onChangeDay(datePeriod) }
             )
 
-            uiState.record?.let { record ->
+            record?.let {
                 Spacer(modifier = Modifier.height(15.dp))
                 CalendarDetailContentSection(
                     modifier = Modifier,
-                    record = record
+                    record = it
                 )
             } ?: run {
                 Spacer(modifier = Modifier.height(40.dp))

@@ -1,5 +1,6 @@
 package org.moa.moa.repository
 
+import com.moa.domain.model.RecordRequest
 import com.moa.domain.usecase.record.RecordUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,11 +14,14 @@ class UiRecordRepositoryImpl(
     val records = _records.asStateFlow()
 
     suspend fun getRecords(date: String) {
-        val records = recordUseCase.getRecords.invoke(date)
-        _records.value = records.map { Emotion.stringToEmotion(it) }
+        recordUseCase.getRecords.invoke(date)
+            .onSuccess { records ->
+                _records.value = records.map { Emotion.stringToEmotion(it) }
+            }
+            .onFailure {
+
+            }
     }
 
-    suspend fun addRecord(record: Record) {
-        recordUseCase.addRecord(Emotion.emotionToString(record))
-    }
+    suspend fun addRecord(record: RecordRequest) = recordUseCase.addRecord(record)
 }

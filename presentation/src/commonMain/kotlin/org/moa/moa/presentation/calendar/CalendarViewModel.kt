@@ -35,15 +35,19 @@ class CalendarViewModel(
 
     init {
         viewModelScope.launch {
+            getRecords(today.toString())
+
             repo.records.collect { records ->
                 _uiState.value = _uiState.value.copy(recordsByMonth = records)
             }
         }
+    }
 
+    private fun getRecords(date: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(screenState = UiState.LOADING)
             runCatching {
-                repo.getRecords(today.toString())
+                repo.getRecords(date)
             }.onSuccess {
                 _uiState.value = _uiState.value.copy(screenState = UiState.SUCCESS)
             }.onFailure {
@@ -53,11 +57,15 @@ class CalendarViewModel(
     }
 
     fun changeYearMonth(datePeriod: Int) {
-        val (newYear, newMonth) = LocalDate(
+        val newDate = LocalDate(
             _uiState.value.year,
             _uiState.value.month,
             1
         ).plus(DatePeriod(months = datePeriod)).run { year to month }
+        val (newYear, newMonth) = newDate.first to newDate.second
+
+        if (_uiState.value.year != newYear) getRecords(newDate.toString())
+
         _uiState.value = _uiState.value.copy(year = newYear, month = newMonth)
     }
 }
