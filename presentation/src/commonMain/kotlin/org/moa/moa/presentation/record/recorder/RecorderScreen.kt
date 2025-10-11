@@ -49,17 +49,16 @@ import org.koin.compose.koinInject
 import org.moa.moa.presentation.component.MOABackTopBar
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOALoadingScreen
-import org.moa.moa.presentation.record.RecordDimens.RECORD_TIME_DELAY
-import org.moa.moa.presentation.record.RecordDimens.bottomPadding
-import org.moa.moa.presentation.record.RecordDimens.recordGuideText
-import org.moa.moa.presentation.record.RecordDimens.recorderButton
-import org.moa.moa.presentation.record.RecordDimens.recorderStopButton
-import org.moa.moa.presentation.record.RecordDimens.topPadding
 import org.moa.moa.presentation.record.component.RecordSuccessScreen
+import org.moa.moa.presentation.record.recorder.RecorderDimens.RECORD_TIME_DELAY
+import org.moa.moa.presentation.record.recorder.RecorderDimens.bottomPadding
+import org.moa.moa.presentation.record.recorder.RecorderDimens.recordGuideText
+import org.moa.moa.presentation.record.recorder.RecorderDimens.recorderButton
+import org.moa.moa.presentation.record.recorder.RecorderDimens.recorderStopButton
+import org.moa.moa.presentation.record.recorder.RecorderDimens.topPadding
 import org.moa.moa.presentation.record.recorder.component.PermissionDialog
 import org.moa.moa.presentation.record.recorder.component.RecordVisualizer
 import org.moa.moa.presentation.record.recorder.component.RecorderBackgroundSection
-import org.moa.moa.presentation.record.recorder.component.VisualizerDimens.MAX_BAR_HEIGHT
 import org.moa.moa.presentation.record.recorder.model.RecordMode
 import org.moa.moa.presentation.record.recorder.model.RecorderState
 import org.moa.moa.presentation.record.recorder.platform.AppSetting
@@ -74,6 +73,15 @@ import org.moa.moa.presentation.ui.theme.WHITE
 import org.moa.moa.presentation.ui.theme.textStyle1
 import org.moa.moa.presentation.ui.theme.transparent
 import org.moa.moa.util.formatRecordTime
+
+private object RecorderDimens {
+    const val RECORD_TIME_DELAY = 500L
+    val topPadding = 30.dp
+    val bottomPadding = 50.dp
+    val recorderButton = 86.dp
+    val recorderStopButton = 60.dp
+    val recordGuideText = 22.sp
+}
 
 @Composable
 fun RecorderScreen(
@@ -210,7 +218,7 @@ private fun RecorderScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     RecordVisualizer(
-                        modifier = Modifier.height(MAX_BAR_HEIGHT),
+                        modifier = Modifier,
                         isTicking = recordState.isRecording && !recordState.isPaused,
                         currentLevel = recordState.amplitude
                     )

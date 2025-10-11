@@ -28,7 +28,7 @@ import org.moa.moa.presentation.record.recorder.component.VisualizerDimens.EMA_A
 import org.moa.moa.presentation.record.recorder.component.VisualizerDimens.MAX_BAR_HEIGHT
 import org.moa.moa.presentation.record.recorder.component.VisualizerDimens.VISUALIZER_TWEEN
 
-object VisualizerDimens {
+private object VisualizerDimens {
     const val BAR_COUNT = 10
     const val BASELINE = 0.1f
     const val EMA_ALPHA = 0.5f

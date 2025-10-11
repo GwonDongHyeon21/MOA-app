@@ -45,16 +45,15 @@ import moa.presentation.generated.resources.redo
 import moa.presentation.generated.resources.trash_light
 import org.jetbrains.compose.resources.painterResource
 import org.moa.moa.presentation.component.MOABackTopBar
-import org.moa.moa.presentation.record.RecordDimens.recordGuideText
-import org.moa.moa.presentation.record.RecordDimens.roundedCornerShape
 import org.moa.moa.presentation.record.recorder.RecorderPlayingDimens.bottomPadding
 import org.moa.moa.presentation.record.recorder.RecorderPlayingDimens.playButton
+import org.moa.moa.presentation.record.recorder.RecorderPlayingDimens.recordGuideText
+import org.moa.moa.presentation.record.recorder.RecorderPlayingDimens.roundedCornerShape
 import org.moa.moa.presentation.record.recorder.RecorderPlayingDimens.saveButton
 import org.moa.moa.presentation.record.recorder.RecorderPlayingDimens.shadow
 import org.moa.moa.presentation.record.recorder.RecorderPlayingDimens.topPadding
 import org.moa.moa.presentation.record.recorder.component.RecordVisualizer
 import org.moa.moa.presentation.record.recorder.component.RecorderBackgroundSection
-import org.moa.moa.presentation.record.recorder.component.VisualizerDimens.MAX_BAR_HEIGHT
 import org.moa.moa.presentation.record.recorder.platform.PlayerState
 import org.moa.moa.presentation.record.recorder.platform.rememberPlayerController
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING2
@@ -67,12 +66,14 @@ import org.moa.moa.presentation.ui.theme.textStyle1
 import org.moa.moa.presentation.ui.theme.transparent
 import org.moa.moa.util.formatRecordTime
 
-object RecorderPlayingDimens {
+private object RecorderPlayingDimens {
     val playButton = 61.dp
     val saveButton = 54.dp
     val topPadding = 30.dp
     val bottomPadding = 24.dp
     val shadow = 3.dp
+    val recordGuideText = 22.sp
+    val roundedCornerShape = RoundedCornerShape(15.dp)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -154,9 +155,7 @@ fun RecorderPlayingScreen(
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     RecordVisualizer(
-                        modifier = Modifier
-                            .height(MAX_BAR_HEIGHT)
-                            .padding(top = 20.dp),
+                        modifier = Modifier.padding(top = 20.dp),
                         isTicking = playerState.isPlaying,
                         currentLevel = playerState.amplitude
                     )

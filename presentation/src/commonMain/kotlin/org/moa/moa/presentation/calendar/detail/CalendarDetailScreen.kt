@@ -56,12 +56,9 @@ import org.moa.moa.presentation.ui.theme.WHITE
 import org.moa.moa.util.emotionRes
 import org.moa.moa.util.formatDateTime
 
-object CalendarDetailDimens {
+private object CalendarDetailDimens {
     const val HEADER_WIDTH_FRACTION = 0.6f
-    const val CONTENT_IMAGE_HEIGHT_FRACTION = 0.4f
-    const val CONTENT_PLACEHOLDER_HEIGHT_FRACTION = 0.5f
 
-    val CalendarDetailRoundedCorner = RoundedCornerShape(25.dp)
     val HeaderRoundedCornerShape = RoundedCornerShape(33.dp)
     val ContentHorizontalPadding = 40.dp
 }
@@ -111,7 +108,7 @@ private fun CalendarDetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(APP_HORIZONTAL_PADDING1),
+                .padding(vertical = 15.dp, horizontal = APP_HORIZONTAL_PADDING1),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CalendarDetailHeaderSection(
