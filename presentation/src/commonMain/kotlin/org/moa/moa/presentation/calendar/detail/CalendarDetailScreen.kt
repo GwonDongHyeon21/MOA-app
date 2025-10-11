@@ -81,11 +81,7 @@ fun CalendarDetailScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.inputDate(date)
-    }
-
-    LaunchedEffect(uiState.date) {
-        uiState.date?.let { viewModel.loadRecord(it) }
+        viewModel.findRecord(date)
     }
 
     Scaffold(
@@ -103,13 +99,11 @@ fun CalendarDetailScreen(
                 .padding(APP_HORIZONTAL_PADDING1),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            uiState.date?.let { date ->
-                CalendarDetailHeaderSection(
-                    modifier = Modifier,
-                    date = date,
-                    onChangeDay = { viewModel.changeDay(it) }
-                )
-            }
+            CalendarDetailHeaderSection(
+                modifier = Modifier,
+                date = uiState.date,
+                onChangeDay = { viewModel.changeDay(it) }
+            )
 
             uiState.record?.let { record ->
                 Spacer(modifier = Modifier.height(15.dp))
@@ -131,10 +125,14 @@ fun CalendarDetailHeaderSection(
     date: String,
     onChangeDay: (Int) -> Unit,
 ) {
-    val headerDate = formatDateTime(
-        dateTime = LocalDate.parse(date).atTime(0, 0),
-        pattern = Strings.date_year_month_date
-    )
+    val headerDate = if (date.isNotEmpty()) {
+        formatDateTime(
+            dateTime = LocalDate.parse(date).atTime(0, 0),
+            pattern = Strings.date_year_month_date
+        )
+    } else {
+        ""
+    }
 
     Row(
         modifier = modifier

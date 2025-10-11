@@ -1,52 +1,33 @@
 package org.moa.moa.presentation.calendar.detail
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.moa.domain.repository.RecordRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.plus
-import org.moa.moa.util.DummyData
+import org.moa.moa.repository.UiRecordRepositoryImpl
 
 class CalendarDetailViewModel(
-    private val recordRepository: RecordRepository,
+    private val repo: UiRecordRepositoryImpl,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
         CalendarDetailUiState(
-            date = null,
+            date = "",
             record = null
         )
     )
     val uiState = _uiState.asStateFlow()
 
-    fun loadRecord(date: String) {
-        viewModelScope.launch {
-            runCatching {
-//                recordRepository.getRecord(date)
-            }.onSuccess { record ->
-                _uiState.value = _uiState.value.copy(
-                    date = date,
-                    record = DummyData.sampleRecords.find { it.date == date } // record
-                )
-            }.onFailure {
-
-            }
-        }
-    }
-
-    fun inputDate(date: String) {
-        _uiState.value = _uiState.value.copy(date = date)
+    fun findRecord(date: String) {
+        _uiState.value =
+            _uiState.value.copy(date = date, record = repo.records.value.find { it.date == date })
     }
 
     fun changeDay(datePeriod: Int) {
-        _uiState.value.date?.let {
-            val newDate = LocalDate.parse(it).plus(DatePeriod(days = datePeriod))
-            loadRecord(it)
-            _uiState.value = _uiState.value.copy(date = newDate.toString())
-        }
+        val newDate =
+            LocalDate.parse(_uiState.value.date).plus(DatePeriod(days = datePeriod)).toString()
+        findRecord(newDate)
     }
 }

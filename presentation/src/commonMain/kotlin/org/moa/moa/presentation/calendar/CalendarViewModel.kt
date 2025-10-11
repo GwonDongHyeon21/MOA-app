@@ -2,7 +2,6 @@ package org.moa.moa.presentation.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.moa.domain.usecase.RecordUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -14,10 +13,10 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import org.moa.moa.presentation.UiState
-import org.moa.moa.util.DummyData
+import org.moa.moa.repository.UiRecordRepositoryImpl
 
 class CalendarViewModel(
-    private val recordUseCase: RecordUseCase,
+    private val repo: UiRecordRepositoryImpl,
 ) : ViewModel() {
 
     private val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
@@ -35,19 +34,18 @@ class CalendarViewModel(
     val uiState = _uiState.asStateFlow()
 
     init {
-        loadRecords()
-    }
+        viewModelScope.launch {
+            repo.records.collect { records ->
+                _uiState.value = _uiState.value.copy(recordsByMonth = records)
+            }
+        }
 
-    private fun loadRecords() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(screenState = UiState.LOADING)
             runCatching {
-//                recordUseCase.getRecordsByMonth()
-            }.onSuccess { records ->
-                _uiState.value = _uiState.value.copy(
-                    screenState = UiState.SUCCESS,
-                    recordsByMonth = DummyData.sampleRecords // records
-                )
+                repo.getRecords(today.toString())
+            }.onSuccess {
+                _uiState.value = _uiState.value.copy(screenState = UiState.SUCCESS)
             }.onFailure {
                 _uiState.value = _uiState.value.copy(screenState = UiState.ERROR)
             }

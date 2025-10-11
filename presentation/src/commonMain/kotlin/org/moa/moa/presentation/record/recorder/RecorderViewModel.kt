@@ -2,15 +2,15 @@ package org.moa.moa.presentation.record.recorder
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.moa.domain.usecase.RecordUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.moa.moa.presentation.record.recorder.model.RecordMode
 import org.moa.moa.presentation.record.recorder.model.RecorderState
+import org.moa.moa.repository.UiRecordRepositoryImpl
 
 class RecorderViewModel(
-    private val recordUseCase: RecordUseCase,
+    private val repo: UiRecordRepositoryImpl,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
