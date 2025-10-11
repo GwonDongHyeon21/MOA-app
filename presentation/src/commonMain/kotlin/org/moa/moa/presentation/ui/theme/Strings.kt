@@ -48,6 +48,7 @@ object Strings {
     const val date_year_month = "yyyy년 M월"
     const val date_year_month_date = "yyyy.MM.dd (E)"
     const val todayRecord = "오늘의 일기"
+    const val make_record = "조각 모으기"
 
     const val monday = "월"
     const val tuesday = "화"

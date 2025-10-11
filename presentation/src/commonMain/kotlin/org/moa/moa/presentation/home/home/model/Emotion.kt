@@ -1,4 +1,4 @@
-package org.moa.moa.presentation.home.model
+package org.moa.moa.presentation.home.home.model
 
 import com.moa.domain.model.RecordResponse
 import org.moa.moa.presentation.record.model.Record

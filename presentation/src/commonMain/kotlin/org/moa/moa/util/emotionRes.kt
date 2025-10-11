@@ -5,7 +5,7 @@ import moa.presentation.generated.resources.emotion_bad
 import moa.presentation.generated.resources.emotion_sad
 import moa.presentation.generated.resources.emotion_smile
 import moa.presentation.generated.resources.emotion_soso
-import org.moa.moa.presentation.home.model.Emotion
+import org.moa.moa.presentation.home.home.model.Emotion
 
 fun emotionRes(emotion: Emotion) = when (emotion) {
     Emotion.SMILE -> Res.drawable.emotion_smile
