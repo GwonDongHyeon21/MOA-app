@@ -1,4 +1,4 @@
-package org.moa.moa.presentation.calendar
+package org.moa.moa.presentation.calendar.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,7 +28,7 @@ class CalendarViewModel(
             year = today.year,
             month = today.month,
             startOn = DayOfWeek.SUNDAY,
-            recordsByMonth = emptyList()
+            records = emptyList()
         )
     )
     val uiState = _uiState.asStateFlow()
@@ -38,7 +38,7 @@ class CalendarViewModel(
             getRecords(today.toString())
 
             repo.records.collect { records ->
-                _uiState.value = _uiState.value.copy(recordsByMonth = records)
+                _uiState.value = _uiState.value.copy(records = records)
             }
         }
     }

@@ -1,4 +1,4 @@
-package org.moa.moa.presentation.calendar
+package org.moa.moa.presentation.calendar.calendar
 
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
@@ -12,5 +12,5 @@ data class CalendarUiState(
     val year: Int,
     val month: Month,
     val startOn: DayOfWeek,
-    val recordsByMonth: List<Record>,
+    val records: List<Record>,
 )

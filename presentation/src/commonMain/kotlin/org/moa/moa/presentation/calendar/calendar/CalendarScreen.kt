@@ -1,4 +1,4 @@
-package org.moa.moa.presentation.calendar
+package org.moa.moa.presentation.calendar.calendar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -67,11 +67,11 @@ import org.moa.moa.presentation.calendar.CalendarDimens.horizontalPadding
 import org.moa.moa.presentation.calendar.CalendarDimens.roundCornerShape
 import org.moa.moa.presentation.calendar.CalendarDimens.sheetShadowElevation
 import org.moa.moa.presentation.calendar.CalendarDimens.verticalPadding
-import org.moa.moa.presentation.calendar.component.BottomSheetContentBackground
-import org.moa.moa.presentation.calendar.component.BottomSheetContentPlaceholder
-import org.moa.moa.presentation.calendar.component.BottomSheetDragHandle
-import org.moa.moa.presentation.calendar.component.DayCell
-import org.moa.moa.presentation.calendar.model.DayInfo
+import org.moa.moa.presentation.calendar.calendar.component.BottomSheetContentBackground
+import org.moa.moa.presentation.calendar.calendar.component.BottomSheetContentPlaceholder
+import org.moa.moa.presentation.calendar.calendar.component.BottomSheetDragHandle
+import org.moa.moa.presentation.calendar.calendar.component.DayCell
+import org.moa.moa.presentation.calendar.calendar.model.DayInfo
 import org.moa.moa.presentation.component.MOABackTopBar
 import org.moa.moa.presentation.component.MOAButton
 import org.moa.moa.presentation.component.MOAErrorScreen
@@ -261,12 +261,12 @@ fun CalendarDaysSection(
     uiState: CalendarUiState,
     onSelectedRecord: (Record?) -> Unit,
 ) {
-    remember(uiState.today, uiState.year, uiState.month, uiState.startOn, uiState.recordsByMonth) {
+    remember(uiState.today, uiState.year, uiState.month, uiState.startOn, uiState.records) {
         buildMonthCells(
             year = uiState.year,
             month = uiState.month,
             startOn = uiState.startOn,
-            recordsByMonth = uiState.recordsByMonth,
+            recordsByMonth = uiState.records,
             mapper = { date, record ->
                 DayInfo(
                     date = date,

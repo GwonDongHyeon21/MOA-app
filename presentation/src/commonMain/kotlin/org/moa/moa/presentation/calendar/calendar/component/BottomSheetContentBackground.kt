@@ -1,4 +1,4 @@
-package org.moa.moa.presentation.calendar.component
+package org.moa.moa.presentation.calendar.calendar.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize

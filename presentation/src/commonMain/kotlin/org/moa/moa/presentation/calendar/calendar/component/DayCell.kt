@@ -1,4 +1,4 @@
-package org.moa.moa.presentation.calendar.component
+package org.moa.moa.presentation.calendar.calendar.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.painterResource
-import org.moa.moa.presentation.calendar.model.DayInfo
+import org.moa.moa.presentation.calendar.calendar.model.DayInfo
 import org.moa.moa.presentation.record.model.Record
 import org.moa.moa.presentation.ui.theme.GRAY8
 import org.moa.moa.util.emotionRes
