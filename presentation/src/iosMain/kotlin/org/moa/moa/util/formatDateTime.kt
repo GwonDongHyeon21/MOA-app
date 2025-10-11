@@ -5,7 +5,6 @@ import platform.Foundation.NSCalendar
 import platform.Foundation.NSDateComponents
 import platform.Foundation.NSDateFormatter
 import platform.Foundation.NSLocale
-import platform.Foundation.currentLocale
 
 actual fun formatDateTime(
     dateTime: LocalDateTime,
@@ -24,7 +23,7 @@ actual fun formatDateTime(
 
     val formatter = NSDateFormatter().apply {
         dateFormat = pattern
-        locale = NSLocale.currentLocale
+        locale = NSLocale(localeIdentifier = "ko_KR")
     }
     return formatter.stringFromDate(nsDate)
 }

@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.serialization)
 }
 
 kotlin {
@@ -37,10 +38,12 @@ kotlin {
 
             // Coil
             implementation(libs.coil.compose)
-            implementation(libs.coil.network.ktor3)
 
             // DateTime
             implementation(libs.kotlinx.datetime)
+
+            // Serialization
+            implementation(libs.kotlinx.serialization.json)
         }
         androidMain.dependencies {
             implementation(compose.ui)
@@ -48,8 +51,13 @@ kotlin {
 
             // Permission
             implementation(libs.accompanist.permissions)
+
+            // Coil
+            implementation(libs.coil.network.okhttp)
         }
         iosMain.dependencies {
+            // Coil
+            implementation(libs.coil.network.ktor3)
         }
     }
 }

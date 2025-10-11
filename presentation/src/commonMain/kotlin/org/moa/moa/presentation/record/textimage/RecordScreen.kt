@@ -89,7 +89,7 @@ fun RecordScreen(
             isCamera = isCamera,
             uiState = uiState,
             onImageBytesChange = { viewModel.changeImageBytes(it) },
-            onAddRecordData = { viewModel.addRecordData() },
+            onAddRecordData = { viewModel.addRecord() },
             onTextChange = { viewModel.changeRecordText(it) },
             onBack = { onBack() },
         )
@@ -133,7 +133,7 @@ private fun RecordScreen(
                     .padding(horizontal = APP_HORIZONTAL_PADDING1)
                     .imePadding(),
                 text = Strings.record,
-                enabled = uiState.recordText.isNotBlank()
+                enabled = uiState.content.isNotBlank()
             ) {
                 onAddRecordData()
             }
@@ -279,7 +279,7 @@ fun RecordInputSection(
             )
 
             OutlinedTextField(
-                value = uiState.recordText,
+                value = uiState.content,
                 onValueChange = { if (it.length < RECORD_MAX_LENGTH) onValueChange(it) },
                 modifier = modifier
                     .weight(1f)

@@ -3,7 +3,8 @@ package org.moa.moa.presentation.record.textimage
 import org.moa.moa.presentation.UiState
 
 data class RecordUiState(
-    val recordText: String,
+    val date: String,
+    val content: String,
     val imageBytes: ByteArray?,
     val screenState: UiState,
 )

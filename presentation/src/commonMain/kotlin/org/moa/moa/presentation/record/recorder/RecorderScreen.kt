@@ -16,12 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -58,6 +56,7 @@ import org.moa.moa.presentation.record.RecordDimens.recorderButton
 import org.moa.moa.presentation.record.RecordDimens.recorderStopButton
 import org.moa.moa.presentation.record.RecordDimens.topPadding
 import org.moa.moa.presentation.record.component.RecordSuccessScreen
+import org.moa.moa.presentation.record.recorder.component.PermissionDialog
 import org.moa.moa.presentation.record.recorder.component.RecordVisualizer
 import org.moa.moa.presentation.record.recorder.component.RecorderBackgroundSection
 import org.moa.moa.presentation.record.recorder.component.VisualizerDimens.MAX_BAR_HEIGHT
@@ -72,6 +71,7 @@ import org.moa.moa.presentation.ui.theme.GRAY2
 import org.moa.moa.presentation.ui.theme.RED
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
+import org.moa.moa.presentation.ui.theme.textStyle1
 import org.moa.moa.presentation.ui.theme.transparent
 import org.moa.moa.util.formatRecordTime
 
@@ -199,7 +199,7 @@ private fun RecorderScreen(
                     )
 
                     Spacer(modifier = Modifier.height(20.dp))
-                    RecordTime(
+                    RecordTimeSection(
                         isRecording = recordState.isRecording,
                         recordTime = recordState.totalRecordMs
                     )
@@ -243,7 +243,7 @@ private fun RecorderScreen(
 }
 
 @Composable
-fun RecordTime(
+fun RecordTimeSection(
     isRecording: Boolean,
     recordTime: Long,
 ) {
@@ -271,8 +271,7 @@ fun RecordTime(
         Spacer(modifier = Modifier.width(10.dp))
         Text(
             text = formatRecordTime(recordTime),
-            fontSize = 17.sp,
-            fontWeight = FontWeight.Medium,
+            style = textStyle1,
             color = if (isRecording) GRAY1 else transparent
         )
     }
@@ -339,29 +338,4 @@ fun RecorderButtonSection(
             }
         }
     }
-}
-
-@Composable
-fun PermissionDialog(
-    onAppSetting: () -> Unit,
-    onBack: () -> Unit,
-) {
-    AlertDialog(
-        onDismissRequest = { onBack() },
-        title = { Text(text = Strings.mic_permission) },
-        text = { Text(text = Strings.mic_permission_guideline) },
-        confirmButton = {
-            TextButton(onClick = {
-                onAppSetting()
-                onBack()
-            }) {
-                Text(text = Strings.setting)
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = { onBack() }) {
-                Text(text = Strings.cancel)
-            }
-        }
-    )
 }

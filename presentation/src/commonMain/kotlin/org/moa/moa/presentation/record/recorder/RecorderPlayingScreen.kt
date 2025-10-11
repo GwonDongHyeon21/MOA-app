@@ -63,9 +63,9 @@ import org.moa.moa.presentation.ui.theme.GRAY1
 import org.moa.moa.presentation.ui.theme.GRAY3
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
+import org.moa.moa.presentation.ui.theme.textStyle1
 import org.moa.moa.presentation.ui.theme.transparent
 import org.moa.moa.util.formatRecordTime
-import kotlin.math.sin
 
 object RecorderPlayingDimens {
     val playButton = 61.dp
@@ -310,8 +310,7 @@ fun SaveButton(
         ) {
             Text(
                 text = Strings.record,
-                fontSize = 17.sp,
-                fontWeight = FontWeight.Medium
+                style = textStyle1
             )
         }
 

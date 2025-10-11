@@ -21,12 +21,14 @@ val GRAY3 = Color(0xFFD9D9D9)
 val GRAY4 = Color(0xFFECECEC)
 val GRAY5 = Color(0xFFF3F3F3)
 val GRAY6 = Color(0xFFF7F7F7)
+
+val GRAY7 = Color(0xFF474747)
+val GRAY8 = Color(0xFFD1D1D1)
 val WHITE = Color(0xFFFFFFFF)
 
 val IVORY2 = Color(0xFFEBEBEB)
 val IVORY3 = Color(0xFFFFFBF4)
 val IVORY4 = Color(0xFFFFF2CC)
-val GRAY7 = Color(0xFF474747)
 
 @Composable
 fun MOAColorScheme() = ColorScheme(

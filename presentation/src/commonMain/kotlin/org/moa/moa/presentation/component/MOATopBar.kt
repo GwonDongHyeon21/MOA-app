@@ -44,7 +44,7 @@ fun MOABackTopBar(
     onBack: () -> Unit,
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(horizontal = APP_HORIZONTAL_PADDING1),
@@ -52,7 +52,7 @@ fun MOABackTopBar(
         Icon(
             painter = painterResource(Res.drawable.left_arrow_icon),
             contentDescription = "GoBackIcon",
-            modifier = modifier
+            modifier = Modifier
                 .align(Alignment.CenterStart)
                 .clickable(
                     onClick = { onBack() },
@@ -64,7 +64,7 @@ fun MOABackTopBar(
         Image(
             painter = painterResource(Res.drawable.top_logo),
             contentDescription = "top_logo",
-            modifier = modifier
+            modifier = Modifier
                 .align(Alignment.Center)
                 .size(50.dp),
             contentScale = ContentScale.Fit

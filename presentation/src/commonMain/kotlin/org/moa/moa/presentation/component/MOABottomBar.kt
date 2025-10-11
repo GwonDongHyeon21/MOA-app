@@ -61,6 +61,10 @@ import org.moa.moa.navigation.sign.SignNavigationItem
 import org.moa.moa.navigation.todo.TodoNavigationItem
 import org.moa.moa.navigation.user.UserNavigationItem
 import org.moa.moa.presentation.component.BottomCenter.PROGRESS_DURATION_MILLS
+import org.moa.moa.presentation.component.BottomCenter.bottomPadding
+import org.moa.moa.presentation.component.BottomCenter.buttonSize
+import org.moa.moa.presentation.component.BottomCenter.centerHeight
+import org.moa.moa.presentation.component.BottomCenter.height
 import org.moa.moa.presentation.ui.theme.IVORY
 import org.moa.moa.presentation.ui.theme.IVORY4
 import org.moa.moa.presentation.ui.theme.MAIN
@@ -71,8 +75,8 @@ import org.moa.moa.util.dpToPx
 object BottomCenter {
     val bottomPadding = 20.dp
     val height = 35.dp
-    val size = 80.dp
-    val centerHeight = height + size / 2
+    val buttonSize = 80.dp
+    val centerHeight = height + buttonSize / 2
     const val PROGRESS_DURATION_MILLS = 500
 }
 
@@ -125,7 +129,7 @@ fun BottomBar(
     )
 
     Box(contentAlignment = Alignment.BottomCenter) {
-        CenterBackdrop(progress, dpToPx(BottomCenter.centerHeight))
+        CenterBackdrop(progress, dpToPx(centerHeight))
         RecordOptions(centerExpanded) {
             when (it) {
                 0 -> navController.navigate(RecordNavigationItem.RecordText.route)
@@ -136,24 +140,22 @@ fun BottomBar(
         CustomBottomBar()
 
         Row(
-            modifier = Modifier.fillMaxWidth().padding(bottom = BottomCenter.bottomPadding),
+            modifier = Modifier.fillMaxWidth().padding(bottom = bottomPadding),
             verticalAlignment = Alignment.Bottom
         ) {
             bottomItems.forEachIndexed { index, item ->
                 val isSelected = tabScreen == item.third
                 if (index == bottomItems.size / 2) {
                     Box(
-                        modifier = Modifier.weight(1f).offset(y = -BottomCenter.height),
+                        modifier = Modifier.weight(1f).offset(y = -height),
                         contentAlignment = Alignment.Center
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(BottomCenter.size)
+                                .size(buttonSize)
                                 .clip(CircleShape)
                                 .background(MAIN)
-                                .clickable(onClick = {
-                                    centerExpanded = !centerExpanded
-                                })
+                                .clickable { centerExpanded = !centerExpanded }
                         )
                         Image(
                             painter = painterResource(Res.drawable.main_button_icon),
@@ -196,8 +198,8 @@ fun BottomBar(
 
 @Composable
 fun CustomBottomBar() {
-    val firstDpToPx = dpToPx(BottomCenter.size / 2 + 15.dp)
-    val secondDpToPx = dpToPx(BottomCenter.size / 2 + 5.dp)
+    val firstDpToPx = dpToPx(buttonSize / 2 + 15.dp)
+    val secondDpToPx = dpToPx(buttonSize / 2 + 5.dp)
 
     Canvas(modifier = Modifier.fillMaxWidth().height(90.dp)) {
         val width = size.width
@@ -234,11 +236,11 @@ fun CustomBottomBar() {
 @Composable
 private fun CenterBackdrop(progress: Float, bottomCenterHeight: Float) {
     val density = LocalDensity.current
-    val maxRadius = with(density) { (BottomCenter.size * 3 / 2).toPx() }
-    val minRadius = with(density) { (BottomCenter.size / 2).toPx() }
+    val maxRadius = with(density) { (buttonSize * 3 / 2).toPx() }
+    val minRadius = with(density) { (buttonSize / 2).toPx() }
     val radius = lerp(minRadius, maxRadius, progress)
 
-    Canvas(modifier = Modifier.padding(bottom = BottomCenter.bottomPadding).zIndex(0f)) {
+    Canvas(modifier = Modifier.padding(bottom = bottomPadding).zIndex(0f)) {
         val x = size.width / 2f
         val y = size.height - bottomCenterHeight
         drawCircle(
@@ -254,17 +256,17 @@ fun RecordOptions(
     expanded: Boolean,
     onClick: (Int) -> Unit,
 ) {
-    val height = BottomCenter.size * 3 / 2 + BottomCenter.centerHeight + BottomCenter.bottomPadding
+    val height = buttonSize * 3 / 2 + centerHeight + bottomPadding
     val size by animateDpAsState(
-        targetValue = if (expanded) BottomCenter.size * 3 / 4 else 0.dp,
-        animationSpec = tween(durationMillis = BottomCenter.PROGRESS_DURATION_MILLS),
+        targetValue = if (expanded) buttonSize * 3 / 4 else 0.dp,
+        animationSpec = tween(durationMillis = PROGRESS_DURATION_MILLS),
         label = "icon_size"
     )
 
     Row(
         modifier = Modifier
             .height(height)
-            .padding(top = BottomCenter.bottomPadding / 2),
+            .padding(top = bottomPadding / 2),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Bottom
     ) {
@@ -280,7 +282,7 @@ fun RecordOptions(
                     tint = Color.Unspecified
                 )
             }
-            Spacer(modifier = Modifier.height(height - BottomCenter.size - BottomCenter.bottomPadding))
+            Spacer(modifier = Modifier.height(height - buttonSize - bottomPadding))
         }
         Spacer(modifier = Modifier.width(5.dp))
         Column {
@@ -295,7 +297,7 @@ fun RecordOptions(
                     tint = Color.Unspecified
                 )
             }
-            Spacer(modifier = Modifier.height(height - BottomCenter.size * 3 / 4))
+            Spacer(modifier = Modifier.height(height - buttonSize * 3 / 4))
         }
         Spacer(modifier = Modifier.width(5.dp))
         Column {
@@ -310,7 +312,7 @@ fun RecordOptions(
                     tint = Color.Unspecified
                 )
             }
-            Spacer(modifier = Modifier.height(height - BottomCenter.size - BottomCenter.bottomPadding))
+            Spacer(modifier = Modifier.height(height - buttonSize - bottomPadding))
         }
     }
 }
