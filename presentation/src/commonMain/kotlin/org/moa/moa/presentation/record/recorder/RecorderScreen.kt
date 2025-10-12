@@ -47,6 +47,7 @@ import moa.presentation.generated.resources.record_start
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import org.moa.moa.presentation.component.MOABackTopBar
+import org.moa.moa.presentation.component.MOADialog
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOALoadingScreen
 import org.moa.moa.presentation.record.component.RecordSuccessScreen
@@ -56,7 +57,6 @@ import org.moa.moa.presentation.record.recorder.RecorderDimens.recordGuideText
 import org.moa.moa.presentation.record.recorder.RecorderDimens.recorderButton
 import org.moa.moa.presentation.record.recorder.RecorderDimens.recorderStopButton
 import org.moa.moa.presentation.record.recorder.RecorderDimens.topPadding
-import org.moa.moa.presentation.record.recorder.component.PermissionDialog
 import org.moa.moa.presentation.record.recorder.component.RecordVisualizer
 import org.moa.moa.presentation.record.recorder.component.RecorderBackgroundSection
 import org.moa.moa.presentation.record.recorder.model.RecordMode
@@ -139,12 +139,16 @@ private fun RecorderScreen(
     }
 
     if (showPermissionDialog) {
-        PermissionDialog(
-            onAppSetting = { isAppSetting = true },
-            onBack = {
+        MOADialog(
+            title = Strings.mic_permission,
+            text = Strings.mic_permission_guideline,
+            confirmText = Strings.setting,
+            dismissText = Strings.cancel,
+            onClickConfirm = { isAppSetting = true },
+            onClickDismiss = {
                 showPermissionDialog = false
                 onBack()
-            }
+            },
         )
     }
 
