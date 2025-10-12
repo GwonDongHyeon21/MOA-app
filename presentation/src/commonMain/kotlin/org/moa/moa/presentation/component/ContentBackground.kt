@@ -1,7 +1,6 @@
-package org.moa.moa.presentation.calendar.detail.component
+package org.moa.moa.presentation.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -12,14 +11,14 @@ import androidx.compose.ui.unit.dp
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.calendar_detail_background
 import org.jetbrains.compose.resources.painterResource
-import org.moa.moa.presentation.calendar.detail.component.ContentBackgroundDimens.contentRoundedCornerShape
+import org.moa.moa.presentation.component.ContentBackgroundDimens.contentRoundedCornerShape
 
 private object ContentBackgroundDimens{
     val contentRoundedCornerShape = RoundedCornerShape(25.dp)
 }
 
 @Composable
-fun CalendarDetailContentBackground(modifier: Modifier) {
+fun ContentBackground(modifier: Modifier) {
     Card(
         shape = contentRoundedCornerShape,
         elevation = CardDefaults.cardElevation(3.dp)
@@ -27,7 +26,7 @@ fun CalendarDetailContentBackground(modifier: Modifier) {
         Image(
             painter = painterResource(Res.drawable.calendar_detail_background),
             contentDescription = null,
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier,
             contentScale = ContentScale.Crop
         )
     }

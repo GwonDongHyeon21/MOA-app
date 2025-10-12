@@ -38,8 +38,4 @@ class HomeViewModel(
             }
         }
     }
-
-    fun combineTodayRecords() {
-
-    }
 }

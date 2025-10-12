@@ -15,7 +15,9 @@ fun NavGraphBuilder.homeNavigationGraph(navController: NavController) {
         )
     }
     composable(HomeNavigationItem.HomeRecord.route) {
-        HomeRecordScreen()
+        HomeRecordScreen(
+            onBack = { navController.popBackStack() }
+        )
     }
     composable(HomeNavigationItem.HomeDetail.route) {
         HomeDetailScreen()

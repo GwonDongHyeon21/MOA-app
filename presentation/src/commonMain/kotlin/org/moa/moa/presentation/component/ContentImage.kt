@@ -1,4 +1,4 @@
-package org.moa.moa.presentation.calendar.detail.component
+package org.moa.moa.presentation.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,7 +18,7 @@ import coil3.compose.AsyncImage
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.top_logo
 import org.jetbrains.compose.resources.painterResource
-import org.moa.moa.presentation.calendar.detail.component.ContentImageDimens.CONTENT_IMAGE_HEIGHT_FRACTION
+import org.moa.moa.presentation.component.ContentImageDimens.CONTENT_IMAGE_HEIGHT_FRACTION
 import org.moa.moa.presentation.ui.theme.CORNER_RADIUS
 import org.moa.moa.presentation.ui.theme.GRAY3
 import org.moa.moa.presentation.ui.theme.GRAY4
@@ -28,7 +28,7 @@ private object ContentImageDimens {
 }
 
 @Composable
-fun CalendarDetailContentImage(
+fun ContentImage(
     modifier: Modifier,
     records: List<String>?,
 ) {

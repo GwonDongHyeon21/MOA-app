@@ -41,9 +41,9 @@ import org.moa.moa.presentation.UiState
 import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.ContentHorizontalPadding
 import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.HEADER_WIDTH_FRACTION
 import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.HeaderRoundedCornerShape
-import org.moa.moa.presentation.calendar.detail.component.CalendarDetailContentBackground
-import org.moa.moa.presentation.calendar.detail.component.CalendarDetailContentImage
 import org.moa.moa.presentation.calendar.detail.component.CalendarDetailContentPlaceholder
+import org.moa.moa.presentation.component.ContentBackground
+import org.moa.moa.presentation.component.ContentImage
 import org.moa.moa.presentation.component.MOABackTopBar
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOALoadingScreen
@@ -192,7 +192,7 @@ fun CalendarDetailContentSection(
             .fillMaxSize()
             .padding(bottom = BOTTOM_PADDING_CENTER + 20.dp)
     ) {
-        CalendarDetailContentBackground(modifier = modifier)
+        ContentBackground(modifier = modifier.fillMaxSize())
 
         Column(modifier = Modifier.padding(horizontal = ContentHorizontalPadding)) {
             Row(
@@ -202,7 +202,7 @@ fun CalendarDetailContentSection(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Box {
-                    CalendarDetailContentImage(
+                    ContentImage(
                         modifier = Modifier.align(Alignment.Center),
                         records = record.imageUrl
                     )
