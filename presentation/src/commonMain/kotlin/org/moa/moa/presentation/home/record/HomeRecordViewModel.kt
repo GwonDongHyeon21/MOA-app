@@ -32,9 +32,9 @@ class HomeRecordViewModel(
     init {
         viewModelScope.launch {
             delay(4_000)
-            repo.records.collect { records ->
+            repo.todayRecord.collect { record ->
                 _uiState.value = _uiState.value.copy(
-                    record = records.find { it.date == today.toString() },
+                    record = record,
                     isLoading = false
                 )
             }

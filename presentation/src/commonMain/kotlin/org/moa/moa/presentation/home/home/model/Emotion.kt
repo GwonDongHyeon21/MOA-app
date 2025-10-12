@@ -15,6 +15,7 @@ enum class Emotion(val label: String) {
                 date = record.date,
                 content = record.content,
                 imageUrl = record.imageUrl,
+                records = record.records,
                 emotion = when (record.emotion) {
                     "smile" -> SMILE
                     "soso" -> SOSO

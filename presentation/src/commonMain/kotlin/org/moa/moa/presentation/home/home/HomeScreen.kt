@@ -19,10 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.moa.domain.model.RecordResponse
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.home_record_guide
 import moa.presentation.generated.resources.home_record_holder
 import moa.presentation.generated.resources.home_record_logo
+import org.jetbrains.compose.resources.imageResource
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import org.moa.moa.presentation.UiState
@@ -32,6 +34,8 @@ import org.moa.moa.presentation.home.home.HomeDimens.buttonHeight
 import org.moa.moa.presentation.home.home.HomeDimens.buttonRoundedCornerShape
 import org.moa.moa.presentation.home.home.HomeDimens.buttonWidth
 import org.moa.moa.presentation.home.home.HomeDimens.verticalPadding
+import org.moa.moa.presentation.home.home.component.PixelClickImage
+import org.moa.moa.presentation.home.home.model.ImageInfo
 import org.moa.moa.presentation.record.model.Record
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
@@ -48,16 +52,18 @@ private object HomeDimens {
 fun HomeScreen(
     viewModel: HomeViewModel = koinInject(),
     onNavigateToHomeRecord: () -> Unit,
-    onNavigateToHomeDetail: () -> Unit,
+    onNavigateToHomeDetail: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     when (uiState.screenState) {
         UiState.DEFAULT -> Unit
         UiState.SUCCESS -> HomeScreen(
-            record = uiState.record,
+            todayRecord = uiState.todayRecord,
+            records = uiState.records,
+            recordImages = uiState.recordImages,
             onNavigateToHomeRecord = { onNavigateToHomeRecord() },
-            onNavigateToHomeDetail = { onNavigateToHomeDetail() }
+            onNavigateToHomeDetail = { recordNumber -> onNavigateToHomeDetail(recordNumber) }
         )
 
         UiState.LOADING -> MOALoadingScreen(Modifier)
@@ -67,9 +73,11 @@ fun HomeScreen(
 
 @Composable
 private fun HomeScreen(
-    record: Record?,
+    todayRecord: Record?,
+    records: List<RecordResponse>,
+    recordImages: List<ImageInfo>,
     onNavigateToHomeRecord: () -> Unit,
-    onNavigateToHomeDetail: () -> Unit,
+    onNavigateToHomeDetail: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -79,16 +87,19 @@ private fun HomeScreen(
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        HomeRecordsSection(
-            modifier = Modifier,
-            record = record
+        HomeRecordImagesSection(
+            modifier = Modifier.fillMaxWidth(),
+            todayRecord = todayRecord,
+            records = records,
+            recordImages = recordImages,
+            onSelectedNumber = { recordNumber -> onNavigateToHomeDetail(recordNumber) }
         )
 
         Button(
             onClick = { onNavigateToHomeRecord() },
             modifier = Modifier.size(buttonWidth, buttonHeight),
             shape = buttonRoundedCornerShape,
-            enabled = record != null
+            enabled = todayRecord != null
         ) {
             Text(
                 text = Strings.make_record,
@@ -99,13 +110,19 @@ private fun HomeScreen(
 }
 
 @Composable
-fun HomeRecordsSection(
+fun HomeRecordImagesSection(
     modifier: Modifier,
-    record: Record?,
+    todayRecord: Record?,
+    recordImages: List<ImageInfo>,
+    records: List<RecordResponse>,
+    onSelectedNumber: (Int) -> Unit,
 ) {
-    Column {
-        if (record == null) {
-            Box(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if (todayRecord == null) {
+            Box(modifier = modifier) {
                 Image(
                     painter = painterResource(Res.drawable.home_record_logo),
                     contentDescription = null,
@@ -127,14 +144,25 @@ fun HomeRecordsSection(
                 }
             }
         } else {
-            Box {
-
+            Box(modifier = modifier) {
+                recordImages
+                    .takeLast(records.size)
+                    .forEachIndexed { index, image ->
+                        PixelClickImage(
+                            image = imageResource(image.drawableRes),
+                            modifier = Modifier
+                                .size(image.size)
+                                .align(image.alignment)
+                                .offset(image.offset.x.dp, image.offset.y.dp),
+                            onClick = { onSelectedNumber((records.size - 1) - index) }
+                        )
+                    }
             }
         }
         Image(
             painter = painterResource(Res.drawable.home_record_holder),
             contentDescription = null,
-            modifier = Modifier.offset(y = (-20).dp)
+            modifier = modifier.offset(y = (-20).dp)
         )
     }
 }
