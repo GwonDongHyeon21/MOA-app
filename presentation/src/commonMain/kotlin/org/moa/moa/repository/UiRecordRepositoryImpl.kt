@@ -1,6 +1,6 @@
 package org.moa.moa.repository
 
-import com.moa.domain.model.RecordRequest
+import com.moa.domain.model.request.RecordRequest
 import com.moa.domain.usecase.record.RecordUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

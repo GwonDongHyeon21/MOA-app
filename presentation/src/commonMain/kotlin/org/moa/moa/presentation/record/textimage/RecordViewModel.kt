@@ -2,7 +2,7 @@ package org.moa.moa.presentation.record.textimage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.moa.domain.model.RecordRequest
+import com.moa.domain.model.request.RecordRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

@@ -1,11 +1,9 @@
-package com.moa.data.repository
+package com.moa.data.repositoryimpl
 
 import com.moa.data.network.ApiService
 import com.moa.domain.DummyData
-import com.moa.domain.model.RecordByDateResponse
-import com.moa.domain.model.RecordRequest
-import com.moa.domain.model.RecordResponse
-import com.moa.domain.model.ResponseMessage
+import com.moa.domain.model.response.RecordByDateResponse
+import com.moa.domain.model.request.RecordRequest
 import com.moa.domain.repository.RecordRepository
 
 class RecordRepositoryImpl(
@@ -18,8 +16,8 @@ class RecordRepositoryImpl(
         return runCatching { DummyData.sampleRecords }
     }
 
-    override suspend fun addRecord(record: RecordRequest): ResponseMessage {
+    override suspend fun addRecord(record: RecordRequest): String {
 //        return apiService.addRecord
-        return ResponseMessage("")
+        return ""
     }
 }

@@ -1,6 +1,6 @@
 package org.moa.moa.presentation.record.model
 
-import com.moa.domain.model.RecordResponse
+import com.moa.domain.model.response.RecordResponse
 import org.moa.moa.presentation.home.home.model.Emotion
 
 data class Record(

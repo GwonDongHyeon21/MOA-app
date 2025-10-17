@@ -1,6 +1,6 @@
 package org.moa.moa.presentation.home.detail
 
-import com.moa.domain.model.RecordResponse
+import com.moa.domain.model.response.RecordResponse
 
 data class HomeDetailUiState(
     val screenState: HomeDetailScreenState,
