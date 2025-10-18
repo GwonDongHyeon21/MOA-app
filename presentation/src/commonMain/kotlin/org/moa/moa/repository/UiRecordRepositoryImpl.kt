@@ -26,13 +26,13 @@ class UiRecordRepositoryImpl(
         .distinctUntilChanged()
 
     suspend fun getRecords(date: String) {
-        recordUseCase.getRecords.invoke(date)
-            .onSuccess { records ->
-                _records.value = records.map { Emotion.stringToEmotion(it) }
-            }
-            .onFailure {
+        runCatching {
+            recordUseCase.getRecords.invoke(date)
+        }.onSuccess { records ->
+            _records.value = records.map { Emotion.stringToEmotion(it) }
+        }.onFailure {
 
-            }
+        }
     }
 
     suspend fun addRecord(record: RecordRequest) = recordUseCase.addRecord(record)
