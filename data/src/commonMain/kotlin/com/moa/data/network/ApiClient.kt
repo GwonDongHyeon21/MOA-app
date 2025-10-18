@@ -22,6 +22,8 @@ object ApiClient {
             level = LogLevel.ALL        // 요청/응답 전체 로그
         }
 
+        expectSuccess = true
+
         defaultRequest {
             url.takeFrom(BASE_URL)
         }

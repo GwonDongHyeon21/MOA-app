@@ -52,6 +52,7 @@ object Strings {
     const val edit_record = "조각 수정하기"
     const val delete_record = "조각 삭제하기"
     const val delete_record_guideline = "조각을 정말 삭제하시겠습니까?\n한번 삭제한 조각은 다시 복원할 수 없습니다."
+    const val complete = "완료"
 
     const val monday = "월"
     const val tuesday = "화"

@@ -31,10 +31,18 @@ class UiRecordRepositoryImpl(
         }.onSuccess { records ->
             _records.value = records.map { Emotion.stringToEmotion(it) }
         }.onFailure {
-
+            throw it
         }
     }
 
-    suspend fun addRecord(record: RecordRequest) = recordUseCase.addRecord(record)
+    suspend fun addRecord(record: RecordRequest) {
+        runCatching {
+            recordUseCase.addRecord(record)
+        }.onSuccess {
+            getRecords(today.toString())
+        }.onFailure {
+            throw it
+        }
+    }
 //    fun decideEmotion(emotion:String) = recordUseCase.decideEmotion(emotion)
 }
