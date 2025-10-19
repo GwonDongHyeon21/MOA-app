@@ -7,5 +7,5 @@ data class DayInfo(
     val date: LocalDate,
     val isToday: Boolean,
     val isCurrentMonth: Boolean,
-    val record: Record?,
+    val records: List<Record>?,
 )

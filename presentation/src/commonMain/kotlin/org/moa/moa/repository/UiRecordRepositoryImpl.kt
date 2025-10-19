@@ -27,7 +27,7 @@ class UiRecordRepositoryImpl(
 
     suspend fun getRecords(date: String) {
         runCatching {
-            recordUseCase.getRecords.invoke(date)
+            recordUseCase.getRecords(date)
         }.onSuccess { records ->
             _records.value = records.map { Emotion.stringToEmotion(it) }
         }.onFailure {

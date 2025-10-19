@@ -10,7 +10,6 @@ data class TodoUiState(
     val dateTodos: List<TodoItemResponse>,
     val monthDates: List<LocalDate>,
     val yearMonths: List<LocalDate>,
-    val monthDropDownExpanded: Boolean,
     val screenState: TodoScreenState,
 )
 

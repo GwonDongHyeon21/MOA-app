@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moa.domain.model.request.AddTodoRequest
 import com.moa.domain.model.request.DeleteTodoRequest
+import com.moa.domain.model.request.UpdateTodoRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -30,7 +31,6 @@ class TodoViewModel(
             dateTodos = emptyList(),
             monthDates = getMonthDates(today),
             yearMonths = generateYearMonthsList(),
-            monthDropDownExpanded = false,
             screenState = TodoScreenState.TODO
         )
     )
@@ -55,11 +55,6 @@ class TodoViewModel(
         _uiState.value = _uiState.value.copy(content = content)
     }
 
-    fun expandDropDown() {
-        val expanded = _uiState.value.monthDropDownExpanded
-        _uiState.value = _uiState.value.copy(monthDropDownExpanded = !expanded)
-    }
-
     fun changeDate(date: LocalDate) {
         if (_uiState.value.date != date) {
             _uiState.value = _uiState.value.copy(
@@ -82,19 +77,29 @@ class TodoViewModel(
     }
 
     fun addTodo() {
-        viewModelScope.launch {
-            runCatching {
-                uiTodoRepositoryImpl.addTodo(
-                    AddTodoRequest(
-                        content = _uiState.value.content,
-                        date = today.toString()
+        if (_uiState.value.content.isNotBlank()) {
+            viewModelScope.launch {
+                runCatching {
+                    uiTodoRepositoryImpl.addTodo(
+                        AddTodoRequest(
+                            content = _uiState.value.content,
+                            date = _uiState.value.date.toString()
+                        )
                     )
-                )
-            }.onSuccess {
-                _uiState.value = _uiState.value.copy(content = "")
-            }.onFailure {
-                _uiState.value = _uiState.value.copy(screenState = TodoScreenState.ERROR)
+                }.onSuccess {
+                    _uiState.value = _uiState.value.copy(content = "")
+                }.onFailure {
+                    _uiState.value = _uiState.value.copy(screenState = TodoScreenState.ERROR)
+                }
             }
+        }
+    }
+
+    fun changeDone(id: String, done: Boolean) {
+        viewModelScope.launch {
+            uiTodoRepositoryImpl.updateTodo(
+                UpdateTodoRequest(id = id, done = !done)
+            )
         }
     }
 
@@ -104,10 +109,8 @@ class TodoViewModel(
                 uiTodoRepositoryImpl.deleteTodo(
                     DeleteTodoRequest(id = id)
                 )
-            }.onSuccess {
-
             }.onFailure {
-
+                _uiState.value = _uiState.value.copy(screenState = TodoScreenState.ERROR)
             }
         }
     }

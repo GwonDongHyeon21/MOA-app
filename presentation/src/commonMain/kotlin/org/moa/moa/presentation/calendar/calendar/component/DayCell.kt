@@ -19,7 +19,7 @@ import org.moa.moa.util.emotionRes
 fun DayCell(
     modifier: Modifier,
     dayInfo: DayInfo,
-    onClickDay: (Record?) -> Unit,
+    onDateClicked: (Record?) -> Unit,
 ) {
     val dateColor = when {
         dayInfo.isToday -> MaterialTheme.colorScheme.primary
@@ -31,7 +31,7 @@ fun DayCell(
         modifier = modifier.clickable(
             indication = null,
             interactionSource = null,
-            onClick = { onClickDay(dayInfo.record) }
+            onClick = { onDateClicked(dayInfo.records?.firstOrNull()) }
         ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -41,7 +41,7 @@ fun DayCell(
             fontSize = 17.sp,
         )
 
-        dayInfo.record?.emotion?.let { emotion ->
+        dayInfo.records?.firstOrNull()?.emotion?.let { emotion ->
             Image(
                 painter = painterResource(emotionRes(emotion)),
                 contentDescription = null,
