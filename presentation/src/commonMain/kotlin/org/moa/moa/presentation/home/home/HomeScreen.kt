@@ -19,7 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.moa.domain.model.RecordResponse
+import com.moa.domain.model.response.RecordResponse
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.home_record_guide
 import moa.presentation.generated.resources.home_record_holder

@@ -20,9 +20,11 @@ import moa.presentation.generated.resources.home_record5
 import org.moa.moa.presentation.UiState
 import org.moa.moa.presentation.home.home.model.ImageInfo
 import org.moa.moa.repository.UiRecordRepositoryImpl
+import org.moa.moa.repository.UiTodoRepositoryImpl
 
 class HomeViewModel(
-    private val repo: UiRecordRepositoryImpl,
+    private val recordRepositoryImpl: UiRecordRepositoryImpl,
+    private val todoRepositoryImpl: UiTodoRepositoryImpl,
 ) : ViewModel() {
 
     private val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
@@ -47,13 +49,19 @@ class HomeViewModel(
 
     init {
         viewModelScope.launch {
-            repo.getRecords(today.toString())
-            repo.todayRecord.collect { record ->
-                _uiState.value = _uiState.value.copy(
-                    screenState = UiState.SUCCESS,
-                    records = record?.records.orEmpty(),
-                    todayRecord = record
-                )
+            runCatching {
+                recordRepositoryImpl.getRecords(today.toString())
+                todoRepositoryImpl.getTodos()
+            }.onSuccess {
+                recordRepositoryImpl.todayRecord.collect { record ->
+                    _uiState.value = _uiState.value.copy(
+                        screenState = UiState.SUCCESS,
+                        records = record?.records.orEmpty(),
+                        todayRecord = record
+                    )
+                }
+            }.onFailure {
+                _uiState.value = _uiState.value.copy(screenState = UiState.ERROR)
             }
         }
     }

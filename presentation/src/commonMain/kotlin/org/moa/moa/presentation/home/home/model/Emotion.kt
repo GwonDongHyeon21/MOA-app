@@ -1,6 +1,6 @@
 package org.moa.moa.presentation.home.home.model
 
-import com.moa.domain.model.RecordByDateResponse
+import com.moa.domain.model.response.RecordByDateResponse
 import org.moa.moa.presentation.record.model.Record
 
 enum class Emotion(val label: String) {

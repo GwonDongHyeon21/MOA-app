@@ -1,4 +1,4 @@
-package com.moa.domain.model
+package com.moa.domain.model.response
 
 data class RecordByDateResponse(
     val date: String,

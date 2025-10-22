@@ -45,14 +45,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import kotlinx.coroutines.launch
-import kotlinx.datetime.DatePeriod
-import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.Month
 import kotlinx.datetime.atTime
-import kotlinx.datetime.minus
-import kotlinx.datetime.plus
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.left_arrow_icon
 import moa.presentation.generated.resources.right_arrow_icon
@@ -62,7 +58,6 @@ import org.koin.compose.koinInject
 import org.moa.moa.presentation.UiState
 import org.moa.moa.presentation.calendar.calendar.CalendarDimens.BOTTOM_SHEET_CONTENT_HEIGHT
 import org.moa.moa.presentation.calendar.calendar.CalendarDimens.CALENDAR_FRACTION
-import org.moa.moa.presentation.calendar.calendar.CalendarDimens.TOTAL_DAY_CELLS
 import org.moa.moa.presentation.calendar.calendar.CalendarDimens.horizontalPadding
 import org.moa.moa.presentation.calendar.calendar.CalendarDimens.roundCornerShape
 import org.moa.moa.presentation.calendar.calendar.CalendarDimens.sheetShadowElevation
@@ -86,11 +81,11 @@ import org.moa.moa.presentation.ui.theme.GRAY3
 import org.moa.moa.presentation.ui.theme.GRAY4
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
+import org.moa.moa.util.buildMonthCells
 import org.moa.moa.util.emotionRes
 import org.moa.moa.util.formatDateTime
 
 private object CalendarDimens {
-    const val TOTAL_DAY_CELLS = 42
     const val CALENDAR_FRACTION = 0.8f
     val verticalPadding = 40.dp
     val horizontalPadding = 20.dp
@@ -279,13 +274,14 @@ fun CalendarDaysSection(
             year = uiState.year,
             month = uiState.month,
             startOn = uiState.startOn,
-            records = uiState.records,
-            mapper = { date, record ->
+            items = uiState.records,
+            selector = { record -> record.date },
+            mapper = { date, records ->
                 DayInfo(
                     date = date,
                     isToday = (date == uiState.today),
                     isCurrentMonth = (date.month == uiState.month),
-                    record = record
+                    records = records
                 )
             }
         )
@@ -295,7 +291,7 @@ fun CalendarDaysSection(
                 DayCell(
                     modifier = Modifier.weight(1f),
                     dayInfo = dayInfo,
-                    onClickDay = { onSelectedRecord(it) }
+                    onDateClicked = { onSelectedRecord(it) }
                 )
             }
         }
@@ -399,28 +395,4 @@ fun BottomSheetContentSection(
             BottomSheetContentPlaceholder(modifier = Modifier)
         }
     }
-}
-
-private fun buildMonthCells(
-    year: Int,
-    month: Month,
-    startOn: DayOfWeek,
-    records: List<Record>,
-    mapper: (LocalDate, Record?) -> DayInfo,
-): List<DayInfo> {
-    val firstDateOfMonth = LocalDate(year, month, 1)
-    val shift = dayDistance(startOn, firstDateOfMonth.dayOfWeek)
-    val startDate = firstDateOfMonth.minus(DatePeriod(days = shift))
-
-    return (0 until TOTAL_DAY_CELLS).map { dayDistance ->
-        val date = startDate.plus(DatePeriod(days = dayDistance))
-        val record = records.find { it.date == date.toString() }
-        mapper(date, record)
-    }
-}
-
-private fun dayDistance(from: DayOfWeek, to: DayOfWeek): Int {
-    val fromDate = from.ordinal
-    val toDate = to.ordinal
-    return (toDate - fromDate + 7) % 7
 }

@@ -1,13 +1,12 @@
 package com.moa.domain.usecase.record
 
-import com.moa.domain.model.RecordRequest
-import com.moa.domain.model.ResponseMessage
+import com.moa.domain.model.request.RecordRequest
 import com.moa.domain.repository.RecordRepository
 
-class AddRecordUseCase(
+class AddRecord(
     private val recordRepository: RecordRepository
 ) {
-    suspend operator fun invoke(record: RecordRequest): ResponseMessage {
+    suspend operator fun invoke(record: RecordRequest): String {
         return recordRepository.addRecord(record)
     }
 }

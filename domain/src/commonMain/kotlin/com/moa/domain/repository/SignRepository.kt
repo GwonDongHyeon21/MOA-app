@@ -1,8 +1,9 @@
 package com.moa.domain.repository
 
-import com.moa.domain.model.ResponseMessage
-import com.moa.domain.model.User
+import com.moa.domain.model.request.UserRequest
+import com.moa.domain.model.response.UserResponse
 
 interface SignRepository {
-    suspend fun signUp(user: User): ResponseMessage
+    suspend fun getUserInfo(token: String): UserResponse
+    suspend fun googleSignUp(user: UserRequest): String
 }

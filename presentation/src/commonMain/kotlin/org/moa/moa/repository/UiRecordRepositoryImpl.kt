@@ -1,6 +1,6 @@
 package org.moa.moa.repository
 
-import com.moa.domain.model.RecordRequest
+import com.moa.domain.model.request.RecordRequest
 import com.moa.domain.usecase.record.RecordUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,15 +26,23 @@ class UiRecordRepositoryImpl(
         .distinctUntilChanged()
 
     suspend fun getRecords(date: String) {
-        recordUseCase.getRecords.invoke(date)
-            .onSuccess { records ->
-                _records.value = records.map { Emotion.stringToEmotion(it) }
-            }
-            .onFailure {
-
-            }
+        runCatching {
+            recordUseCase.getRecords(date)
+        }.onSuccess { records ->
+            _records.value = records.map { Emotion.stringToEmotion(it) }
+        }.onFailure {
+            throw it
+        }
     }
 
-    suspend fun addRecord(record: RecordRequest) = recordUseCase.addRecord(record)
+    suspend fun addRecord(record: RecordRequest) {
+        runCatching {
+            recordUseCase.addRecord(record)
+        }.onSuccess {
+            getRecords(today.toString())
+        }.onFailure {
+            throw it
+        }
+    }
 //    fun decideEmotion(emotion:String) = recordUseCase.decideEmotion(emotion)
 }

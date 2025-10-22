@@ -44,6 +44,11 @@ kotlin {
 
             // Serialization
             implementation(libs.kotlinx.serialization.json)
+
+            // Russhwolf
+            implementation(libs.multiplatform.settings)
+            implementation(libs.multiplatform.settings.no.arg)
+            implementation(libs.multiplatform.settings.coroutines)
         }
         androidMain.dependencies {
             implementation(compose.ui)
@@ -54,6 +59,9 @@ kotlin {
 
             // Coil
             implementation(libs.coil.network.okhttp)
+
+            // GoogleService
+            implementation(libs.play.services.auth)
         }
         iosMain.dependencies {
             // Coil

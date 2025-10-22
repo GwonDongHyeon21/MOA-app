@@ -8,18 +8,20 @@ import org.moa.moa.presentation.home.home.HomeViewModel
 import org.moa.moa.presentation.home.record.HomeRecordViewModel
 import org.moa.moa.presentation.record.recorder.RecorderViewModel
 import org.moa.moa.presentation.record.textimage.RecordViewModel
-import org.moa.moa.presentation.sign.SignUpViewModel
+import org.moa.moa.presentation.todo.TodoViewModel
 import org.moa.moa.repository.UiRecordRepositoryImpl
+import org.moa.moa.repository.UiTodoRepositoryImpl
 
 val presentationModule = module {
     single { UiRecordRepositoryImpl(get()) }
+    single { UiTodoRepositoryImpl(get()) }
 
-    factory { SignUpViewModel(get()) }
-    factory { HomeViewModel(get()) }
+    factory { HomeViewModel(get(), get()) }
     factory { HomeRecordViewModel(get()) }
     factory { HomeDetailViewModel(get()) }
     factory { RecordViewModel(get()) }
     factory { RecorderViewModel(get()) }
     factory { CalendarViewModel(get()) }
     factory { CalendarDetailViewModel(get()) }
+    factory { TodoViewModel(get()) }
 }

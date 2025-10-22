@@ -15,6 +15,7 @@ buildConfig {
     }
 
     packageName("com.moa.data")
+
     buildConfigField("String", "BASE_URL", localProperties.getProperty("BASE_URL"))
 }
 
@@ -39,7 +40,15 @@ kotlin {
             // Ktor
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.logging)
+
+            // Serialization
             implementation(libs.ktor.serialization.kotlinx.json)
+
+            // Russhwolf
+            implementation(libs.multiplatform.settings)
+            implementation(libs.multiplatform.settings.no.arg)
+            implementation(libs.multiplatform.settings.coroutines)
         }
         androidMain.dependencies {
             implementation(libs.koin.android)
