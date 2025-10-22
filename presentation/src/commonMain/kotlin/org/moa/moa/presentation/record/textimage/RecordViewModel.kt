@@ -2,13 +2,10 @@ package org.moa.moa.presentation.record.textimage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.moa.domain.model.request.RecordRequest
+import com.moa.domain.model.request.AddTextImageRecordRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import org.moa.moa.presentation.UiState
 import org.moa.moa.repository.UiRecordRepositoryImpl
 
@@ -16,11 +13,8 @@ class RecordViewModel(
     private val repo: UiRecordRepositoryImpl,
 ) : ViewModel() {
 
-    private val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-
     private val _uiState = MutableStateFlow(
         RecordUiState(
-            date = today.toString(),
             content = "",
             imageBytes = null,
             screenState = UiState.DEFAULT
@@ -36,15 +30,14 @@ class RecordViewModel(
         _uiState.value = _uiState.value.copy(imageBytes = imageBytes)
     }
 
-    fun addRecord() {
+    fun addTextImageRecord() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(screenState = UiState.LOADING)
             runCatching {
-                repo.addRecord(
-                    RecordRequest(
-                        date = _uiState.value.date,
+                repo.addTextImageRecord(
+                    AddTextImageRecordRequest(
                         content = _uiState.value.content,
-                        imageBytes = _uiState.value.imageBytes,
+                        imageBytes = _uiState.value.imageBytes
                     )
                 )
             }.onSuccess {

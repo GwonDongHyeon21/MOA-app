@@ -19,17 +19,17 @@ class CalendarDetailViewModel(
         CalendarDetailUiState(
             screenState = UiState.LOADING,
             date = "",
-            record = null,
-            records = emptyList()
+            diary = null,
+            diaries = emptyList()
         )
     )
     val uiState = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            repo.records.collect { records ->
+            repo.diaries.collect { diaries ->
                 _uiState.value = _uiState.value.copy(
-                    records = records,
+                    diaries = diaries,
                     screenState = UiState.SUCCESS
                 )
             }
@@ -39,7 +39,7 @@ class CalendarDetailViewModel(
     fun findRecord(date: String) {
         _uiState.value = _uiState.value.copy(
             date = date,
-            record = _uiState.value.records.find { it.date == date }
+            diary = _uiState.value.diaries.find { it.date == date }
         )
     }
 
@@ -56,7 +56,7 @@ class CalendarDetailViewModel(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(screenState = UiState.LOADING)
             runCatching {
-                repo.getRecords(date)
+                repo.getDiaries()
             }.onSuccess {
                 _uiState.value = _uiState.value.copy(screenState = UiState.SUCCESS)
             }.onFailure {

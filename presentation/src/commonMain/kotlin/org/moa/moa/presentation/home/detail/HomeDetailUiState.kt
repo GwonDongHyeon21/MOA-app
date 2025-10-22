@@ -1,11 +1,11 @@
 package org.moa.moa.presentation.home.detail
 
-import com.moa.domain.model.response.RecordResponse
+import com.moa.domain.model.response.DiaryRecord
 
 data class HomeDetailUiState(
     val screenState: HomeDetailScreenState,
-    val records: List<RecordResponse>?,
-    val record: RecordResponse?,
+    val records: List<DiaryRecord>?,
+    val record: DiaryRecord?,
 )
 
 enum class HomeDetailScreenState {

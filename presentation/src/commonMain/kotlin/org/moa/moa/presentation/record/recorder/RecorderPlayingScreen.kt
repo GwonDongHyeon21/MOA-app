@@ -38,6 +38,9 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.pause
 import moa.presentation.generated.resources.record_start
@@ -84,6 +87,8 @@ fun RecorderPlayingScreen(
     onSaveRecord: () -> Unit,
     onRecordState: () -> Unit,
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     val playerController = rememberPlayerController()
     val playerState = playerController.state.value
     val currentPlayTime = playerState.currentPlayMs
@@ -98,8 +103,19 @@ fun RecorderPlayingScreen(
         }
     }
 
-    DisposableEffect(Unit) {
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_PAUSE -> playerController.pause()
+                Lifecycle.Event.ON_STOP, Lifecycle.Event.ON_DESTROY -> playerController.close()
+                else -> Unit
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
         onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
             playerController.close()
         }
     }
@@ -218,7 +234,7 @@ fun RecorderPlayingScreen(
                     Spacer(modifier = Modifier.height(30.dp))
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         PlayButtonSection(
-                            modifier = Modifier,
+                            modifier = Modifier.size(playButton),
                             playerState = playerState,
                             onLoadPlaying = { playerController.load(recordPath, autoPlay = true) },
                             onPausePlaying = { playerController.pause() },
@@ -227,7 +243,9 @@ fun RecorderPlayingScreen(
 
                         Spacer(modifier = Modifier.height(30.dp))
                         SaveButton(
-                            modifier = Modifier,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = APP_HORIZONTAL_PADDING2 + 20.dp),
                             onBack = { onBack() },
                             onSaveRecord = { onSaveRecord() },
                             onRecordState = { onRecordState() },
@@ -261,7 +279,7 @@ fun PlayButtonSection(
                 onPlay()
             }
         },
-        modifier = Modifier.size(playButton),
+        modifier = modifier,
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(containerColor = GRAY1)
     ) {
@@ -280,9 +298,7 @@ fun SaveButton(
     onRecordState: () -> Unit,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = APP_HORIZONTAL_PADDING2 + 20.dp),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {

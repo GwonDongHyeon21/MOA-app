@@ -11,7 +11,7 @@ import org.moa.moa.presentation.home.record.HomeRecordScreen
 fun NavGraphBuilder.homeNavigationGraph(navController: NavController) {
     composable(HomeNavigationItem.Home.route) {
         HomeScreen(
-            onNavigateToHomeRecord = { navController.navigate(HomeNavigationItem.HomeRecord.route) },
+            onNavigateToHomeDiary = { navController.navigate(HomeNavigationItem.HomeRecord.route) },
             onNavigateToHomeDetail = { navController.navigate(HomeDetail(it)) }
         )
     }

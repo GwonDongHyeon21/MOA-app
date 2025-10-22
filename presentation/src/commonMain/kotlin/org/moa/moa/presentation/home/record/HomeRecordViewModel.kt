@@ -22,7 +22,7 @@ class HomeRecordViewModel(
         HomeRecordUiState(
             screenState = HomeRecordScreenState.SUCCESS,
             date = today.toString(),
-            record = null,
+            diary = null,
             emotion = null,
             isLoading = true
         )
@@ -32,9 +32,9 @@ class HomeRecordViewModel(
     init {
         viewModelScope.launch {
             delay(4_000)
-            repo.todayRecord.collect { record ->
+            repo.todayDiary.collect { diary ->
                 _uiState.value = _uiState.value.copy(
-                    record = record,
+                    diary = diary,
                     isLoading = false
                 )
             }

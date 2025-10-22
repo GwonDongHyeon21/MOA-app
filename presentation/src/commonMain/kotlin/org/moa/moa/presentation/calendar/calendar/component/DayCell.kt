@@ -9,9 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
+import com.moa.domain.model.response.Diary
 import org.jetbrains.compose.resources.painterResource
 import org.moa.moa.presentation.calendar.calendar.model.DayInfo
-import org.moa.moa.presentation.record.model.Record
+import org.moa.moa.presentation.home.home.model.Emotion
 import org.moa.moa.presentation.ui.theme.GRAY8
 import org.moa.moa.util.emotionRes
 
@@ -19,7 +20,7 @@ import org.moa.moa.util.emotionRes
 fun DayCell(
     modifier: Modifier,
     dayInfo: DayInfo,
-    onDateClicked: (Record?) -> Unit,
+    onDateClicked: (Diary?) -> Unit,
 ) {
     val dateColor = when {
         dayInfo.isToday -> MaterialTheme.colorScheme.primary
@@ -31,7 +32,7 @@ fun DayCell(
         modifier = modifier.clickable(
             indication = null,
             interactionSource = null,
-            onClick = { onDateClicked(dayInfo.records?.firstOrNull()) }
+            onClick = { onDateClicked(dayInfo.diaries?.firstOrNull()) }
         ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -41,7 +42,7 @@ fun DayCell(
             fontSize = 17.sp,
         )
 
-        dayInfo.records?.firstOrNull()?.emotion?.let { emotion ->
+        Emotion.stringToEmotion(dayInfo.diaries?.firstOrNull()?.emotion)?.let { emotion ->
             Image(
                 painter = painterResource(emotionRes(emotion)),
                 contentDescription = null,

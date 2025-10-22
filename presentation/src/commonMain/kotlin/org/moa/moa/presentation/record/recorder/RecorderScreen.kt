@@ -102,7 +102,7 @@ fun RecorderScreen(
         is RecorderState.PLAYING -> RecorderPlayingScreen(
             recordPath = state.recordFile,
             onBack = { onBack() },
-            onSaveRecord = { viewModel.saveRecord() },
+            onSaveRecord = { viewModel.addAudioRecord() },
             onRecordState = { viewModel.resetRecord() }
         )
 
@@ -120,6 +120,8 @@ private fun RecorderScreen(
     onPauseRecord: () -> Unit,
     onStopRecord: (String) -> Unit,
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     val micPermission = rememberPermissionState()
     val recorderController = rememberRecorderController()
     val recordState = recorderController.state.value
@@ -154,16 +156,15 @@ private fun RecorderScreen(
 
     AppSetting(isAppSetting) { isAppSetting = false }
 
-    val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
-                Lifecycle.Event.ON_PAUSE, Lifecycle.Event.ON_STOP -> {
+                Lifecycle.Event.ON_PAUSE -> {
                     recorderController.pause()
                     onPauseRecord()
                 }
 
-                Lifecycle.Event.ON_DESTROY -> recorderController.release()
+                Lifecycle.Event.ON_STOP, Lifecycle.Event.ON_DESTROY -> recorderController.release()
                 else -> Unit
             }
         }

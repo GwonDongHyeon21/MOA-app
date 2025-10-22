@@ -1,6 +1,8 @@
 package com.moa.domain.usecase.record
 
 class RecordUseCase(
-    val getRecords: GetRecord,
-    val addRecord: AddRecord,
+    val getDiaries: GetDiaries,
+    val getRecords: GetRecords,
+    val addTextImageRecord: AddTextImageRecord,
+    val addAudioRecord: AddAudioRecord,
 )

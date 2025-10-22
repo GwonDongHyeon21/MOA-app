@@ -28,17 +28,17 @@ class CalendarViewModel(
             year = today.year,
             month = today.month,
             startOn = DayOfWeek.SUNDAY,
-            records = emptyList()
+            diaries = emptyList()
         )
     )
     val uiState = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            repo.records.collect { records ->
+            repo.diaries.collect { diaries ->
                 _uiState.value = _uiState.value.copy(
                     screenState = UiState.SUCCESS,
-                    records = records
+                    diaries = diaries
                 )
             }
         }
@@ -48,7 +48,7 @@ class CalendarViewModel(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(screenState = UiState.LOADING)
             runCatching {
-                repo.getRecords(date)
+                repo.getDiaries()
             }.onSuccess {
                 _uiState.value = _uiState.value.copy(screenState = UiState.SUCCESS)
             }.onFailure {
