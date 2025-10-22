@@ -26,12 +26,17 @@ import moa.presentation.generated.resources.record_background_bottom
 import moa.presentation.generated.resources.record_background_left
 import moa.presentation.generated.resources.record_background_right
 import org.jetbrains.compose.resources.painterResource
-import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.CONTENT_PLACEHOLDER_HEIGHT_FRACTION
-import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.CalendarDetailRoundedCorner
+import org.moa.moa.presentation.calendar.detail.component.CalendarDetailContentPlaceholderDimes.CONTENT_PLACEHOLDER_HEIGHT_FRACTION
+import org.moa.moa.presentation.calendar.detail.component.CalendarDetailContentPlaceholderDimes.calendarDetailRoundedCorner
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.GRAY1
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
+
+private object CalendarDetailContentPlaceholderDimes {
+    const val CONTENT_PLACEHOLDER_HEIGHT_FRACTION = 0.5f
+    val calendarDetailRoundedCorner = RoundedCornerShape(25.dp)
+}
 
 @Composable
 fun CalendarDetailContentPlaceholder(modifier: Modifier) {
@@ -40,7 +45,7 @@ fun CalendarDetailContentPlaceholder(modifier: Modifier) {
             .fillMaxHeight(CONTENT_PLACEHOLDER_HEIGHT_FRACTION)
             .fillMaxWidth()
             .padding(horizontal = APP_HORIZONTAL_PADDING1)
-            .clip(CalendarDetailRoundedCorner)
+            .clip(calendarDetailRoundedCorner)
             .background(WHITE)
             .padding(top = 40.dp),
         horizontalAlignment = Alignment.CenterHorizontally

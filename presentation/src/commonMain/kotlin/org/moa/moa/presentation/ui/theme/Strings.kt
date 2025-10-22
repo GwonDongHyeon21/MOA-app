@@ -48,6 +48,10 @@ object Strings {
     const val date_year_month = "yyyy년 M월"
     const val date_year_month_date = "yyyy.MM.dd (E)"
     const val todayRecord = "오늘의 일기"
+    const val make_record = "조각 모으기"
+    const val edit_record = "조각 수정하기"
+    const val delete_record = "조각 삭제하기"
+    const val delete_record_guideline = "조각을 정말 삭제하시겠습니까?\n한번 삭제한 조각은 다시 복원할 수 없습니다."
 
     const val monday = "월"
     const val tuesday = "화"

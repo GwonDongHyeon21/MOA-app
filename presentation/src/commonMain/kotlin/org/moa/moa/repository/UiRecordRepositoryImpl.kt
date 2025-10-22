@@ -4,14 +4,26 @@ import com.moa.domain.model.RecordRequest
 import com.moa.domain.usecase.record.RecordUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import org.moa.moa.presentation.home.model.Emotion
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import org.moa.moa.presentation.home.home.model.Emotion
 import org.moa.moa.presentation.record.model.Record
 
 class UiRecordRepositoryImpl(
     private val recordUseCase: RecordUseCase,
 ) {
+
+    private val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+
     private val _records = MutableStateFlow(emptyList<Record>())
     val records = _records.asStateFlow()
+
+    val todayRecord = _records
+        .map { records -> records.find { it.date == today.toString() } }
+        .distinctUntilChanged()
 
     suspend fun getRecords(date: String) {
         recordUseCase.getRecords.invoke(date)
@@ -24,4 +36,5 @@ class UiRecordRepositoryImpl(
     }
 
     suspend fun addRecord(record: RecordRequest) = recordUseCase.addRecord(record)
+//    fun decideEmotion(emotion:String) = recordUseCase.decideEmotion(emotion)
 }

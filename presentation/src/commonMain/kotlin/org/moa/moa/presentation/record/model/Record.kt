@@ -1,10 +1,12 @@
 package org.moa.moa.presentation.record.model
 
-import org.moa.moa.presentation.home.model.Emotion
+import com.moa.domain.model.RecordResponse
+import org.moa.moa.presentation.home.home.model.Emotion
 
 data class Record(
     val date: String,
     val content: String,
-    val imageUrl: String?,
+    val imageUrl: List<String>?,
+    val records: List<RecordResponse>?,
     val emotion: Emotion?,
 )

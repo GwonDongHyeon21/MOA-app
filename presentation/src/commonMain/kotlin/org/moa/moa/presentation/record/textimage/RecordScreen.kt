@@ -39,6 +39,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import kotlinx.coroutines.launch
 import moa.presentation.generated.resources.Res
@@ -53,18 +54,18 @@ import org.moa.moa.presentation.component.MOAButton
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOAFloatingActionButton
 import org.moa.moa.presentation.component.MOALoadingScreen
-import org.moa.moa.presentation.record.RecordDimens.CAMERA_IMAGE_FRACTION
-import org.moa.moa.presentation.record.RecordDimens.RECORD_MAX_LENGTH
-import org.moa.moa.presentation.record.RecordDimens.RECORD_MAX_LINES
-import org.moa.moa.presentation.record.RecordDimens.cameraButton
-import org.moa.moa.presentation.record.RecordDimens.cameraButtonText
-import org.moa.moa.presentation.record.RecordDimens.imagePadding
-import org.moa.moa.presentation.record.RecordDimens.recordGuideText
-import org.moa.moa.presentation.record.RecordDimens.roundedCornerShape
-import org.moa.moa.presentation.record.RecordDimens.shadow
-import org.moa.moa.presentation.record.RecordDimens.topPadding
 import org.moa.moa.presentation.record.component.ImageDialog
 import org.moa.moa.presentation.record.component.RecordSuccessScreen
+import org.moa.moa.presentation.record.textimage.RecordDimens.CAMERA_IMAGE_FRACTION
+import org.moa.moa.presentation.record.textimage.RecordDimens.RECORD_MAX_LENGTH
+import org.moa.moa.presentation.record.textimage.RecordDimens.RECORD_MAX_LINES
+import org.moa.moa.presentation.record.textimage.RecordDimens.cameraButton
+import org.moa.moa.presentation.record.textimage.RecordDimens.cameraButtonText
+import org.moa.moa.presentation.record.textimage.RecordDimens.imagePadding
+import org.moa.moa.presentation.record.textimage.RecordDimens.recordGuideText
+import org.moa.moa.presentation.record.textimage.RecordDimens.roundedCornerShape
+import org.moa.moa.presentation.record.textimage.RecordDimens.shadow
+import org.moa.moa.presentation.record.textimage.RecordDimens.topPadding
 import org.moa.moa.presentation.record.textimage.platform.rememberCameraController
 import org.moa.moa.presentation.record.textimage.platform.rememberImagePicker
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
@@ -75,6 +76,19 @@ import org.moa.moa.presentation.ui.theme.GRAY6
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
 import org.moa.moa.presentation.ui.theme.transparent
+
+private object RecordDimens {
+    const val RECORD_MAX_LENGTH = 500
+    const val RECORD_MAX_LINES = 20
+    const val CAMERA_IMAGE_FRACTION = 0.3f
+    val recordGuideText = 22.sp
+    val topPadding = 30.dp
+    val cameraButton = 46.dp
+    val cameraButtonText = 17.sp
+    val imagePadding = 20.dp
+    val shadow = 4.dp
+    val roundedCornerShape = RoundedCornerShape(15.dp)
+}
 
 @Composable
 fun RecordScreen(

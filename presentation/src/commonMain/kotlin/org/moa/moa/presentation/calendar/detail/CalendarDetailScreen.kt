@@ -2,13 +2,11 @@ package org.moa.moa.presentation.calendar.detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,47 +27,38 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.atTime
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.left_arrow_icon
 import moa.presentation.generated.resources.right_arrow_icon
-import moa.presentation.generated.resources.top_logo
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import org.moa.moa.presentation.UiState
-import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.CONTENT_IMAGE_HEIGHT_FRACTION
 import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.ContentHorizontalPadding
 import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.HEADER_WIDTH_FRACTION
 import org.moa.moa.presentation.calendar.detail.CalendarDetailDimens.HeaderRoundedCornerShape
-import org.moa.moa.presentation.calendar.detail.component.CalendarDetailContentBackground
 import org.moa.moa.presentation.calendar.detail.component.CalendarDetailContentPlaceholder
+import org.moa.moa.presentation.component.ContentBackground
+import org.moa.moa.presentation.component.ContentImage
 import org.moa.moa.presentation.component.MOABackTopBar
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOALoadingScreen
 import org.moa.moa.presentation.record.model.Record
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
-import org.moa.moa.presentation.ui.theme.CORNER_RADIUS
 import org.moa.moa.presentation.ui.theme.GRAY1
-import org.moa.moa.presentation.ui.theme.GRAY3
-import org.moa.moa.presentation.ui.theme.GRAY4
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
 import org.moa.moa.util.emotionRes
 import org.moa.moa.util.formatDateTime
 
-object CalendarDetailDimens {
+private object CalendarDetailDimens {
     const val HEADER_WIDTH_FRACTION = 0.6f
-    const val CONTENT_IMAGE_HEIGHT_FRACTION = 0.4f
-    const val CONTENT_PLACEHOLDER_HEIGHT_FRACTION = 0.5f
 
-    val CalendarDetailRoundedCorner = RoundedCornerShape(25.dp)
     val HeaderRoundedCornerShape = RoundedCornerShape(33.dp)
     val ContentHorizontalPadding = 40.dp
 }
@@ -119,7 +108,7 @@ private fun CalendarDetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(APP_HORIZONTAL_PADDING1),
+                .padding(vertical = 15.dp, horizontal = APP_HORIZONTAL_PADDING1),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CalendarDetailHeaderSection(
@@ -203,7 +192,7 @@ fun CalendarDetailContentSection(
             .fillMaxSize()
             .padding(bottom = BOTTOM_PADDING_CENTER + 20.dp)
     ) {
-        CalendarDetailContentBackground(modifier = modifier)
+        ContentBackground(modifier = modifier.fillMaxSize())
 
         Column(modifier = Modifier.padding(horizontal = ContentHorizontalPadding)) {
             Row(
@@ -213,19 +202,9 @@ fun CalendarDetailContentSection(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Box {
-                    AsyncImage(
-                        model = record.imageUrl,
-                        contentDescription = "RecordImage",
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .fillMaxHeight(CONTENT_IMAGE_HEIGHT_FRACTION)
-                            .padding(vertical = 8.dp, horizontal = 25.dp)
-                            .clip(RoundedCornerShape(CORNER_RADIUS))
-                            .background(GRAY4)
-                            .border(1.dp, GRAY3, RoundedCornerShape(CORNER_RADIUS)),
-                        placeholder = painterResource(Res.drawable.top_logo),
-                        error = painterResource(Res.drawable.top_logo),
-                        contentScale = ContentScale.Fit
+                    ContentImage(
+                        modifier = Modifier.align(Alignment.Center),
+                        records = record.imageUrl
                     )
 
                     record.emotion?.let { emotion ->

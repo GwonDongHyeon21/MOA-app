@@ -35,10 +35,11 @@ class CalendarViewModel(
 
     init {
         viewModelScope.launch {
-            getRecords(today.toString())
-
             repo.records.collect { records ->
-                _uiState.value = _uiState.value.copy(records = records)
+                _uiState.value = _uiState.value.copy(
+                    screenState = UiState.SUCCESS,
+                    records = records
+                )
             }
         }
     }
