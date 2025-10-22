@@ -44,6 +44,11 @@ kotlin {
 
             // Serialization
             implementation(libs.ktor.serialization.kotlinx.json)
+
+            // Russhwolf
+            implementation(libs.multiplatform.settings)
+            implementation(libs.multiplatform.settings.no.arg)
+            implementation(libs.multiplatform.settings.coroutines)
         }
         androidMain.dependencies {
             implementation(libs.koin.android)

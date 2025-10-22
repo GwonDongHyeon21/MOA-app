@@ -74,7 +74,7 @@ class ApiService {
     }
 
     suspend fun getTodos(): TodosResponse {
-//        val token = "" //getToken()
+        val token = getToken()
         return ApiClient.httpClient.get(ApiConstants.GET_TODOS) {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, "Bearer $token")
@@ -82,7 +82,7 @@ class ApiService {
     }
 
     suspend fun addTodo(todo: AddTodoRequest): ResponseMessage {
-//        val token = "" //getToken()
+        val token = getToken()
         return ApiClient.httpClient.post(ApiConstants.ADD_TODO) {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, "Bearer $token")
@@ -91,7 +91,7 @@ class ApiService {
     }
 
     suspend fun updateTodo(todo: UpdateTodoRequest): ResponseMessage {
-//        val token = "" //getToken()
+        val token = getToken()
         return ApiClient.httpClient.patch(ApiConstants.UPDATE_TODO) {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, "Bearer $token")
@@ -100,11 +100,18 @@ class ApiService {
     }
 
     suspend fun deleteTodo(todo: DeleteTodoRequest): ResponseMessage {
-//        val token = "" //getToken()
+        val token = getToken()
         return ApiClient.httpClient.delete(ApiConstants.DELETE_TODO) {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, "Bearer $token")
             setBody(todo)
         }.body()
     }
+}
+
+@OptIn(ExperimentalSettingsApi::class)
+suspend fun getToken(): String? {
+    val settings = Settings()
+    val suspendSettings = settings.toSuspendSettings()
+    return suspendSettings.getStringOrNull("moa_accessToken_token")
 }
