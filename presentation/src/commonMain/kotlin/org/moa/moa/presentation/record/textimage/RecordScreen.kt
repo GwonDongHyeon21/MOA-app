@@ -103,7 +103,7 @@ fun RecordScreen(
             isCamera = isCamera,
             uiState = uiState,
             onImageBytesChange = { viewModel.changeImageBytes(it) },
-            onAddRecordData = { viewModel.addRecord() },
+            onAddRecordData = { viewModel.addTextImageRecord() },
             onTextChange = { viewModel.changeRecordText(it) },
             onBack = { onBack() },
         )
@@ -134,6 +134,7 @@ private fun RecordScreen(
     }
 
     Scaffold(
+        modifier = Modifier.padding(bottom = APP_HORIZONTAL_PADDING2),
         topBar = {
             MOABackTopBar(
                 modifier = Modifier,

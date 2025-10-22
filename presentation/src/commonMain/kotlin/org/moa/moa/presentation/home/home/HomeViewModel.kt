@@ -40,8 +40,7 @@ class HomeViewModel(
     private val _uiState = MutableStateFlow(
         HomeUiState(
             screenState = UiState.LOADING,
-            records = emptyList(),
-            todayRecord = null,
+            diary = null,
             recordImages = recordImages
         )
     )
@@ -50,14 +49,13 @@ class HomeViewModel(
     init {
         viewModelScope.launch {
             runCatching {
-                recordRepositoryImpl.getRecords(today.toString())
+                recordRepositoryImpl.getDiaries()
                 todoRepositoryImpl.getTodos()
             }.onSuccess {
-                recordRepositoryImpl.todayRecord.collect { record ->
+                recordRepositoryImpl.todayDiary.collect { diary ->
                     _uiState.value = _uiState.value.copy(
                         screenState = UiState.SUCCESS,
-                        records = record?.records.orEmpty(),
-                        todayRecord = record
+                        diary = diary,
                     )
                 }
             }.onFailure {

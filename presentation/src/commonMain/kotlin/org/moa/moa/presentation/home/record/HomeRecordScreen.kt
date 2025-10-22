@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.moa.domain.model.response.Diary
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.atTime
 import moa.presentation.generated.resources.Res
@@ -47,7 +48,6 @@ import org.moa.moa.presentation.home.home.model.Emotion
 import org.moa.moa.presentation.home.record.HomeRecordDimens.ContentHorizontalPadding
 import org.moa.moa.presentation.home.record.HomeRecordDimens.emotionRoundedCornerShape
 import org.moa.moa.presentation.home.record.component.HomeRecordLoading
-import org.moa.moa.presentation.record.model.Record
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
 import org.moa.moa.presentation.ui.theme.GRAY1
@@ -77,7 +77,7 @@ fun HomeRecordScreen(
     when (uiState.screenState) {
         HomeRecordScreenState.SUCCESS -> HomeRecordScreen(
             date = uiState.date,
-            record = uiState.record,
+            diary = uiState.diary,
             emotion = uiState.emotion,
             isLoading = uiState.isLoading,
             onSelectedEmotion = { emotion -> viewModel.selectEmotion(emotion) },
@@ -91,7 +91,7 @@ fun HomeRecordScreen(
 @Composable
 private fun HomeRecordScreen(
     date: String,
-    record: Record?,
+    diary: Diary?,
     emotion: Emotion?,
     onSelectedEmotion: (Emotion?) -> Unit,
     onBack: () -> Unit,
@@ -127,7 +127,7 @@ private fun HomeRecordScreen(
                     HomeRecordSectionSection(
                         modifier = Modifier,
                         isLoading = isLoading,
-                        record = record
+                        diary = diary
                     )
                 }
 
@@ -176,13 +176,13 @@ fun HomeRecordHeaderSection(
 fun HomeRecordSectionSection(
     modifier: Modifier,
     isLoading: Boolean,
-    record: Record?,
+    diary: Diary?,
 ) {
     if (isLoading) {
         HomeRecordLoading(modifier = modifier)
     } else {
         Column(modifier = modifier.padding(horizontal = ContentHorizontalPadding)) {
-            record?.apply {
+            diary?.let {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -192,10 +192,10 @@ fun HomeRecordSectionSection(
                     Box {
                         ContentImage(
                             modifier = Modifier.align(Alignment.Center),
-                            records = imageUrl
+                            images = it.images
                         )
 
-                        emotion?.let { emotion ->
+                        Emotion.stringToEmotion(it.emotion)?.let { emotion ->
                             Image(
                                 painter = painterResource(emotionRes(emotion)),
                                 contentDescription = null,
@@ -209,7 +209,7 @@ fun HomeRecordSectionSection(
                 }
 
                 Text(
-                    text = content,
+                    text = it.content,
                     modifier = Modifier.verticalScroll(rememberScrollState()),
                     fontSize = 17.sp,
                     color = GRAY1,

@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.moa.domain.model.response.Diary
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.atTime
 import moa.presentation.generated.resources.Res
@@ -47,7 +48,7 @@ import org.moa.moa.presentation.component.ContentImage
 import org.moa.moa.presentation.component.MOABackTopBar
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOALoadingScreen
-import org.moa.moa.presentation.record.model.Record
+import org.moa.moa.presentation.home.home.model.Emotion
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
 import org.moa.moa.presentation.ui.theme.GRAY1
@@ -79,7 +80,7 @@ fun CalendarDetailScreen(
         UiState.DEFAULT -> Unit
         UiState.SUCCESS -> CalendarDetailScreen(
             date = uiState.date,
-            record = uiState.record,
+            diary = uiState.diary,
             onChangeDay = { datePeriod -> viewModel.changeDay(datePeriod) },
             onBack = { onBack() }
         )
@@ -92,7 +93,7 @@ fun CalendarDetailScreen(
 @Composable
 private fun CalendarDetailScreen(
     date: String,
-    record: Record?,
+    diary: Diary?,
     onChangeDay: (Int) -> Unit,
     onBack: () -> Unit,
 ) {
@@ -117,11 +118,11 @@ private fun CalendarDetailScreen(
                 onChangeDay = { datePeriod -> onChangeDay(datePeriod) }
             )
 
-            record?.let {
+            diary?.let {
                 Spacer(modifier = Modifier.height(15.dp))
                 CalendarDetailContentSection(
                     modifier = Modifier,
-                    record = it
+                    diary = it
                 )
             } ?: run {
                 Spacer(modifier = Modifier.height(40.dp))
@@ -185,7 +186,7 @@ fun CalendarDetailHeaderSection(
 @Composable
 fun CalendarDetailContentSection(
     modifier: Modifier,
-    record: Record,
+    diary: Diary,
 ) {
     Box(
         modifier = modifier
@@ -204,10 +205,10 @@ fun CalendarDetailContentSection(
                 Box {
                     ContentImage(
                         modifier = Modifier.align(Alignment.Center),
-                        records = record.imageUrl
+                        images = diary.images
                     )
 
-                    record.emotion?.let { emotion ->
+                    Emotion.stringToEmotion(diary.emotion)?.let { emotion ->
                         Image(
                             painter = painterResource(emotionRes(emotion)),
                             contentDescription = null,
@@ -221,7 +222,7 @@ fun CalendarDetailContentSection(
             }
 
             Text(
-                text = record.content,
+                text = diary.content,
                 modifier = Modifier.verticalScroll(rememberScrollState()),
                 fontSize = 17.sp,
                 color = GRAY1,

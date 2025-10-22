@@ -44,6 +44,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.moa.domain.model.response.Diary
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -72,7 +73,7 @@ import org.moa.moa.presentation.component.MOABackTopBar
 import org.moa.moa.presentation.component.MOAButton
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOALoadingScreen
-import org.moa.moa.presentation.record.model.Record
+import org.moa.moa.presentation.home.home.model.Emotion
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING2
 import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
@@ -109,7 +110,7 @@ fun CalendarScreen(
         UiState.SUCCESS -> CalendarScreen(
             uiState = uiState,
             onMonthChange = { viewModel.changeYearMonth(it) },
-            onNavigateToDetail = { record -> onNavigateToDetail(record.date) },
+            onNavigateToDetail = { diary -> onNavigateToDetail(diary.date) },
             onBack = { onBack() }
         )
 
@@ -123,7 +124,7 @@ fun CalendarScreen(
 private fun CalendarScreen(
     uiState: CalendarUiState,
     onMonthChange: (Int) -> Unit,
-    onNavigateToDetail: (Record) -> Unit,
+    onNavigateToDetail: (Diary) -> Unit,
     onBack: () -> Unit,
 ) {
     val sheetState = rememberStandardBottomSheetState(
@@ -132,7 +133,7 @@ private fun CalendarScreen(
     )
     val scaffoldState = rememberBottomSheetScaffoldState(sheetState)
     val coroutineScope = rememberCoroutineScope()
-    var selectedRecord by remember { mutableStateOf<Record?>(null) }
+    var selectedDiary by remember { mutableStateOf<Diary?>(null) }
 
     LaunchedEffect(Unit) {
         scaffoldState.bottomSheetState.hide()
@@ -142,8 +143,8 @@ private fun CalendarScreen(
         sheetContent = {
             BottomSheetContentSection(
                 modifier = Modifier,
-                record = selectedRecord,
-                onNavigateToDetail = { record -> onNavigateToDetail(record) }
+                diary = selectedDiary,
+                onNavigateToDetail = { diary -> onNavigateToDetail(diary) }
             )
         },
         scaffoldState = scaffoldState,
@@ -188,9 +189,9 @@ private fun CalendarScreen(
                 CalendarDaysSection(
                     modifier = Modifier.weight(1f),
                     uiState = uiState,
-                    onSelectedRecord = {
+                    onSelectedDiary = {
                         coroutineScope.launch {
-                            selectedRecord = it
+                            selectedDiary = it
                             scaffoldState.bottomSheetState.expand()
                         }
                     }
@@ -267,21 +268,21 @@ fun CalendarDayLabelsSection(modifier: Modifier) {
 fun CalendarDaysSection(
     modifier: Modifier,
     uiState: CalendarUiState,
-    onSelectedRecord: (Record?) -> Unit,
+    onSelectedDiary: (Diary?) -> Unit,
 ) {
-    remember(uiState.today, uiState.year, uiState.month, uiState.startOn, uiState.records) {
+    remember(uiState.today, uiState.year, uiState.month, uiState.startOn, uiState.diaries) {
         buildMonthCells(
             year = uiState.year,
             month = uiState.month,
             startOn = uiState.startOn,
-            items = uiState.records,
+            items = uiState.diaries,
             selector = { record -> record.date },
-            mapper = { date, records ->
+            mapper = { date, diaries ->
                 DayInfo(
                     date = date,
                     isToday = (date == uiState.today),
                     isCurrentMonth = (date.month == uiState.month),
-                    records = records
+                    diaries = diaries
                 )
             }
         )
@@ -291,7 +292,7 @@ fun CalendarDaysSection(
                 DayCell(
                     modifier = Modifier.weight(1f),
                     dayInfo = dayInfo,
-                    onDateClicked = { onSelectedRecord(it) }
+                    onDateClicked = { onSelectedDiary(it) }
                 )
             }
         }
@@ -301,8 +302,8 @@ fun CalendarDaysSection(
 @Composable
 fun BottomSheetContentSection(
     modifier: Modifier,
-    record: Record?,
-    onNavigateToDetail: (Record) -> Unit,
+    diary: Diary?,
+    onNavigateToDetail: (Diary) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -311,7 +312,7 @@ fun BottomSheetContentSection(
             .padding(horizontal = APP_HORIZONTAL_PADDING1)
             .padding(bottom = BOTTOM_PADDING_CENTER + sheetVerticalPadding * 2),
     ) {
-        record?.let {
+        diary?.let {
             val contentDate = formatDateTime(
                 dateTime = LocalDate.parse(it.date).atTime(0, 0),
                 pattern = Strings.date_year_month_date
@@ -350,7 +351,7 @@ fun BottomSheetContentSection(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         AsyncImage(
-                            model = it.imageUrl?.first(),
+                            model = it.images?.first()?.url,
                             contentDescription = "record_image",
                             modifier = Modifier
                                 .fillMaxHeight()
@@ -373,7 +374,7 @@ fun BottomSheetContentSection(
                     }
                 }
 
-                it.emotion?.let { emotion ->
+                Emotion.stringToEmotion(it.emotion)?.let { emotion ->
                     Image(
                         painter = painterResource(emotionRes(emotion)),
                         contentDescription = null,
