@@ -21,7 +21,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import org.koin.compose.koinInject
 import org.moa.moa.platform.backhandler.BackStackHandler
 import org.moa.moa.presentation.UiState
 import org.moa.moa.presentation.component.MOABackTopBar
@@ -39,7 +38,7 @@ import org.moa.moa.presentation.ui.theme.Strings
 
 @Composable
 fun SignUpScreen(
-    viewModel: SignUpViewModel = koinInject(),
+    viewModel: SignUpViewModel,
     onNavigateToHome: () -> Unit,
     onBack: () -> Unit,
 ) {
@@ -75,6 +74,7 @@ private fun SignUpScreen(
     BackStackHandler { if (signUpTabIndex > 1) signUpTabIndex-- else onBack() }
 
     Scaffold(
+        modifier = Modifier.padding(bottom = APP_HORIZONTAL_PADDING2),
         topBar = {
             MOABackTopBar(
                 modifier = Modifier,
