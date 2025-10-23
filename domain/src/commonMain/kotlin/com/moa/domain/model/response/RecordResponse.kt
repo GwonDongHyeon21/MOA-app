@@ -13,7 +13,7 @@ data class GetRecordsResponse(
 @Serializable
 data class RecordItem(
     @SerialName("id") val id: String,
-    @SerialName("type") val type: String,  // "text", "image", "text+image", "audio"
+    @SerialName("type") val type: String,
     @SerialName("context") val content: String,
     @SerialName("imageUrl") val imageUrl: String?,
     @SerialName("createdAt") val date: String,

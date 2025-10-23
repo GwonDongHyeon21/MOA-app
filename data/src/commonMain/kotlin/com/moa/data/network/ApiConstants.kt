@@ -6,8 +6,7 @@ object ApiConstants {
 
     const val GET_DIARY_LIST = "/diary/list"
     const val GET_RECORD_LIST = "/record/list"
-    const val ADD_TEXT_IMAGE_RECORD = "/record/create"
-    const val ADD_AUDIO_RECORD = "/record/audio"
+    const val ADD_RECORD = "/record/create"
     const val UPDATE_RECORD = "/record/update"
     const val DELETE_RECORD = "/record/delete"
 

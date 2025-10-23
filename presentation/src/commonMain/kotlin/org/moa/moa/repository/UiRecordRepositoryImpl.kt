@@ -1,14 +1,16 @@
 package org.moa.moa.repository
 
-import com.moa.domain.model.request.AddAudioRecordRequest
-import com.moa.domain.model.request.AddTextImageRecordRequest
+import com.moa.domain.model.request.AddRecordRequest
 import com.moa.domain.model.response.Diary
+import com.moa.domain.model.response.RecordItem
 import com.moa.domain.usecase.record.RecordUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
@@ -16,21 +18,27 @@ class UiRecordRepositoryImpl(
     private val recordUseCase: RecordUseCase,
 ) {
 
-    private val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+    private val defaultTimeZone = TimeZone.currentSystemDefault()
+    private val today = Clock.System.now().toLocalDateTime(defaultTimeZone).date
+
+    private fun String.isToday(
+        timeZone: TimeZone = defaultTimeZone,
+        date: LocalDate = today,
+    ): Boolean = Instant.parse(this).toLocalDateTime(timeZone).date == date
 
     private val _diaries = MutableStateFlow(emptyList<Diary>())
     val diaries = _diaries.asStateFlow()
 
     val todayDiary = _diaries
-        .map { diaries -> diaries.find { it.date == today.toString() } }
+        .map { diaries -> diaries.find { it.date.isToday() } }
         .distinctUntilChanged()
 
-//    private val _records = MutableStateFlow(emptyList<RecordItem>())
-//    val records = _records.asStateFlow()
-//
-//    val todayRecord = _records
-//        .map { records -> records.filter { it.date == today.toString() } }
-//        .distinctUntilChanged()
+    private val _records = MutableStateFlow(emptyList<RecordItem>())
+    val records = _records.asStateFlow()
+
+    val todayRecord = _records
+        .map { records -> records.filter { it.date.isToday() } }
+        .distinctUntilChanged()
 
     suspend fun getDiaries() {
         runCatching {
@@ -42,33 +50,22 @@ class UiRecordRepositoryImpl(
         }
     }
 
-//    suspend fun getRecords(date: String) {
-//        runCatching {
-//            recordUseCase.getRecords(date)
-//        }.onSuccess { records ->
-//            _records.value = records.records
-//        }.onFailure {
-//            throw it
-//        }
-//    }
-
-    suspend fun addTextImageRecord(record: AddTextImageRecordRequest) {
+    suspend fun getRecords() {
         runCatching {
-            recordUseCase.addTextImageRecord(record)
-        }.onSuccess {
-            getDiaries()
-//            getRecords(today.toString())
+            recordUseCase.getRecords()
+        }.onSuccess { records ->
+            _records.value = records.records
         }.onFailure {
             throw it
         }
     }
 
-    suspend fun addAudioRecord(record: AddAudioRecordRequest) {
+    suspend fun addRecord(record: AddRecordRequest) {
         runCatching {
-            recordUseCase.addAudioRecord(record)
+            recordUseCase.addRecord(record)
         }.onSuccess {
-            getDiaries()
-//            getRecords(today.toString())
+//            getDiaries()
+            getRecords()
         }.onFailure {
             throw it
         }

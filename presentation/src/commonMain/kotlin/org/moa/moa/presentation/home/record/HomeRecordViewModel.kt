@@ -24,7 +24,8 @@ class HomeRecordViewModel(
             date = today.toString(),
             diary = null,
             emotion = null,
-            isLoading = true
+            isLoading = true,
+            isEditMode = false
         )
     )
     val uiState = _uiState.asStateFlow()
@@ -43,6 +44,10 @@ class HomeRecordViewModel(
 
     fun selectEmotion(emotion: Emotion?) {
         _uiState.value = _uiState.value.copy(emotion = emotion)
+    }
+
+    fun changeMode() {
+        _uiState.value = _uiState.value.copy(isEditMode = !_uiState.value.isEditMode)
     }
 
     fun decideEmotion() {

@@ -102,7 +102,7 @@ fun RecorderScreen(
         is RecorderState.PLAYING -> RecorderPlayingScreen(
             recordPath = state.recordFile,
             onBack = { onBack() },
-            onSaveRecord = { viewModel.addAudioRecord() },
+            onSaveRecord = { viewModel.addRecord() },
             onRecordState = { viewModel.resetRecord() }
         )
 

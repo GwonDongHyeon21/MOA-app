@@ -37,7 +37,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -360,8 +359,7 @@ fun BottomSheetContentSection(
                                 .background(GRAY4)
                                 .border(1.dp, GRAY3, RoundedCornerShape(5.dp)),
                             placeholder = painterResource(Res.drawable.top_logo),
-                            error = painterResource(Res.drawable.top_logo),
-                            contentScale = ContentScale.Fit,
+                            error = painterResource(Res.drawable.top_logo)
                         )
 
                         Spacer(modifier = Modifier.width(20.dp))

@@ -103,7 +103,7 @@ fun RecordScreen(
             isCamera = isCamera,
             uiState = uiState,
             onImageBytesChange = { viewModel.changeImageBytes(it) },
-            onAddRecordData = { viewModel.addTextImageRecord() },
+            onAddRecordData = { viewModel.addRecord() },
             onTextChange = { viewModel.changeRecordText(it) },
             onBack = { onBack() },
         )
@@ -338,8 +338,7 @@ fun RecordCameraSection(
             contentDescription = null,
             modifier = modifier
                 .fillMaxWidth()
-                .clip(roundedCornerShape),
-            contentScale = ContentScale.Fit,
+                .clip(roundedCornerShape)
         )
 
         Row(

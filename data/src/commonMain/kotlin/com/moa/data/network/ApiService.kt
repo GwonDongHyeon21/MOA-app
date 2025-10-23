@@ -1,7 +1,6 @@
 package com.moa.data.network
 
-import com.moa.domain.model.request.AddAudioRecordRequest
-import com.moa.domain.model.request.AddTextImageRecordRequest
+import com.moa.domain.model.request.AddRecordRequest
 import com.moa.domain.model.request.AddTodoRequest
 import com.moa.domain.model.request.DeleteTodoRequest
 import com.moa.domain.model.request.UpdateTodoRequest
@@ -63,42 +62,34 @@ class ApiService {
         }.body()
     }
 
-    suspend fun addTextImageRecord(record: AddTextImageRecordRequest): AddRecordResponse {
+    suspend fun addRecord(record: AddRecordRequest): AddRecordResponse {
         val token = getToken()
         return ApiClient.httpClient.submitFormWithBinaryData(
-            url = ApiConstants.ADD_TEXT_IMAGE_RECORD,
+            url = ApiConstants.ADD_RECORD,
             formData = formData {
-                append("context", record.content)
-
-                record.imageBytes?.let { bytes ->
+                record.content?.let {
+                    append("context", it)
+                }
+                record.imageBytes?.let { imageBytes ->
                     append(
-                        "image",
-                        bytes,
+                        "file",
+                        imageBytes,
                         Headers.build {
                             append(HttpHeaders.ContentType, "image/jpeg")
                             append(HttpHeaders.ContentDisposition, "filename=\"image.jpg\"")
                         }
                     )
                 }
-            }
-        ) {
-            header(HttpHeaders.Authorization, "Bearer $token")
-        }.body()
-    }
-
-    suspend fun addAudioRecord(record: AddAudioRecordRequest): String {
-        val token = getToken()
-        return ApiClient.httpClient.submitFormWithBinaryData(
-            url = ApiConstants.ADD_AUDIO_RECORD,
-            formData = formData {
-                append(
-                    "audio",
-                    record.audioByteArray,
-                    Headers.build {
-                        append(HttpHeaders.ContentType, "audio/mpeg")
-                        append(HttpHeaders.ContentDisposition, "filename=\"audio.mp3\"")
-                    }
-                )
+                record.audioBytes?.let { audio ->
+                    append(
+                        "file",
+                        audio,
+                        Headers.build {
+                            append(HttpHeaders.ContentType, "audio/mpeg")
+                            append(HttpHeaders.ContentDisposition, "filename=\"audio.mp3\"")
+                        }
+                    )
+                }
             }
         ) {
             header(HttpHeaders.Authorization, "Bearer $token")

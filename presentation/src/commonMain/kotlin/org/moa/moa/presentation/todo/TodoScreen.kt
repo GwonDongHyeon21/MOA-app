@@ -164,7 +164,13 @@ private fun TodoScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     val formattedDate = formatDateTime(
-                        dateTime = LocalDateTime(uiState.date.year, uiState.date.month, 1, 0, 0),
+                        dateTime = LocalDateTime(
+                            uiState.date.year,
+                            uiState.date.month,
+                            uiState.date.dayOfMonth,
+                            0,
+                            0
+                        ),
                         pattern = Strings.date_month_date
                     )
 

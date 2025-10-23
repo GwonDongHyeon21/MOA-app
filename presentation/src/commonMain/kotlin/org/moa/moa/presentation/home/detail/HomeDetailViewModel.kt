@@ -23,14 +23,14 @@ class HomeDetailViewModel(
 
     init {
         viewModelScope.launch {
-            repo.todayDiary.collect { diary ->
-                _uiState.value = _uiState.value.copy(records = diary?.records)
+            repo.todayRecord.collect { records ->
+                _uiState.value = _uiState.value.copy(records = records)
             }
         }
     }
 
     fun loadRecord(recordNumber: Int) {
-        _uiState.value = _uiState.value.copy(record = _uiState.value.records?.get(recordNumber))
+        _uiState.value = _uiState.value.copy(record = _uiState.value.records[recordNumber])
     }
 
     fun deleteRecord() {
