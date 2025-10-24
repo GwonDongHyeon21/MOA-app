@@ -71,6 +71,12 @@ private fun SignUpScreen(
     onBack: () -> Unit,
 ) {
     var signUpTabIndex by remember { mutableIntStateOf(1) }
+    val enabled = when (signUpTabIndex) {
+        1 -> uiState.userId.isNotEmpty()
+        2 -> uiState.birthDate.length == BIRTHDATE_LENGTH
+        3 -> true
+        else -> true
+    }
 
     BackStackHandler { if (signUpTabIndex > 1) signUpTabIndex-- else onBack() }
 
@@ -88,16 +94,11 @@ private fun SignUpScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 text = Strings.continueText,
-                buttonColor = when (signUpTabIndex) {
-                    1 -> if (uiState.userId.isNotEmpty()) MAIN else GRAY4
-                    2 -> if (uiState.birthDate.length == BIRTHDATE_LENGTH) MAIN else GRAY4
-                    3 -> MAIN
-                    else -> MAIN
-                }
+                buttonColor = if (enabled) MAIN else GRAY4,
+                enabled = enabled
             ) {
                 when (signUpTabIndex) {
-                    1 -> if (uiState.userId.isNotEmpty()) signUpTabIndex++
-                    2 -> if (uiState.birthDate.length == BIRTHDATE_LENGTH) signUpTabIndex++
+                    1, 2 -> if (enabled) signUpTabIndex++
                     3 -> uiState.gender?.let { onSignUp() }
                 }
             }
