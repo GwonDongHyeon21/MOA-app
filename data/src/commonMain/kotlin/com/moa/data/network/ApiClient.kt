@@ -28,6 +28,7 @@ object ApiClient {
 
     private val excludedExact = listOf(
         ApiConstants.GET_USER_INFO,
+        ApiConstants.GOOGLE_SIGN_UP,
         ApiConstants.GET_ACCESS_TOKEN
     )
 

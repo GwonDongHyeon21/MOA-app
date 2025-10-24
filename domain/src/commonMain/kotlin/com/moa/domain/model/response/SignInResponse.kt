@@ -15,6 +15,9 @@ data class SignInResponse(
     // SignUp 필요
     @SerialName("prefill") val prefill: PrefillInfo? = null,
     @SerialName("hint") val hint: HintInfo? = null,
+
+    // Invalid Google ID token
+    @SerialName("message") val responseMessage: String? = null,
 )
 
 @Serializable
