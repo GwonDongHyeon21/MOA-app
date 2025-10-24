@@ -59,8 +59,8 @@ import org.moa.moa.presentation.ui.theme.GRAY4
 import org.moa.moa.presentation.ui.theme.MAIN
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
-import org.moa.moa.util.formatDateTime
-import org.moa.moa.util.recordTypeToString
+import org.moa.moa.presentation.util.formatDateTime
+import org.moa.moa.presentation.util.recordTypeToString
 
 private object HomeDetailDimens {
     val topPadding = 30.dp

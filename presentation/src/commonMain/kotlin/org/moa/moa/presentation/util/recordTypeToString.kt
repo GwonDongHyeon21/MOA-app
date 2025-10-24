@@ -1,4 +1,4 @@
-package org.moa.moa.util
+package org.moa.moa.presentation.util
 
 import org.moa.moa.presentation.ui.theme.Strings
 

@@ -1,4 +1,4 @@
-package org.moa.moa.util
+package org.moa.moa.presentation.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity

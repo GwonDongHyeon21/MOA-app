@@ -79,7 +79,7 @@ import org.moa.moa.presentation.ui.theme.Strings.tuesday
 import org.moa.moa.presentation.ui.theme.Strings.wednesday
 import org.moa.moa.presentation.ui.theme.WHITE
 import org.moa.moa.presentation.ui.theme.transparent
-import org.moa.moa.util.formatDateTime
+import org.moa.moa.presentation.util.formatDateTime
 
 private object TodoDimens {
     const val CONTENT_LENGTH = 100

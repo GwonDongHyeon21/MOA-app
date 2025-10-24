@@ -1,4 +1,4 @@
-package org.moa.moa.util
+package org.moa.moa.presentation.util
 
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.Settings

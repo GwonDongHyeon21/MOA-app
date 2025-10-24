@@ -52,7 +52,7 @@ import org.moa.moa.presentation.ui.theme.GRAY1
 import org.moa.moa.presentation.ui.theme.MAIN
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
-import org.moa.moa.util.formatDateTime
+import org.moa.moa.presentation.util.formatDateTime
 
 @Composable
 fun RecordSuccessScreen(onClick: () -> Unit) {

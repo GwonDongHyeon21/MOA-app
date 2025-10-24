@@ -47,8 +47,8 @@ import org.moa.moa.presentation.ui.theme.GRAY8
 import org.moa.moa.presentation.ui.theme.IVORY
 import org.moa.moa.presentation.ui.theme.IVORY3
 import org.moa.moa.presentation.ui.theme.Strings
-import org.moa.moa.util.buildMonthCells
-import org.moa.moa.util.formatDateTime
+import org.moa.moa.presentation.util.buildMonthCells
+import org.moa.moa.presentation.util.formatDateTime
 
 private object TodoCalendarDialogDimens {
     const val DIALOG_HEIGHT_FRACTION = 0.8f

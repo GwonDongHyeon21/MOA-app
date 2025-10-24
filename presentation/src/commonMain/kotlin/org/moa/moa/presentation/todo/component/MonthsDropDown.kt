@@ -22,7 +22,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.moa.moa.presentation.ui.theme.GRAY3
 import org.moa.moa.presentation.ui.theme.Strings
-import org.moa.moa.util.formatDateTime
+import org.moa.moa.presentation.util.formatDateTime
 
 @Composable
 fun MonthsDropDown(

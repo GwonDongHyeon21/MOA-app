@@ -54,8 +54,8 @@ import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
 import org.moa.moa.presentation.ui.theme.GRAY1
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
-import org.moa.moa.util.emotionRes
-import org.moa.moa.util.formatDateTime
+import org.moa.moa.presentation.util.emotionRes
+import org.moa.moa.presentation.util.formatDateTime
 
 private object CalendarDetailDimens {
     const val HEADER_WIDTH_FRACTION = 0.6f

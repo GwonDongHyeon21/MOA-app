@@ -1,4 +1,4 @@
-package org.moa.moa.util
+package org.moa.moa.presentation.util
 
 fun formatRecordTime(ms: Long): String {
     val totalSec = (ms / 1000).coerceAtLeast(0)

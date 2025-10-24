@@ -1,4 +1,4 @@
-package org.moa.moa.util
+package org.moa.moa.presentation.util
 
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.emotion_bad

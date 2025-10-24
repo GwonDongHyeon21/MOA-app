@@ -1,4 +1,4 @@
-package org.moa.moa.util
+package org.moa.moa.presentation.util
 
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.DayOfWeek
@@ -6,7 +6,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
-import org.moa.moa.util.CellsDimens.TOTAL_DAY_CELLS
+import org.moa.moa.presentation.util.CellsDimens.TOTAL_DAY_CELLS
 
 private object CellsDimens {
     const val TOTAL_DAY_CELLS = 42

@@ -64,8 +64,8 @@ import org.moa.moa.presentation.ui.theme.GRAY1
 import org.moa.moa.presentation.ui.theme.GRAY9
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
-import org.moa.moa.util.emotionRes
-import org.moa.moa.util.formatDateTime
+import org.moa.moa.presentation.util.emotionRes
+import org.moa.moa.presentation.util.formatDateTime
 
 private object HomeRecordDimens {
     val ContentHorizontalPadding = 40.dp

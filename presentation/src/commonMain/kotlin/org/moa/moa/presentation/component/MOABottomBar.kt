@@ -70,7 +70,7 @@ import org.moa.moa.presentation.ui.theme.IVORY4
 import org.moa.moa.presentation.ui.theme.MAIN
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.unspecified
-import org.moa.moa.util.dpToPx
+import org.moa.moa.presentation.util.dpToPx
 
 object BottomCenter {
     val bottomPadding = 20.dp

@@ -1,4 +1,4 @@
-package org.moa.moa.util
+package org.moa.moa.presentation.util
 
 import kotlinx.datetime.LocalDateTime
 import java.time.format.DateTimeFormatter
