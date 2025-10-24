@@ -15,7 +15,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.moa.domain.model.response.Image
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.top_logo
 import org.jetbrains.compose.resources.painterResource
@@ -31,7 +30,7 @@ private object ContentImageDimens {
 @Composable
 fun ContentImage(
     modifier: Modifier,
-    images: List<Image>?,
+    images: List<String>?,
 ) {
     images?.let {
         LazyRow(
@@ -42,7 +41,7 @@ fun ContentImage(
         ) {
             items(it) { image ->
                 AsyncImage(
-                    model = image.url,
+                    model = image,
                     contentDescription = "RecordImage",
                     modifier = Modifier
                         .fillMaxHeight()

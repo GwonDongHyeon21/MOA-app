@@ -84,11 +84,7 @@ fun HomeRecordScreen(
 
     when (uiState.screenState) {
         HomeRecordScreenState.SUCCESS -> HomeRecordScreen(
-            date = uiState.date,
-            diary = uiState.diary,
-            emotion = uiState.emotion,
-            isLoading = uiState.isLoading,
-            isEditMode = uiState.isEditMode,
+            uiState = uiState,
             onSelectedEmotion = { emotion -> viewModel.selectEmotion(emotion) },
             onModeChange = { viewModel.changeMode() },
             onBack = { onBack() }
@@ -100,11 +96,7 @@ fun HomeRecordScreen(
 
 @Composable
 private fun HomeRecordScreen(
-    date: String,
-    diary: Diary?,
-    emotion: Emotion?,
-    isLoading: Boolean,
-    isEditMode: Boolean,
+    uiState: HomeRecordUiState,
     onSelectedEmotion: (Emotion?) -> Unit,
     onModeChange: () -> Unit,
     onBack: () -> Unit,
@@ -127,7 +119,7 @@ private fun HomeRecordScreen(
         ) {
             HomeRecordHeaderSection(
                 modifier = Modifier,
-                date = date,
+                date = uiState.date,
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -138,14 +130,14 @@ private fun HomeRecordScreen(
                     Spacer(modifier = Modifier.height(15.dp))
                     HomeRecordSectionSection(
                         modifier = Modifier,
-                        isLoading = isLoading,
-                        diary = diary,
-                        isEditMode = isEditMode,
+                        isLoading = uiState.isLoading,
+                        diary = uiState.diary,
+                        isEditMode = uiState.isEditMode,
                         onModeChange = { onModeChange() }
                     )
                 }
 
-                if (emotion == null) {
+                if (uiState.emotion == null) {
                     Image(
                         painter = painterResource(Res.drawable.emotion_guide),
                         contentDescription = "EmotionGuide",
@@ -156,7 +148,7 @@ private fun HomeRecordScreen(
 
             HomeEmotionSection(
                 modifier = Modifier,
-                emotion = emotion,
+                emotion = uiState.emotion,
                 onSelectedEmotion = { emotion -> onSelectedEmotion(emotion) }
             )
         }

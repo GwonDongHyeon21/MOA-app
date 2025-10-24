@@ -10,10 +10,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import com.moa.domain.model.response.Diary
+import kotlinx.datetime.DayOfWeek
 import org.jetbrains.compose.resources.painterResource
 import org.moa.moa.presentation.calendar.calendar.model.DayInfo
 import org.moa.moa.presentation.home.home.model.Emotion
+import org.moa.moa.presentation.ui.theme.BLUE
 import org.moa.moa.presentation.ui.theme.GRAY8
+import org.moa.moa.presentation.ui.theme.RED2
 import org.moa.moa.util.emotionRes
 
 @Composable
@@ -22,10 +25,16 @@ fun DayCell(
     dayInfo: DayInfo,
     onDateClicked: (Diary?) -> Unit,
 ) {
-    val dateColor = when {
-        dayInfo.isToday -> MaterialTheme.colorScheme.primary
-        dayInfo.isCurrentMonth -> MaterialTheme.colorScheme.onSurface
-        else -> GRAY8
+    val dateColor = if (!dayInfo.isCurrentMonth) {
+        GRAY8
+    } else {
+        when {
+            dayInfo.date.dayOfWeek == DayOfWeek.SUNDAY -> RED2
+            dayInfo.date.dayOfWeek == DayOfWeek.SATURDAY -> BLUE
+            dayInfo.isToday -> MaterialTheme.colorScheme.primary
+            dayInfo.isCurrentMonth -> MaterialTheme.colorScheme.onSurface
+            else -> GRAY8
+        }
     }
 
     Column(

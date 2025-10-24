@@ -10,7 +10,12 @@ val unspecified = Color.Unspecified
 val MAIN = Color(0xFFFFC941)
 val PINK = Color(0xFFFF6198)
 val ORANGE = Color(0xFFFB582D)
+
 val RED = Color(0xFFE3224E)
+val RED2 = Color(0xFFF94617)
+
+val BLUE = Color(0xFF1091EF)
+
 val IVORY = Color(0xFFFEE9AA)
 val YELLOW = Color(0xFFF9D801)
 val BROWN = Color(0xFF76413D)

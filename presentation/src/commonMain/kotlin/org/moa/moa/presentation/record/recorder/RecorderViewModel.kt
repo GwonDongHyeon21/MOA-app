@@ -12,7 +12,7 @@ import org.moa.moa.presentation.record.recorder.platform.readFileAsBytes
 import org.moa.moa.repository.UiRecordRepositoryImpl
 
 class RecorderViewModel(
-    private val uiRecordRepositoryImpl: UiRecordRepositoryImpl,
+    private val repo: UiRecordRepositoryImpl,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
@@ -62,7 +62,7 @@ class RecorderViewModel(
             }
 
             runCatching {
-                uiRecordRepositoryImpl.addRecord(
+                repo.addRecord(
                     AddRecordRequest(
                         content = null,
                         imageBytes = null,

@@ -56,12 +56,14 @@ import org.moa.moa.presentation.home.detail.HomeDetailDimens.bottomPadding
 import org.moa.moa.presentation.home.detail.HomeDetailDimens.topPadding
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
+import org.moa.moa.presentation.ui.theme.GRAY1
 import org.moa.moa.presentation.ui.theme.GRAY3
 import org.moa.moa.presentation.ui.theme.GRAY4
 import org.moa.moa.presentation.ui.theme.MAIN
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
 import org.moa.moa.util.formatDateTime
+import org.moa.moa.util.recordTypeToString
 
 private object HomeDetailDimens {
     val topPadding = 30.dp
@@ -123,13 +125,14 @@ private fun HomeDetailScreen(
                 .padding(top = topPadding, bottom = bottomPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HomeDetailTimeImageSection(
-                modifier = Modifier,
-                timeText = timeText
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
             record?.let {
+                HomeDetailTimeImageSection(
+                    modifier = Modifier,
+                    timeText = timeText,
+                    recordType = it.type
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
                 Box(
                     modifier = Modifier
                         .weight(1f)
@@ -142,9 +145,9 @@ private fun HomeDetailScreen(
                         verticalArrangement = Arrangement.spacedBy(24.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        it.imageUrl?.let {
+                        it.imageUrl?.let { url ->
                             AsyncImage(
-                                model = it,
+                                model = url,
                                 contentDescription = "record_image",
                                 modifier = Modifier
                                     .fillMaxWidth(0.4f)
@@ -178,6 +181,7 @@ private fun HomeDetailScreen(
 fun HomeDetailTimeImageSection(
     modifier: Modifier,
     timeText: String,
+    recordType: String,
 ) {
     Text(
         text = timeText,
@@ -189,7 +193,14 @@ fun HomeDetailTimeImageSection(
             .padding(vertical = 8.dp, horizontal = 24.dp)
     )
 
-    Spacer(modifier = Modifier.height(50.dp))
+    Spacer(modifier = Modifier.height(15.dp))
+    Text(
+        text = recordTypeToString(recordType),
+        color = GRAY1,
+        fontSize = 15.sp
+    )
+
+    Spacer(modifier = Modifier.height(15.dp))
     Box(modifier = modifier) {
         Image(
             painter = painterResource(Res.drawable.disk_shape),

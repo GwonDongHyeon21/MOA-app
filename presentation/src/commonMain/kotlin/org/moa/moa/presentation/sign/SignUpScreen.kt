@@ -32,6 +32,7 @@ import org.moa.moa.presentation.sign.component.GenderInput
 import org.moa.moa.presentation.sign.component.UserIdInput
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING2
 import org.moa.moa.presentation.ui.theme.BIRTHDATE_LENGTH
+import org.moa.moa.presentation.ui.theme.GRAY4
 import org.moa.moa.presentation.ui.theme.IVORY
 import org.moa.moa.presentation.ui.theme.MAIN
 import org.moa.moa.presentation.ui.theme.Strings
@@ -66,7 +67,7 @@ private fun SignUpScreen(
     onSignUp: () -> Unit,
     onUserIdChanged: (String) -> Unit,
     onBirthDateChanged: (String) -> Unit,
-    onGenderChanged: (Gender) -> Unit,
+    onGenderChanged: (Gender?) -> Unit,
     onBack: () -> Unit,
 ) {
     var signUpTabIndex by remember { mutableIntStateOf(1) }
@@ -86,7 +87,13 @@ private fun SignUpScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                text = Strings.continueText
+                text = Strings.continueText,
+                buttonColor = when (signUpTabIndex) {
+                    1 -> if (uiState.userId.isNotEmpty()) MAIN else GRAY4
+                    2 -> if (uiState.birthDate.length == BIRTHDATE_LENGTH) MAIN else GRAY4
+                    3 -> MAIN
+                    else -> MAIN
+                }
             ) {
                 when (signUpTabIndex) {
                     1 -> if (uiState.userId.isNotEmpty()) signUpTabIndex++
