@@ -2,7 +2,7 @@ package org.moa.moa.presentation.home.record
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
+import com.moa.domain.model.request.CreateDiaryRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -12,15 +12,15 @@ import kotlinx.datetime.toLocalDateTime
 import org.moa.moa.presentation.home.home.model.Emotion
 import org.moa.moa.repository.UiRecordRepositoryImpl
 
-class HomeRecordViewModel(
+class HomeDiaryViewModel(
     private val repo: UiRecordRepositoryImpl,
 ) : ViewModel() {
 
     private val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
     private val _uiState = MutableStateFlow(
-        HomeRecordUiState(
-            screenState = HomeRecordScreenState.SUCCESS,
+        HomeDiaryUiState(
+            screenState = HomeDiaryScreenState.SUCCESS,
             date = today.toString(),
             diary = null,
             emotion = null,
@@ -32,12 +32,30 @@ class HomeRecordViewModel(
 
     init {
         viewModelScope.launch {
-            delay(4_000)
             repo.todayDiary.collect { diary ->
-                _uiState.value = _uiState.value.copy(
-                    diary = diary,
-                    isLoading = false
+                diary?.let {
+                    _uiState.value = _uiState.value.copy(
+                        diary = diary,
+                        isLoading = false
+                    )
+                } ?: run {
+                    createDiary()
+                }
+            }
+        }
+    }
+
+    private fun createDiary() {
+        viewModelScope.launch {
+            runCatching {
+                repo.createDiary(
+                    CreateDiaryRequest(
+                        date = today.toString(),
+                        persona = 0
+                    )
                 )
+            }.onFailure {
+                _uiState.value = _uiState.value.copy(screenState = HomeDiaryScreenState.ERROR)
             }
         }
     }

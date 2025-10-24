@@ -37,9 +37,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.moa.domain.model.response.RecordItem
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.disk_shape
 import moa.presentation.generated.resources.star
@@ -104,11 +101,6 @@ private fun HomeDetailScreen(
     onEditRecord: () -> Unit,
     onDeleteRecord: () -> Unit,
 ) {
-    val timeText = formatDateTime(
-        dateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
-        pattern = Strings.date_time_format
-    )
-
     Scaffold(
         topBar = {
             MOABackTopBar(
@@ -128,8 +120,7 @@ private fun HomeDetailScreen(
             record?.let {
                 HomeDetailTimeImageSection(
                     modifier = Modifier,
-                    timeText = timeText,
-                    recordType = it.type
+                    record = it
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -180,9 +171,13 @@ private fun HomeDetailScreen(
 @Composable
 fun HomeDetailTimeImageSection(
     modifier: Modifier,
-    timeText: String,
-    recordType: String,
+    record: RecordItem,
 ) {
+    val timeText = formatDateTime(
+        dateTime = record.dataToLocalDateTime,
+        pattern = Strings.date_time_format
+    )
+
     Text(
         text = timeText,
         fontSize = 17.sp,
@@ -195,7 +190,7 @@ fun HomeDetailTimeImageSection(
 
     Spacer(modifier = Modifier.height(15.dp))
     Text(
-        text = recordTypeToString(recordType),
+        text = recordTypeToString(record.type),
         color = GRAY1,
         fontSize = 15.sp
     )

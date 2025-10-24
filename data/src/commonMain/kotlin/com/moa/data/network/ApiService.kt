@@ -48,7 +48,7 @@ class ApiService {
     }
 
     suspend fun createDiary(diary: CreateDiaryRequest): CreateDiaryResponse {
-        return ApiClient.httpClient.get(ApiConstants.CREATE_DIARY) {
+        return ApiClient.httpClient.post(ApiConstants.CREATE_DIARY) {
             contentType(ContentType.Application.Json)
             setBody(diary)
         }.body()

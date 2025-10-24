@@ -37,7 +37,7 @@ class HomeViewModel(
 
     val uiState: StateFlow<HomeUiState> = combine(
         recordRepositoryImpl.todayDiary,
-        recordRepositoryImpl.todayRecord
+        recordRepositoryImpl.todayRecords
     ) { diary, records ->
         HomeUiState(
             screenState = UiState.SUCCESS,

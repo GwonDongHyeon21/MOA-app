@@ -24,6 +24,9 @@ kotlin {
 
             // Serialization
             implementation(libs.ktor.serialization.kotlinx.json)
+
+            // DateTime
+            implementation(libs.kotlinx.datetime)
         }
     }
 }

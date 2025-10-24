@@ -1,6 +1,7 @@
 package com.moa.domain.di
 
 import com.moa.domain.usecase.record.AddRecord
+import com.moa.domain.usecase.record.CreateDairy
 import com.moa.domain.usecase.record.GetDiaries
 import com.moa.domain.usecase.record.GetRecords
 import com.moa.domain.usecase.record.RecordUseCase
@@ -19,7 +20,8 @@ val domainModule = module {
     factory { GetUserInfo(get()) }
     factory { GoogleSignUp(get()) }
 
-    factory { RecordUseCase(get(), get(), get()) }
+    factory { RecordUseCase(get(), get(), get(), get()) }
+    factory { CreateDairy(get()) }
     factory { GetDiaries(get()) }
     factory { GetRecords(get()) }
     factory { AddRecord(get()) }

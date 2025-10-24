@@ -70,8 +70,8 @@ private object HomeRecordDimens {
 }
 
 @Composable
-fun HomeRecordScreen(
-    viewModel: HomeRecordViewModel = koinInject(),
+fun HomeDiaryScreen(
+    viewModel: HomeDiaryViewModel = koinInject(),
     onBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -83,20 +83,20 @@ fun HomeRecordScreen(
     }
 
     when (uiState.screenState) {
-        HomeRecordScreenState.SUCCESS -> HomeRecordScreen(
+        HomeDiaryScreenState.SUCCESS -> HomeDiaryScreen(
             uiState = uiState,
             onSelectedEmotion = { emotion -> viewModel.selectEmotion(emotion) },
             onModeChange = { viewModel.changeMode() },
             onBack = { onBack() }
         )
 
-        HomeRecordScreenState.ERROR -> MOAErrorScreen(Modifier)
+        HomeDiaryScreenState.ERROR -> MOAErrorScreen(Modifier)
     }
 }
 
 @Composable
-private fun HomeRecordScreen(
-    uiState: HomeRecordUiState,
+private fun HomeDiaryScreen(
+    uiState: HomeDiaryUiState,
     onSelectedEmotion: (Emotion?) -> Unit,
     onModeChange: () -> Unit,
     onBack: () -> Unit,
@@ -226,27 +226,27 @@ fun HomeRecordSectionSection(
                             )
                         }
                     }
+                }
 
-                    if (isEditMode) {
-                        TextField(
-                            value = recordText,
-                            onValueChange = { recordText = it },
-                            modifier = Modifier.verticalScroll(rememberScrollState()),
-                            textStyle = TextStyle(
-                                fontSize = 17.sp,
-                                color = GRAY1,
-                                lineHeight = 30.sp
-                            )
-                        )
-                    } else {
-                        Text(
-                            text = it.content,
-                            modifier = Modifier.verticalScroll(rememberScrollState()),
+                if (isEditMode) {
+                    TextField(
+                        value = recordText,
+                        onValueChange = { recordText = it },
+                        modifier = Modifier.verticalScroll(rememberScrollState()),
+                        textStyle = TextStyle(
                             fontSize = 17.sp,
                             color = GRAY1,
                             lineHeight = 30.sp
                         )
-                    }
+                    )
+                } else {
+                    Text(
+                        text = it.content,
+                        modifier = Modifier.verticalScroll(rememberScrollState()),
+                        fontSize = 17.sp,
+                        color = GRAY1,
+                        lineHeight = 30.sp
+                    )
                 }
             }
         }
