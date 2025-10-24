@@ -13,7 +13,7 @@ import com.moa.domain.model.response.Diary
 import kotlinx.datetime.DayOfWeek
 import org.jetbrains.compose.resources.painterResource
 import org.moa.moa.presentation.calendar.calendar.model.DayInfo
-import org.moa.moa.presentation.home.home.model.Emotion
+import org.moa.moa.presentation.home.home.model.Emotion.Companion.toEmotion
 import org.moa.moa.presentation.ui.theme.BLUE
 import org.moa.moa.presentation.ui.theme.GRAY8
 import org.moa.moa.presentation.ui.theme.RED2
@@ -51,7 +51,7 @@ fun DayCell(
             fontSize = 17.sp,
         )
 
-        Emotion.stringToEmotion(dayInfo.diaries?.firstOrNull()?.emotion)?.let { emotion ->
+        dayInfo.diaries?.firstOrNull()?.emotion.toEmotion()?.let { emotion ->
             Image(
                 painter = painterResource(emotionRes(emotion)),
                 contentDescription = null,

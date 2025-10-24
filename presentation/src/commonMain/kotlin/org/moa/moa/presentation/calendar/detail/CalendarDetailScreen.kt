@@ -48,7 +48,7 @@ import org.moa.moa.presentation.component.ContentImage
 import org.moa.moa.presentation.component.MOABackTopBar
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOALoadingScreen
-import org.moa.moa.presentation.home.home.model.Emotion
+import org.moa.moa.presentation.home.home.model.Emotion.Companion.toEmotion
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
 import org.moa.moa.presentation.ui.theme.GRAY1
@@ -208,7 +208,7 @@ fun CalendarDetailContentSection(
                         images = diary.images
                     )
 
-                    Emotion.stringToEmotion(diary.emotion)?.let { emotion ->
+                    diary.emotion.toEmotion()?.let { emotion ->
                         Image(
                             painter = painterResource(emotionRes(emotion)),
                             contentDescription = null,

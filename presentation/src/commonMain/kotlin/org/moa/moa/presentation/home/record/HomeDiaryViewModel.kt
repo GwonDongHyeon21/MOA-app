@@ -11,6 +11,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.moa.moa.presentation.home.home.model.Emotion
+import org.moa.moa.presentation.home.home.model.Emotion.Companion.toEmotion
 import org.moa.moa.repository.UiRecordRepositoryImpl
 
 class HomeDiaryViewModel(
@@ -39,6 +40,7 @@ class HomeDiaryViewModel(
                     _uiState.value = _uiState.value.copy(
                         diary = it,
                         diaryText = it.content,
+                        emotion = it.emotion.toEmotion(),
                         isLoading = false
                     )
                 } ?: run {
@@ -78,7 +80,7 @@ class HomeDiaryViewModel(
     fun updateDiary() {
         viewModelScope.launch {
             runCatching {
-                _uiState.value.diary?.let { diary->
+                _uiState.value.diary?.let { diary ->
                     repo.updateDiary(
                         UpdateDiaryRequest(
                             id = diary.id,

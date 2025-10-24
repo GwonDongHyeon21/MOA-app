@@ -73,7 +73,8 @@ import org.moa.moa.presentation.calendar.calendar.model.DayInfo
 import org.moa.moa.presentation.component.MOAButton
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOALoadingScreen
-import org.moa.moa.presentation.home.home.model.Emotion
+import org.moa.moa.presentation.component.MOATopBar
+import org.moa.moa.presentation.home.home.model.Emotion.Companion.toEmotion
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING2
 import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
@@ -387,7 +388,7 @@ fun BottomSheetContentSection(
                     }
                 }
 
-                Emotion.stringToEmotion(it.emotion)?.let { emotion ->
+                it.emotion.toEmotion()?.let { emotion ->
                     Image(
                         painter = painterResource(emotionRes(emotion)),
                         contentDescription = null,

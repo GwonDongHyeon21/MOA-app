@@ -7,14 +7,13 @@ enum class Emotion(val label: String) {
     BAD("bad");
 
     companion object {
-        fun stringToEmotion(emotion: String?): Emotion? {
-            return when (emotion) {
-                "smile" -> SMILE
-                "soso" -> SOSO
-                "sad" -> SAD
-                "bad" -> BAD
-                else -> null
-            }
+        fun String?.toEmotion() = when (this) {
+            "smile" -> SMILE
+            "soso" -> SOSO
+            "sad" -> SAD
+            "bad" -> BAD
+            else -> null
         }
     }
 }
+

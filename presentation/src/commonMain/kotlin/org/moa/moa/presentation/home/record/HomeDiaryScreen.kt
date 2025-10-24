@@ -40,7 +40,6 @@ import com.moa.domain.model.response.Diary
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.atTime
 import moa.presentation.generated.resources.Res
-import moa.presentation.generated.resources.add
 import moa.presentation.generated.resources.check
 import moa.presentation.generated.resources.emotion_bad
 import moa.presentation.generated.resources.emotion_guide
@@ -52,10 +51,10 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import org.moa.moa.presentation.component.ContentBackground
 import org.moa.moa.presentation.component.ContentImage
-import org.moa.moa.presentation.component.MOABackTopBar
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOATopBar
 import org.moa.moa.presentation.home.home.model.Emotion
+import org.moa.moa.presentation.home.home.model.Emotion.Companion.toEmotion
 import org.moa.moa.presentation.home.record.HomeRecordDimens.ContentHorizontalPadding
 import org.moa.moa.presentation.home.record.HomeRecordDimens.emotionRoundedCornerShape
 import org.moa.moa.presentation.home.record.component.HomeRecordLoading
@@ -207,7 +206,7 @@ fun HomeRecordSectionSection(
                             images = it.images
                         )
 
-                        Emotion.stringToEmotion(it.emotion)?.let { emotion ->
+                        it.emotion.toEmotion()?.let { emotion ->
                             Image(
                                 painter = painterResource(emotionRes(emotion)),
                                 contentDescription = null,
