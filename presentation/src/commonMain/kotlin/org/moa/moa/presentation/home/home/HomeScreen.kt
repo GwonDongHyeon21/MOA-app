@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moa.domain.model.response.Diary
+import com.moa.domain.model.response.RecordItem
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.home_record_guide
 import moa.presentation.generated.resources.home_record_holder
@@ -59,6 +60,7 @@ fun HomeScreen(
         UiState.DEFAULT -> Unit
         UiState.SUCCESS -> HomeScreen(
             diary = uiState.diary,
+            todayRecords = uiState.todayRecords,
             recordImages = uiState.recordImages,
             onNavigateToHomeDiary = { onNavigateToHomeDiary() },
             onNavigateToHomeDetail = { recordNumber -> onNavigateToHomeDetail(recordNumber) }
@@ -72,13 +74,14 @@ fun HomeScreen(
 @Composable
 private fun HomeScreen(
     diary: Diary?,
+    todayRecords: List<RecordItem>,
     recordImages: List<ImageInfo>,
     onNavigateToHomeDiary: () -> Unit,
     onNavigateToHomeDetail: (Int) -> Unit,
 ) {
-    if (diary?.content?.isNotEmpty() == true) {
+    diary?.let {
         onNavigateToHomeDiary()
-    } else {
+    } ?: run {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -89,7 +92,7 @@ private fun HomeScreen(
         ) {
             HomeRecordImagesSection(
                 modifier = Modifier.fillMaxWidth(),
-                diary = diary,
+                todayRecords = todayRecords,
                 recordImages = recordImages,
                 onSelectedNumber = { recordNumber -> onNavigateToHomeDetail(recordNumber) }
             )
@@ -98,7 +101,7 @@ private fun HomeScreen(
                 onClick = { onNavigateToHomeDiary() },
                 modifier = Modifier.size(buttonWidth, buttonHeight),
                 shape = buttonRoundedCornerShape,
-                enabled = diary?.records?.isNotEmpty() == true
+                enabled = todayRecords.isNotEmpty()
             ) {
                 Text(
                     text = Strings.make_record,
@@ -112,7 +115,7 @@ private fun HomeScreen(
 @Composable
 fun HomeRecordImagesSection(
     modifier: Modifier,
-    diary: Diary?,
+    todayRecords: List<RecordItem>,
     recordImages: List<ImageInfo>,
     onSelectedNumber: (Int) -> Unit,
 ) {
@@ -120,7 +123,7 @@ fun HomeRecordImagesSection(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (diary?.records == null) {
+        if (todayRecords.isEmpty()) {
             Box(modifier = modifier) {
                 Image(
                     painter = painterResource(Res.drawable.home_record_logo),
@@ -145,7 +148,7 @@ fun HomeRecordImagesSection(
         } else {
             Box(modifier = modifier) {
                 recordImages
-                    .takeLast(diary.records.size)
+                    .takeLast(todayRecords.size)
                     .forEachIndexed { index, image ->
                         PixelClickImage(
                             image = imageResource(image.drawableRes),
@@ -153,7 +156,7 @@ fun HomeRecordImagesSection(
                                 .size(image.size)
                                 .align(image.alignment)
                                 .offset(image.offset.x.dp, image.offset.y.dp),
-                            onClick = { onSelectedNumber((diary.records.size - 1) - index) }
+                            onClick = { onSelectedNumber((todayRecords.size - 1) - index) }
                         )
                     }
             }

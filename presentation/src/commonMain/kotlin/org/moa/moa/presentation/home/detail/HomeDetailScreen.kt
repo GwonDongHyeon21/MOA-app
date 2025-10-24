@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,17 +30,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.moa.domain.model.response.DiaryRecord
+import coil3.compose.AsyncImage
+import com.moa.domain.model.response.RecordItem
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.disk_shape
 import moa.presentation.generated.resources.star
+import moa.presentation.generated.resources.top_logo
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import org.moa.moa.presentation.component.MOABackTopBar
@@ -52,11 +56,14 @@ import org.moa.moa.presentation.home.detail.HomeDetailDimens.bottomPadding
 import org.moa.moa.presentation.home.detail.HomeDetailDimens.topPadding
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
+import org.moa.moa.presentation.ui.theme.GRAY1
+import org.moa.moa.presentation.ui.theme.GRAY3
 import org.moa.moa.presentation.ui.theme.GRAY4
 import org.moa.moa.presentation.ui.theme.MAIN
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
 import org.moa.moa.util.formatDateTime
+import org.moa.moa.util.recordTypeToString
 
 private object HomeDetailDimens {
     val topPadding = 30.dp
@@ -92,7 +99,7 @@ fun HomeDetailScreen(
 
 @Composable
 private fun HomeDetailScreen(
-    record: DiaryRecord?,
+    record: RecordItem?,
     onBack: () -> Unit,
     onEditRecord: () -> Unit,
     onDeleteRecord: () -> Unit,
@@ -118,22 +125,45 @@ private fun HomeDetailScreen(
                 .padding(top = topPadding, bottom = bottomPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HomeDetailTimeImageSection(
-                modifier = Modifier,
-                timeText = timeText
-            )
+            record?.let {
+                HomeDetailTimeImageSection(
+                    modifier = Modifier,
+                    timeText = timeText,
+                    recordType = it.type
+                )
 
-            Spacer(modifier = Modifier.height(20.dp))
-            record?.content?.let {
+                Spacer(modifier = Modifier.height(20.dp))
                 Box(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth()
                         .background(WHITE, backgroundRoundedCornerShape)
                         .padding(vertical = 24.dp, horizontal = 48.dp),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.TopCenter
                 ) {
-                    Text(text = it, modifier = Modifier.verticalScroll(rememberScrollState()))
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        it.imageUrl?.let { url ->
+                            AsyncImage(
+                                model = url,
+                                contentDescription = "record_image",
+                                modifier = Modifier
+                                    .fillMaxWidth(0.4f)
+                                    .aspectRatio(1f)
+                                    .clip(RoundedCornerShape(15.dp))
+                                    .background(GRAY4)
+                                    .border(1.dp, GRAY3, RoundedCornerShape(5.dp)),
+                                placeholder = painterResource(Res.drawable.top_logo),
+                                error = painterResource(Res.drawable.top_logo)
+                            )
+                        }
+                        Text(
+                            text = it.content,
+                            modifier = Modifier.verticalScroll(rememberScrollState())
+                        )
+                    }
                 }
             }
 
@@ -151,6 +181,7 @@ private fun HomeDetailScreen(
 fun HomeDetailTimeImageSection(
     modifier: Modifier,
     timeText: String,
+    recordType: String,
 ) {
     Text(
         text = timeText,
@@ -162,7 +193,14 @@ fun HomeDetailTimeImageSection(
             .padding(vertical = 8.dp, horizontal = 24.dp)
     )
 
-    Spacer(modifier = Modifier.height(50.dp))
+    Spacer(modifier = Modifier.height(15.dp))
+    Text(
+        text = recordTypeToString(recordType),
+        color = GRAY1,
+        fontSize = 15.sp
+    )
+
+    Spacer(modifier = Modifier.height(15.dp))
     Box(modifier = modifier) {
         Image(
             painter = painterResource(Res.drawable.disk_shape),

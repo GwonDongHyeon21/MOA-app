@@ -58,6 +58,12 @@ class CalendarViewModel(
     }
 
     fun changeYearMonth(datePeriod: Int) {
+        if (datePeriod == 0) {
+            if (_uiState.value.year != today.year) getRecords(today.toString())
+            _uiState.value = _uiState.value.copy(year = today.year, month = today.month)
+            return
+        }
+
         val newDate = LocalDate(
             _uiState.value.year,
             _uiState.value.month,

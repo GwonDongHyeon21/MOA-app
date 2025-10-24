@@ -5,12 +5,12 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.home_record1
 import moa.presentation.generated.resources.home_record2
@@ -27,8 +27,6 @@ class HomeViewModel(
     private val todoRepositoryImpl: UiTodoRepositoryImpl,
 ) : ViewModel() {
 
-    private val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-
     private val recordImages = listOf(
         ImageInfo(Res.drawable.home_record5, Alignment.TopEnd, 150.dp, Offset(-15f, -65f)),
         ImageInfo(Res.drawable.home_record4, Alignment.TopStart, 200.dp, Offset(20f, -110f)),
@@ -37,30 +35,37 @@ class HomeViewModel(
         ImageInfo(Res.drawable.home_record1, Alignment.BottomEnd, 200.dp, Offset(-20f, 40f))
     )
 
-    private val _uiState = MutableStateFlow(
+    val uiState: StateFlow<HomeUiState> = combine(
+        recordRepositoryImpl.todayDiary,
+        recordRepositoryImpl.todayRecord
+    ) { diary, records ->
         HomeUiState(
+            screenState = UiState.SUCCESS,
+            diary = diary,
+            todayRecords = records,
+            recordImages = recordImages,
+        )
+    }.onStart {
+        recordRepositoryImpl.getDiaries()
+        recordRepositoryImpl.getRecords()
+        todoRepositoryImpl.getTodos()
+    }.catch {
+        emit(
+            HomeUiState(
+                screenState = UiState.ERROR,
+                diary = null,
+                todayRecords = emptyList(),
+                recordImages = recordImages,
+            )
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = HomeUiState(
             screenState = UiState.LOADING,
             diary = null,
-            recordImages = recordImages
+            todayRecords = emptyList(),
+            recordImages = recordImages,
         )
     )
-    val uiState = _uiState.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            runCatching {
-                recordRepositoryImpl.getDiaries()
-                todoRepositoryImpl.getTodos()
-            }.onSuccess {
-                recordRepositoryImpl.todayDiary.collect { diary ->
-                    _uiState.value = _uiState.value.copy(
-                        screenState = UiState.SUCCESS,
-                        diary = diary,
-                    )
-                }
-            }.onFailure {
-                _uiState.value = _uiState.value.copy(screenState = UiState.ERROR)
-            }
-        }
-    }
 }

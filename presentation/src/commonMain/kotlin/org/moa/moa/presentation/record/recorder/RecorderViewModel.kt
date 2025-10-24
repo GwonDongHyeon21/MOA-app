@@ -2,7 +2,7 @@ package org.moa.moa.presentation.record.recorder
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.moa.domain.model.request.AddAudioRecordRequest
+import com.moa.domain.model.request.AddRecordRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -12,7 +12,7 @@ import org.moa.moa.presentation.record.recorder.platform.readFileAsBytes
 import org.moa.moa.repository.UiRecordRepositoryImpl
 
 class RecorderViewModel(
-    private val uiRecordRepositoryImpl: UiRecordRepositoryImpl,
+    private val repo: UiRecordRepositoryImpl,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
@@ -45,7 +45,7 @@ class RecorderViewModel(
         )
     }
 
-    fun addAudioRecord() {
+    fun addRecord() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(screenState = RecorderState.LOADING)
 
@@ -62,8 +62,13 @@ class RecorderViewModel(
             }
 
             runCatching {
-                uiRecordRepositoryImpl.addAudioRecord(
-                    AddAudioRecordRequest(audioBytes)
+                repo.addRecord(
+                    AddRecordRequest(
+                        content = null,
+                        imageBytes = null,
+                        audioBytes = audioBytes,
+
+                        )
                 )
             }.onSuccess {
                 _uiState.value = _uiState.value.copy(screenState = RecorderState.SUCCESS)

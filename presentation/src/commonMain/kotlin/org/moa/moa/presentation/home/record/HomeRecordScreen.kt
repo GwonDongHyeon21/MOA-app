@@ -16,16 +16,23 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +40,7 @@ import com.moa.domain.model.response.Diary
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.atTime
 import moa.presentation.generated.resources.Res
+import moa.presentation.generated.resources.add
 import moa.presentation.generated.resources.emotion_bad
 import moa.presentation.generated.resources.emotion_guide
 import moa.presentation.generated.resources.emotion_sad
@@ -76,11 +84,9 @@ fun HomeRecordScreen(
 
     when (uiState.screenState) {
         HomeRecordScreenState.SUCCESS -> HomeRecordScreen(
-            date = uiState.date,
-            diary = uiState.diary,
-            emotion = uiState.emotion,
-            isLoading = uiState.isLoading,
+            uiState = uiState,
             onSelectedEmotion = { emotion -> viewModel.selectEmotion(emotion) },
+            onModeChange = { viewModel.changeMode() },
             onBack = { onBack() }
         )
 
@@ -90,12 +96,10 @@ fun HomeRecordScreen(
 
 @Composable
 private fun HomeRecordScreen(
-    date: String,
-    diary: Diary?,
-    emotion: Emotion?,
+    uiState: HomeRecordUiState,
     onSelectedEmotion: (Emotion?) -> Unit,
+    onModeChange: () -> Unit,
     onBack: () -> Unit,
-    isLoading: Boolean,
 ) {
     Scaffold(
         topBar = {
@@ -115,7 +119,7 @@ private fun HomeRecordScreen(
         ) {
             HomeRecordHeaderSection(
                 modifier = Modifier,
-                date = date,
+                date = uiState.date,
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -126,12 +130,14 @@ private fun HomeRecordScreen(
                     Spacer(modifier = Modifier.height(15.dp))
                     HomeRecordSectionSection(
                         modifier = Modifier,
-                        isLoading = isLoading,
-                        diary = diary
+                        isLoading = uiState.isLoading,
+                        diary = uiState.diary,
+                        isEditMode = uiState.isEditMode,
+                        onModeChange = { onModeChange() }
                     )
                 }
 
-                if (emotion == null) {
+                if (uiState.emotion == null) {
                     Image(
                         painter = painterResource(Res.drawable.emotion_guide),
                         contentDescription = "EmotionGuide",
@@ -142,7 +148,7 @@ private fun HomeRecordScreen(
 
             HomeEmotionSection(
                 modifier = Modifier,
-                emotion = emotion,
+                emotion = uiState.emotion,
                 onSelectedEmotion = { emotion -> onSelectedEmotion(emotion) }
             )
         }
@@ -159,7 +165,10 @@ fun HomeRecordHeaderSection(
         pattern = Strings.date_year_month_date
     )
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(
             text = Strings.todayRecord,
             fontSize = 17.sp,
@@ -177,7 +186,11 @@ fun HomeRecordSectionSection(
     modifier: Modifier,
     isLoading: Boolean,
     diary: Diary?,
+    isEditMode: Boolean,
+    onModeChange: () -> Unit,
 ) {
+    var recordText by remember { mutableStateOf(diary?.content ?: "") }
+
     if (isLoading) {
         HomeRecordLoading(modifier = modifier)
     } else {
@@ -205,16 +218,36 @@ fun HomeRecordSectionSection(
                                     .rotate(-11f)
                             )
                         }
+
+                        IconButton(onClick = { onModeChange() }) {
+                            Icon(
+                                painter = painterResource(if (isEditMode) Res.drawable.add else Res.drawable.emotion_smile),
+                                contentDescription = null,
+                            )
+                        }
+                    }
+
+                    if (isEditMode) {
+                        TextField(
+                            value = recordText,
+                            onValueChange = { recordText = it },
+                            modifier = Modifier.verticalScroll(rememberScrollState()),
+                            textStyle = TextStyle(
+                                fontSize = 17.sp,
+                                color = GRAY1,
+                                lineHeight = 30.sp
+                            )
+                        )
+                    } else {
+                        Text(
+                            text = it.content,
+                            modifier = Modifier.verticalScroll(rememberScrollState()),
+                            fontSize = 17.sp,
+                            color = GRAY1,
+                            lineHeight = 30.sp
+                        )
                     }
                 }
-
-                Text(
-                    text = it.content,
-                    modifier = Modifier.verticalScroll(rememberScrollState()),
-                    fontSize = 17.sp,
-                    color = GRAY1,
-                    lineHeight = 30.sp
-                )
             }
         }
     }

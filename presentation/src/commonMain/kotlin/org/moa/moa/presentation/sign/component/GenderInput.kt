@@ -2,6 +2,7 @@ package org.moa.moa.presentation.sign.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,7 +30,7 @@ import org.moa.moa.presentation.ui.theme.transparent
 @Composable
 fun GenderInput(
     gender: Gender?,
-    onValueChange: (Gender) -> Unit,
+    onValueChange: (Gender?) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -50,7 +51,10 @@ fun GenderInput(
         )
 
         Spacer(Modifier.height(40.dp))
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
             TextButton(
                 onClick = { onValueChange(Gender.MEN) },
                 content = {
@@ -90,5 +94,26 @@ fun GenderInput(
                     )
             )
         }
+
+        Spacer(modifier = Modifier.height(12.dp))
+        TextButton(
+            onClick = { onValueChange(null) },
+            content = {
+                Text(
+                    text = Strings.gender_null,
+                    fontSize = 15.sp,
+                    color = BLACK
+                )
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(15.dp))
+                .background(if (gender == null) MAIN else transparent)
+                .border(
+                    width = 1.dp,
+                    color = if (gender == null) MAIN else GRAY2,
+                    shape = RoundedCornerShape(15.dp)
+                )
+        )
     }
 }

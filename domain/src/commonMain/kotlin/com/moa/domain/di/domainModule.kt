@@ -1,13 +1,12 @@
 package com.moa.domain.di
 
-import com.moa.domain.usecase.record.AddAudioRecord
-import com.moa.domain.usecase.record.RecordUseCase
-import com.moa.domain.usecase.sign.SignUseCase
-import com.moa.domain.usecase.record.AddTextImageRecord
+import com.moa.domain.usecase.record.AddRecord
 import com.moa.domain.usecase.record.GetDiaries
 import com.moa.domain.usecase.record.GetRecords
+import com.moa.domain.usecase.record.RecordUseCase
 import com.moa.domain.usecase.sign.GetUserInfo
 import com.moa.domain.usecase.sign.GoogleSignUp
+import com.moa.domain.usecase.sign.SignUseCase
 import com.moa.domain.usecase.todo.AddTodo
 import com.moa.domain.usecase.todo.DeleteTodo
 import com.moa.domain.usecase.todo.GetTodos
@@ -20,11 +19,10 @@ val domainModule = module {
     factory { GetUserInfo(get()) }
     factory { GoogleSignUp(get()) }
 
-    factory { RecordUseCase(get(), get(), get(), get()) }
+    factory { RecordUseCase(get(), get(), get()) }
     factory { GetDiaries(get()) }
     factory { GetRecords(get()) }
-    factory { AddTextImageRecord(get()) }
-    factory { AddAudioRecord(get()) }
+    factory { AddRecord(get()) }
 
     factory { TodoUseCase(get(), get(), get(), get()) }
     factory { GetTodos(get()) }

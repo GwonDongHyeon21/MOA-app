@@ -1,8 +1,7 @@
 package com.moa.data.repositoryimpl
 
 import com.moa.data.network.ApiService
-import com.moa.domain.model.request.AddAudioRecordRequest
-import com.moa.domain.model.request.AddTextImageRecordRequest
+import com.moa.domain.model.request.AddRecordRequest
 import com.moa.domain.model.response.AddRecordResponse
 import com.moa.domain.model.response.GetDiariesResponse
 import com.moa.domain.model.response.GetRecordsResponse
@@ -16,15 +15,11 @@ class RecordRepositoryImpl(
         return apiService.getDiaries()
     }
 
-    override suspend fun getRecords(date: String): GetRecordsResponse {
+    override suspend fun getRecords(): GetRecordsResponse {
         return apiService.getRecords()
     }
 
-    override suspend fun addTextImageRecord(record: AddTextImageRecordRequest): AddRecordResponse {
-        return apiService.addTextImageRecord(record)
-    }
-
-    override suspend fun addAudioRecord(record: AddAudioRecordRequest): String {
-        return apiService.addAudioRecord(record)
+    override suspend fun addRecord(record: AddRecordRequest): AddRecordResponse {
+        return apiService.addRecord(record)
     }
 }

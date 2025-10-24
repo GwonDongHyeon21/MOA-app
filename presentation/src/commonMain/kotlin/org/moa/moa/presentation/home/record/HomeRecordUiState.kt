@@ -9,6 +9,7 @@ data class HomeRecordUiState(
     val diary: Diary?,
     val emotion: Emotion?,
     val isLoading: Boolean,
+    val isEditMode: Boolean
 )
 
 enum class HomeRecordScreenState {

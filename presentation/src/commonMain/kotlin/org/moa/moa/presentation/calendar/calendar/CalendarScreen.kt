@@ -3,6 +3,7 @@ package org.moa.moa.presentation.calendar.calendar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +38,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -59,8 +59,9 @@ import org.koin.compose.koinInject
 import org.moa.moa.presentation.UiState
 import org.moa.moa.presentation.calendar.calendar.CalendarDimens.BOTTOM_SHEET_CONTENT_HEIGHT
 import org.moa.moa.presentation.calendar.calendar.CalendarDimens.CALENDAR_FRACTION
+import org.moa.moa.presentation.calendar.calendar.CalendarDimens.buttonRoundedCornerShape
 import org.moa.moa.presentation.calendar.calendar.CalendarDimens.horizontalPadding
-import org.moa.moa.presentation.calendar.calendar.CalendarDimens.roundCornerShape
+import org.moa.moa.presentation.calendar.calendar.CalendarDimens.roundedCornerShape
 import org.moa.moa.presentation.calendar.calendar.CalendarDimens.sheetShadowElevation
 import org.moa.moa.presentation.calendar.calendar.CalendarDimens.sheetVerticalPadding
 import org.moa.moa.presentation.calendar.calendar.CalendarDimens.verticalPadding
@@ -80,6 +81,7 @@ import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
 import org.moa.moa.presentation.ui.theme.GRAY1
 import org.moa.moa.presentation.ui.theme.GRAY3
 import org.moa.moa.presentation.ui.theme.GRAY4
+import org.moa.moa.presentation.ui.theme.MAIN
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
 import org.moa.moa.util.buildMonthCells
@@ -90,7 +92,9 @@ private object CalendarDimens {
     const val CALENDAR_FRACTION = 0.8f
     val verticalPadding = 40.dp
     val horizontalPadding = 20.dp
-    val roundCornerShape = RoundedCornerShape(20.dp)
+
+    val roundedCornerShape = RoundedCornerShape(20.dp)
+    val buttonRoundedCornerShape = RoundedCornerShape(74.dp)
 
     const val BOTTOM_SHEET_CONTENT_HEIGHT = 0.5f
     val sheetVerticalPadding = 20.dp
@@ -171,12 +175,13 @@ private fun CalendarScreen(
                     .fillMaxHeight(CALENDAR_FRACTION)
                     .fillMaxWidth()
                     .padding(horizontal = APP_HORIZONTAL_PADDING1)
-                    .clip(roundCornerShape)
+                    .clip(roundedCornerShape)
                     .background(MaterialTheme.colorScheme.background)
                     .padding(vertical = verticalPadding, horizontal = horizontalPadding),
                 verticalArrangement = Arrangement.Center
             ) {
                 CalendarMonthHeaderSection(
+                    modifier = Modifier.fillMaxWidth(),
                     year = uiState.year,
                     month = uiState.month,
                     onMonthChange = { onMonthChange(it) }
@@ -203,6 +208,7 @@ private fun CalendarScreen(
 
 @Composable
 fun CalendarMonthHeaderSection(
+    modifier: Modifier,
     year: Int,
     month: Month,
     onMonthChange: (Int) -> Unit,
@@ -212,31 +218,46 @@ fun CalendarMonthHeaderSection(
         pattern = Strings.date_year_month
     )
 
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        IconButton(onClick = { onMonthChange(-1) }) {
-            Icon(
-                painter = painterResource(Res.drawable.left_arrow_icon),
-                contentDescription = "PreviousMonth"
+    Box(modifier = modifier) {
+        Row(
+            modifier = Modifier.align(Alignment.Center),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            IconButton(onClick = { onMonthChange(-1) }) {
+                Icon(
+                    painter = painterResource(Res.drawable.left_arrow_icon),
+                    contentDescription = "PreviousMonth"
+                )
+            }
+
+            Text(
+                text = headerDate,
+                fontSize = 17.sp,
+                fontWeight = FontWeight.SemiBold
             )
+
+
+            IconButton(onClick = { onMonthChange(1) }) {
+                Icon(
+                    painter = painterResource(Res.drawable.right_arrow_icon),
+                    contentDescription = "NextMonth"
+                )
+            }
         }
 
         Text(
-            text = headerDate,
-            fontSize = 17.sp,
-            fontWeight = FontWeight.SemiBold
+            text = Strings.today,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .border(2.dp, MAIN, buttonRoundedCornerShape)
+                .background(WHITE, buttonRoundedCornerShape)
+                .clip(buttonRoundedCornerShape)
+                .clickable { onMonthChange(0) }
+                .padding(horizontal = 9.dp)
         )
-
-
-        IconButton(onClick = { onMonthChange(1) }) {
-            Icon(
-                painter = painterResource(Res.drawable.right_arrow_icon),
-                contentDescription = "NextMonth"
-            )
-        }
     }
 }
 
@@ -351,7 +372,7 @@ fun BottomSheetContentSection(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         AsyncImage(
-                            model = it.images?.first()?.url,
+                            model = it.images.first(),
                             contentDescription = "record_image",
                             modifier = Modifier
                                 .fillMaxHeight()
@@ -360,8 +381,7 @@ fun BottomSheetContentSection(
                                 .background(GRAY4)
                                 .border(1.dp, GRAY3, RoundedCornerShape(5.dp)),
                             placeholder = painterResource(Res.drawable.top_logo),
-                            error = painterResource(Res.drawable.top_logo),
-                            contentScale = ContentScale.Fit,
+                            error = painterResource(Res.drawable.top_logo)
                         )
 
                         Spacer(modifier = Modifier.width(20.dp))
