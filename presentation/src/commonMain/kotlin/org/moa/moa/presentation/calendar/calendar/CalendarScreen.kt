@@ -70,7 +70,6 @@ import org.moa.moa.presentation.calendar.calendar.component.BottomSheetContentPl
 import org.moa.moa.presentation.calendar.calendar.component.BottomSheetDragHandle
 import org.moa.moa.presentation.calendar.calendar.component.DayCell
 import org.moa.moa.presentation.calendar.calendar.model.DayInfo
-import org.moa.moa.presentation.component.MOABackTopBar
 import org.moa.moa.presentation.component.MOAButton
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOALoadingScreen
@@ -105,7 +104,6 @@ private object CalendarDimens {
 fun CalendarScreen(
     viewModel: CalendarViewModel = koinInject(),
     onNavigateToDetail: (String) -> Unit,
-    onBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -115,7 +113,6 @@ fun CalendarScreen(
             uiState = uiState,
             onMonthChange = { viewModel.changeYearMonth(it) },
             onNavigateToDetail = { diary -> onNavigateToDetail(diary.date) },
-            onBack = { onBack() }
         )
 
         UiState.LOADING -> MOALoadingScreen(Modifier)
@@ -129,7 +126,6 @@ private fun CalendarScreen(
     uiState: CalendarUiState,
     onMonthChange: (Int) -> Unit,
     onNavigateToDetail: (Diary) -> Unit,
-    onBack: () -> Unit,
 ) {
     val sheetState = rememberStandardBottomSheetState(
         initialValue = SheetValue.Hidden,
@@ -156,10 +152,7 @@ private fun CalendarScreen(
         sheetShadowElevation = sheetShadowElevation,
         sheetDragHandle = { BottomSheetDragHandle(modifier = Modifier) },
         topBar = {
-            MOABackTopBar(
-                modifier = Modifier.background(WHITE),
-                onBack = { onBack() }
-            )
+            MOATopBar(modifier = Modifier.background(WHITE))
         }
     ) { innerPadding ->
         Column(
