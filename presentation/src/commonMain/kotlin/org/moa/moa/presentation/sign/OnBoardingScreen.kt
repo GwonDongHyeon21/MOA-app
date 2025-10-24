@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import moa.presentation.generated.resources.Res
+import moa.presentation.generated.resources.google_logo
 import moa.presentation.generated.resources.onboarding_image1
 import moa.presentation.generated.resources.onboarding_image2
 import moa.presentation.generated.resources.onboarding_image3
@@ -44,7 +45,6 @@ fun OnBoardingScreen(
     when (uiState) {
         OnBoardingScreenState.ONBOARDING -> OnBoardingScreen(
             onGoogleLoginClick = { viewModel.googleLogin() },
-            onNavigateToHome = { onNavigateToHome() }
         )
 
         OnBoardingScreenState.SIGNUP -> onNavigateToSignUp()
@@ -55,10 +55,7 @@ fun OnBoardingScreen(
 }
 
 @Composable
-private fun OnBoardingScreen(
-    onGoogleLoginClick: () -> Unit,
-    onNavigateToHome: () -> Unit,
-) {
+private fun OnBoardingScreen(onGoogleLoginClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -117,12 +114,11 @@ private fun OnBoardingScreen(
             modifier = Modifier.padding(horizontal = 32.dp),
             verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
-            SignButton("${Strings.google} ${Strings.login}") {
-                onGoogleLoginClick()
-            }
-            SignButton("${Strings.apple} ${Strings.login}") {
-                onNavigateToHome()
-            }
+            SignButton(
+                loginOptionText = "${Strings.google} ${Strings.login}",
+                imageRes = Res.drawable.google_logo,
+                onClick = { onGoogleLoginClick() }
+            )
         }
     }
 }

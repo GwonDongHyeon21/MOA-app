@@ -26,9 +26,22 @@ object ApiClient {
 
     private const val BASE_URL = BuildConfig.BASE_URL
 
-    private val excludedExact = listOf(ApiConstants.GET_USER_INFO)
+    private val excludedExact = listOf(
+        ApiConstants.GET_USER_INFO,
+        ApiConstants.GOOGLE_SIGN_UP,
+        ApiConstants.GET_ACCESS_TOKEN
+    )
 
     private val refreshClient = HttpClient {
+        install(Logging) {
+            logger = object : Logger {
+                override fun log(message: String) {
+                    println(message)
+                }
+            }
+            level = LogLevel.ALL
+        }
+
         defaultRequest {
             url.takeFrom(BASE_URL)
         }

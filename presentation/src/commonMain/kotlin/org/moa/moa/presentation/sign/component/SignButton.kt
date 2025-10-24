@@ -1,5 +1,6 @@
 package org.moa.moa.presentation.sign.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -19,6 +20,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import moa.presentation.generated.resources.Res
 import moa.presentation.generated.resources.right_arrow_icon
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.imageResource
 import org.jetbrains.compose.resources.painterResource
 import org.moa.moa.presentation.ui.theme.IVORY
 import org.moa.moa.presentation.ui.theme.WHITE
@@ -26,6 +29,7 @@ import org.moa.moa.presentation.ui.theme.WHITE
 @Composable
 fun SignButton(
     loginOptionText: String,
+    imageRes: DrawableResource,
     onClick: () -> Unit,
 ) {
     Row(
@@ -40,8 +44,15 @@ fun SignButton(
             modifier = Modifier
                 .size(50.dp)
                 .clip(CircleShape)
-                .background(WHITE)
-        )
+                .background(WHITE),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                bitmap = imageResource(imageRes),
+                contentDescription = null,
+                modifier = Modifier.size(30.dp)
+            )
+        }
 
         Spacer(Modifier.width(20.dp))
         Text(text = loginOptionText)

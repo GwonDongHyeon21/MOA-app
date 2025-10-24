@@ -23,7 +23,7 @@ class HomeDetailViewModel(
 
     init {
         viewModelScope.launch {
-            repo.todayRecord.collect { records ->
+            repo.todayRecords.collect { records ->
                 _uiState.value = _uiState.value.copy(records = records)
             }
         }

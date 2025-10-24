@@ -30,16 +30,16 @@ private object ContentImageDimens {
 @Composable
 fun ContentImage(
     modifier: Modifier,
-    images: List<String>?,
+    images: List<String>,
 ) {
-    images?.let {
+    if (images.isNotEmpty()) {
         LazyRow(
             modifier = modifier
                 .padding(vertical = 8.dp, horizontal = 25.dp)
                 .fillMaxHeight(CONTENT_IMAGE_HEIGHT_FRACTION),
             horizontalArrangement = Arrangement.spacedBy(15.dp)
         ) {
-            items(it) { image ->
+            items(images) { image ->
                 AsyncImage(
                     model = image,
                     contentDescription = "RecordImage",
@@ -52,7 +52,7 @@ fun ContentImage(
                 )
             }
         }
-    } ?: run {
+    } else {
         Image(
             painter = painterResource(Res.drawable.top_logo),
             contentDescription = null,

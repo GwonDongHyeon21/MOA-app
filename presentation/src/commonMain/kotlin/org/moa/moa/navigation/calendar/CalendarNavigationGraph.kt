@@ -11,7 +11,6 @@ fun NavGraphBuilder.calendarNavigationGraph(navController: NavController) {
     composable(CalendarNavigationItem.Calendar.route) {
         CalendarScreen(
             onNavigateToDetail = { date -> navController.navigate(CalendarDetailRoute(date)) },
-            onBack = { navController.popBackStack() }
         )
     }
 

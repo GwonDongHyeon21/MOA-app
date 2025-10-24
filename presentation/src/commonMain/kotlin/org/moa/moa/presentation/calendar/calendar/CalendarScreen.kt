@@ -70,11 +70,11 @@ import org.moa.moa.presentation.calendar.calendar.component.BottomSheetContentPl
 import org.moa.moa.presentation.calendar.calendar.component.BottomSheetDragHandle
 import org.moa.moa.presentation.calendar.calendar.component.DayCell
 import org.moa.moa.presentation.calendar.calendar.model.DayInfo
-import org.moa.moa.presentation.component.MOABackTopBar
 import org.moa.moa.presentation.component.MOAButton
 import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOALoadingScreen
-import org.moa.moa.presentation.home.home.model.Emotion
+import org.moa.moa.presentation.component.MOATopBar
+import org.moa.moa.presentation.home.home.model.Emotion.Companion.toEmotion
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING2
 import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
@@ -105,7 +105,6 @@ private object CalendarDimens {
 fun CalendarScreen(
     viewModel: CalendarViewModel = koinInject(),
     onNavigateToDetail: (String) -> Unit,
-    onBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -115,7 +114,6 @@ fun CalendarScreen(
             uiState = uiState,
             onMonthChange = { viewModel.changeYearMonth(it) },
             onNavigateToDetail = { diary -> onNavigateToDetail(diary.date) },
-            onBack = { onBack() }
         )
 
         UiState.LOADING -> MOALoadingScreen(Modifier)
@@ -129,7 +127,6 @@ private fun CalendarScreen(
     uiState: CalendarUiState,
     onMonthChange: (Int) -> Unit,
     onNavigateToDetail: (Diary) -> Unit,
-    onBack: () -> Unit,
 ) {
     val sheetState = rememberStandardBottomSheetState(
         initialValue = SheetValue.Hidden,
@@ -156,10 +153,7 @@ private fun CalendarScreen(
         sheetShadowElevation = sheetShadowElevation,
         sheetDragHandle = { BottomSheetDragHandle(modifier = Modifier) },
         topBar = {
-            MOABackTopBar(
-                modifier = Modifier.background(WHITE),
-                onBack = { onBack() }
-            )
+            MOATopBar(modifier = Modifier.background(WHITE))
         }
     ) { innerPadding ->
         Column(
@@ -297,7 +291,7 @@ fun CalendarDaysSection(
             month = uiState.month,
             startOn = uiState.startOn,
             items = uiState.diaries,
-            selector = { record -> record.date },
+            selector = { diary -> diary.date },
             mapper = { date, diaries ->
                 DayInfo(
                     date = date,
@@ -372,7 +366,7 @@ fun BottomSheetContentSection(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         AsyncImage(
-                            model = it.images.first(),
+                            model = it.images.firstOrNull(),
                             contentDescription = "record_image",
                             modifier = Modifier
                                 .fillMaxHeight()
@@ -394,7 +388,7 @@ fun BottomSheetContentSection(
                     }
                 }
 
-                Emotion.stringToEmotion(it.emotion)?.let { emotion ->
+                it.emotion.toEmotion()?.let { emotion ->
                     Image(
                         painter = painterResource(emotionRes(emotion)),
                         contentDescription = null,

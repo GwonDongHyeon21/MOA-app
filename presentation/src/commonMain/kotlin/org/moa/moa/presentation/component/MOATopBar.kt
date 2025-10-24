@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -19,21 +18,22 @@ import moa.presentation.generated.resources.left_arrow_icon
 import moa.presentation.generated.resources.top_logo
 import org.jetbrains.compose.resources.painterResource
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
-import org.moa.moa.presentation.ui.theme.TOP_BAR_HEIGHT
 
 @Composable
 fun MOATopBar(modifier: Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(TOP_BAR_HEIGHT)
+            .wrapContentHeight()
             .padding(horizontal = APP_HORIZONTAL_PADDING1)
     ) {
         Image(
             painter = painterResource(Res.drawable.top_logo),
             contentDescription = "top_logo",
             contentScale = ContentScale.Fit,
-            modifier = modifier.align(Alignment.Center)
+            modifier = modifier
+                .align(Alignment.Center)
+                .size(50.dp)
         )
     }
 }

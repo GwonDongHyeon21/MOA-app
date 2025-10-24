@@ -15,50 +15,53 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moa.domain.model.response.Diary
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.atTime
 import moa.presentation.generated.resources.Res
-import moa.presentation.generated.resources.add
+import moa.presentation.generated.resources.check
 import moa.presentation.generated.resources.emotion_bad
 import moa.presentation.generated.resources.emotion_guide
 import moa.presentation.generated.resources.emotion_sad
 import moa.presentation.generated.resources.emotion_smile
 import moa.presentation.generated.resources.emotion_soso
+import moa.presentation.generated.resources.pencil
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import org.moa.moa.presentation.component.ContentBackground
 import org.moa.moa.presentation.component.ContentImage
-import org.moa.moa.presentation.component.MOABackTopBar
 import org.moa.moa.presentation.component.MOAErrorScreen
+import org.moa.moa.presentation.component.MOATopBar
 import org.moa.moa.presentation.home.home.model.Emotion
+import org.moa.moa.presentation.home.home.model.Emotion.Companion.toEmotion
 import org.moa.moa.presentation.home.record.HomeRecordDimens.ContentHorizontalPadding
 import org.moa.moa.presentation.home.record.HomeRecordDimens.emotionRoundedCornerShape
 import org.moa.moa.presentation.home.record.component.HomeRecordLoading
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
 import org.moa.moa.presentation.ui.theme.GRAY1
+import org.moa.moa.presentation.ui.theme.GRAY9
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
 import org.moa.moa.util.emotionRes
@@ -70,43 +73,37 @@ private object HomeRecordDimens {
 }
 
 @Composable
-fun HomeRecordScreen(
-    viewModel: HomeRecordViewModel = koinInject(),
-    onBack: () -> Unit,
-) {
+fun HomeDiaryScreen(viewModel: HomeDiaryViewModel = koinInject()) {
     val uiState by viewModel.uiState.collectAsState()
 
     DisposableEffect(Unit) {
         onDispose {
-            viewModel.decideEmotion()
+            viewModel.updateDiary()
         }
     }
 
     when (uiState.screenState) {
-        HomeRecordScreenState.SUCCESS -> HomeRecordScreen(
+        HomeDiaryScreenState.SUCCESS -> HomeDiaryScreen(
             uiState = uiState,
             onSelectedEmotion = { emotion -> viewModel.selectEmotion(emotion) },
             onModeChange = { viewModel.changeMode() },
-            onBack = { onBack() }
+            onDiaryTextChanged = { text -> viewModel.changeDiaryText(text) },
         )
 
-        HomeRecordScreenState.ERROR -> MOAErrorScreen(Modifier)
+        HomeDiaryScreenState.ERROR -> MOAErrorScreen(Modifier)
     }
 }
 
 @Composable
-private fun HomeRecordScreen(
-    uiState: HomeRecordUiState,
+private fun HomeDiaryScreen(
+    uiState: HomeDiaryUiState,
     onSelectedEmotion: (Emotion?) -> Unit,
     onModeChange: () -> Unit,
-    onBack: () -> Unit,
+    onDiaryTextChanged: (String) -> Unit,
 ) {
     Scaffold(
         topBar = {
-            MOABackTopBar(
-                modifier = Modifier,
-                onBack = { onBack() }
-            )
+            MOATopBar(modifier = Modifier)
         }
     ) { innerPadding ->
         Column(
@@ -132,8 +129,10 @@ private fun HomeRecordScreen(
                         modifier = Modifier,
                         isLoading = uiState.isLoading,
                         diary = uiState.diary,
+                        diaryText = uiState.diaryText,
                         isEditMode = uiState.isEditMode,
-                        onModeChange = { onModeChange() }
+                        onModeChange = { onModeChange() },
+                        onDiaryTextChanged = { onDiaryTextChanged(it) }
                     )
                 }
 
@@ -186,29 +185,28 @@ fun HomeRecordSectionSection(
     modifier: Modifier,
     isLoading: Boolean,
     diary: Diary?,
+    diaryText: String,
     isEditMode: Boolean,
     onModeChange: () -> Unit,
+    onDiaryTextChanged: (String) -> Unit,
 ) {
-    var recordText by remember { mutableStateOf(diary?.content ?: "") }
-
     if (isLoading) {
         HomeRecordLoading(modifier = modifier)
     } else {
-        Column(modifier = modifier.padding(horizontal = ContentHorizontalPadding)) {
+        Column(modifier = modifier) {
             diary?.let {
-                Row(
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
-                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Box {
+                    Box(modifier = Modifier.padding(horizontal = ContentHorizontalPadding)) {
                         ContentImage(
                             modifier = Modifier.align(Alignment.Center),
                             images = it.images
                         )
 
-                        Emotion.stringToEmotion(it.emotion)?.let { emotion ->
+                        it.emotion.toEmotion()?.let { emotion ->
                             Image(
                                 painter = painterResource(emotionRes(emotion)),
                                 contentDescription = null,
@@ -218,36 +216,37 @@ fun HomeRecordSectionSection(
                                     .rotate(-11f)
                             )
                         }
-
-                        IconButton(onClick = { onModeChange() }) {
-                            Icon(
-                                painter = painterResource(if (isEditMode) Res.drawable.add else Res.drawable.emotion_smile),
-                                contentDescription = null,
-                            )
-                        }
                     }
 
-                    if (isEditMode) {
-                        TextField(
-                            value = recordText,
-                            onValueChange = { recordText = it },
-                            modifier = Modifier.verticalScroll(rememberScrollState()),
-                            textStyle = TextStyle(
-                                fontSize = 17.sp,
-                                color = GRAY1,
-                                lineHeight = 30.sp
-                            )
+                    IconButton(
+                        onClick = { onModeChange() },
+                        modifier = Modifier.align(Alignment.TopEnd),
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = MaterialTheme.colorScheme.primary.copy(0.4f)
                         )
-                    } else {
-                        Text(
-                            text = it.content,
-                            modifier = Modifier.verticalScroll(rememberScrollState()),
-                            fontSize = 17.sp,
-                            color = GRAY1,
-                            lineHeight = 30.sp
+                    ) {
+                        Icon(
+                            painter = painterResource(if (isEditMode) Res.drawable.check else Res.drawable.pencil),
+                            contentDescription = null,
+                            tint = GRAY9
                         )
                     }
                 }
+
+                BasicTextField(
+                    value = diaryText,
+                    onValueChange = { onDiaryTextChanged(it) },
+                    modifier = Modifier
+                        .padding(horizontal = ContentHorizontalPadding)
+                        .verticalScroll(rememberScrollState()),
+                    readOnly = !isEditMode,
+                    textStyle = TextStyle(
+                        fontSize = 17.sp,
+                        color = GRAY1,
+                        lineHeight = 30.sp,
+                        textDecoration = if (isEditMode) TextDecoration.Underline else null
+                    ),
+                )
             }
         }
     }

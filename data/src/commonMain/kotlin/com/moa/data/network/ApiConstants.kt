@@ -6,6 +6,9 @@ object ApiConstants {
     const val GOOGLE_SIGN_UP = "/auth/google/signUp"
 
     const val GET_DIARY_LIST = "/diary/list"
+    const val CREATE_DIARY = "/diary/create"
+    const val UPDATE_DIARY = "/diary/update"
+
     const val GET_RECORD_LIST = "/record/list"
     const val ADD_RECORD = "/record/create"
     const val UPDATE_RECORD = "/record/update"

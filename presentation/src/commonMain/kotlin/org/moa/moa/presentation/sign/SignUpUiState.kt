@@ -1,8 +1,7 @@
 package org.moa.moa.presentation.sign
 
 import org.moa.moa.presentation.UiState
-import org.moa.moa.presentation.sign.Gender.MEN
-import org.moa.moa.presentation.sign.Gender.WOMEN
+import org.moa.moa.presentation.sign.Gender.*
 
 data class SignUpUiState(
     val userId: String,
@@ -21,12 +20,15 @@ enum class OnBoardingScreenState {
 
 enum class Gender {
     MEN,
-    WOMEN
+    WOMEN,
+    UNKNOWN
 }
 
-fun Gender.toGenderString(): String {
+fun Gender?.toGenderString(): String {
     return when (this) {
         MEN -> "male"
         WOMEN -> "female"
+        UNKNOWN -> "null"
+        else -> "null"
     }
 }

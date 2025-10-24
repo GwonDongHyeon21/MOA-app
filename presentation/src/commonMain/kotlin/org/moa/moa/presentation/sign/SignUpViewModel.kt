@@ -100,7 +100,7 @@ class SignUpViewModel(
                         pictureUrl = prefill.picture,
                         userId = _uiState.value.userId,
                         birthdate = _uiState.value.birthDate,
-                        gender = _uiState.value.gender?.toGenderString() ?: "null"
+                        gender = _uiState.value.gender.toGenderString()
                     )
                 )
             }.onSuccess { response ->

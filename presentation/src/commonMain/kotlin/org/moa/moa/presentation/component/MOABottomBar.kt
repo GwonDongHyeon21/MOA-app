@@ -171,7 +171,7 @@ fun BottomBar(
                                 interactionSource = remember { MutableInteractionSource() },
                                 onClick = {
                                     navController.navigate(item.third) {
-                                        popUpTo(bottomItems.first().third) { inclusive = false }
+                                        popUpTo(0)
                                         launchSingleTop = true
                                         restoreState = true
                                     }

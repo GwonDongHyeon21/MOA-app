@@ -67,8 +67,7 @@ class RecorderViewModel(
                         content = null,
                         imageBytes = null,
                         audioBytes = audioBytes,
-
-                        )
+                    )
                 )
             }.onSuccess {
                 _uiState.value = _uiState.value.copy(screenState = RecorderState.SUCCESS)

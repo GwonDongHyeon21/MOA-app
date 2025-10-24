@@ -1,5 +1,8 @@
 package com.moa.domain.model.response
 
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -17,5 +20,7 @@ data class RecordItem(
     @SerialName("context") val content: String,
     @SerialName("imageUrl") val imageUrl: String?,
     @SerialName("createdAt") val date: String,
-    @SerialName("updatedAt") val updatedAt: String,
-)
+    @SerialName("updatedAt") val updatedAt: String? = null,
+) {
+    val dataToLocalDateTime = Instant.parse(date).toLocalDateTime(TimeZone.currentSystemDefault())
+}

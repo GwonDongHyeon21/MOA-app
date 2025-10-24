@@ -107,6 +107,7 @@ private fun HomeScreen(
                     text = Strings.make_record,
                     fontSize = 17.sp
                 )
+
             }
         }
     }
@@ -156,7 +157,7 @@ fun HomeRecordImagesSection(
                                 .size(image.size)
                                 .align(image.alignment)
                                 .offset(image.offset.x.dp, image.offset.y.dp),
-                            onClick = { onSelectedNumber((todayRecords.size - 1) - index) }
+                            onClick = { onSelectedNumber(index) }
                         )
                     }
             }
