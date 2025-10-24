@@ -12,7 +12,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.moa.moa.presentation.home.home.model.Emotion
 import org.moa.moa.presentation.home.home.model.Emotion.Companion.toEmotion
-import org.moa.moa.repository.UiRecordRepositoryImpl
+import org.moa.moa.usecaseimpl.UiRecordRepositoryImpl
 
 class HomeDiaryViewModel(
     private val repo: UiRecordRepositoryImpl,

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.moa.moa.presentation.UiState
-import org.moa.moa.repository.UiRecordRepositoryImpl
+import org.moa.moa.usecaseimpl.UiRecordRepositoryImpl
 
 class RecordViewModel(
     private val repo: UiRecordRepositoryImpl,

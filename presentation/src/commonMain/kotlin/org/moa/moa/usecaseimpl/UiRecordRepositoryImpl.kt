@@ -1,9 +1,8 @@
-package org.moa.moa.repository
+package org.moa.moa.usecaseimpl
 
 import com.moa.domain.model.request.AddRecordRequest
 import com.moa.domain.model.request.CreateDiaryRequest
 import com.moa.domain.model.request.UpdateDiaryRequest
-import com.moa.domain.model.response.CreateDiaryResponse
 import com.moa.domain.model.response.Diary
 import com.moa.domain.model.response.RecordItem
 import com.moa.domain.usecase.record.RecordUseCase
@@ -80,6 +79,4 @@ class UiRecordRepositoryImpl(
             throw it
         }
     }
-
-//    fun decideEmotion(emotion:String) = recordUseCase.decideEmotion(emotion)
 }

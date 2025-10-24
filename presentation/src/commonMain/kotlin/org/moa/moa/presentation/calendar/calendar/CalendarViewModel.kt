@@ -13,7 +13,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import org.moa.moa.presentation.UiState
-import org.moa.moa.repository.UiRecordRepositoryImpl
+import org.moa.moa.usecaseimpl.UiRecordRepositoryImpl
 
 class CalendarViewModel(
     private val repo: UiRecordRepositoryImpl,

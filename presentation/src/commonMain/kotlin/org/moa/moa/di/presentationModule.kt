@@ -9,8 +9,8 @@ import org.moa.moa.presentation.home.record.HomeDiaryViewModel
 import org.moa.moa.presentation.record.recorder.RecorderViewModel
 import org.moa.moa.presentation.record.textimage.RecordViewModel
 import org.moa.moa.presentation.todo.TodoViewModel
-import org.moa.moa.repository.UiRecordRepositoryImpl
-import org.moa.moa.repository.UiTodoRepositoryImpl
+import org.moa.moa.usecaseimpl.UiRecordRepositoryImpl
+import org.moa.moa.usecaseimpl.UiTodoRepositoryImpl
 
 val presentationModule = module {
     single { UiRecordRepositoryImpl(get()) }

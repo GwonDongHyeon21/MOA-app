@@ -19,8 +19,8 @@ import moa.presentation.generated.resources.home_record4
 import moa.presentation.generated.resources.home_record5
 import org.moa.moa.presentation.UiState
 import org.moa.moa.presentation.home.home.model.ImageInfo
-import org.moa.moa.repository.UiRecordRepositoryImpl
-import org.moa.moa.repository.UiTodoRepositoryImpl
+import org.moa.moa.usecaseimpl.UiRecordRepositoryImpl
+import org.moa.moa.usecaseimpl.UiTodoRepositoryImpl
 
 class HomeViewModel(
     private val recordRepositoryImpl: UiRecordRepositoryImpl,

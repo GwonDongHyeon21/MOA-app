@@ -9,7 +9,7 @@ import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.plus
 import org.moa.moa.presentation.UiState
-import org.moa.moa.repository.UiRecordRepositoryImpl
+import org.moa.moa.usecaseimpl.UiRecordRepositoryImpl
 
 class CalendarDetailViewModel(
     private val repo: UiRecordRepositoryImpl,

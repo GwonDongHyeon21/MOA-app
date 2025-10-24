@@ -6,7 +6,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.moa.moa.repository.UiRecordRepositoryImpl
+import org.moa.moa.usecaseimpl.UiRecordRepositoryImpl
 
 class HomeDetailViewModel(
     private val repo: UiRecordRepositoryImpl,

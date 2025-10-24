@@ -107,7 +107,6 @@ private fun HomeScreen(
                     text = Strings.make_record,
                     fontSize = 17.sp
                 )
-
             }
         }
     }

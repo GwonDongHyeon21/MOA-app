@@ -15,7 +15,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
-import org.moa.moa.repository.UiTodoRepositoryImpl
+import org.moa.moa.usecaseimpl.UiTodoRepositoryImpl
 
 class TodoViewModel(
     private val uiTodoRepositoryImpl: UiTodoRepositoryImpl,

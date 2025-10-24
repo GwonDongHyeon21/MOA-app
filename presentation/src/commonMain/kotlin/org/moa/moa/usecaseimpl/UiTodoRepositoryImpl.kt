@@ -1,4 +1,4 @@
-package org.moa.moa.repository
+package org.moa.moa.usecaseimpl
 
 import com.moa.domain.model.request.AddTodoRequest
 import com.moa.domain.model.request.DeleteTodoRequest
