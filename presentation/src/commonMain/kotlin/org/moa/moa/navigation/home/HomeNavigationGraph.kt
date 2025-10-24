@@ -20,9 +20,7 @@ fun NavGraphBuilder.homeNavigationGraph(navController: NavController) {
         )
     }
     composable(HomeNavigationItem.HomeDiary.route) {
-        HomeDiaryScreen(
-            onBack = { navController.popBackStack() }
-        )
+        HomeDiaryScreen()
     }
     composable<HomeDetail> { backStackEntry ->
         val arguments = backStackEntry.toRoute<HomeDetail>()

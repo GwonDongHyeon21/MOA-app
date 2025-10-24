@@ -5,6 +5,7 @@ import com.moa.domain.model.request.AddTodoRequest
 import com.moa.domain.model.request.CreateDiaryRequest
 import com.moa.domain.model.request.DeleteTodoRequest
 import com.moa.domain.model.request.GetUserInfoRequest
+import com.moa.domain.model.request.UpdateDiaryRequest
 import com.moa.domain.model.request.UpdateTodoRequest
 import com.moa.domain.model.request.UserRequest
 import com.moa.domain.model.response.AddRecordResponse
@@ -22,6 +23,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
@@ -49,6 +51,13 @@ class ApiService {
 
     suspend fun createDiary(diary: CreateDiaryRequest): CreateDiaryResponse {
         return ApiClient.httpClient.post(ApiConstants.CREATE_DIARY) {
+            contentType(ContentType.Application.Json)
+            setBody(diary)
+        }.body()
+    }
+
+    suspend fun updateDiary(diary: UpdateDiaryRequest): ResponseMessage {
+        return ApiClient.httpClient.patch(ApiConstants.UPDATE_DIARY) {
             contentType(ContentType.Application.Json)
             setBody(diary)
         }.body()

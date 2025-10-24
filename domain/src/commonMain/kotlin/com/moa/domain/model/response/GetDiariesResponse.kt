@@ -1,8 +1,5 @@
 package com.moa.domain.model.response
 
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -21,7 +18,4 @@ data class Diary(
     @SerialName("createdAt") val createdAt: String,
     @SerialName("images") val images: List<String> = emptyList(),
     @SerialName("emotion") val emotion: String? = null,
-) {
-    val dataToLocalDateTime =
-        Instant.parse(createdAt).toLocalDateTime(TimeZone.currentSystemDefault())
-}
+)

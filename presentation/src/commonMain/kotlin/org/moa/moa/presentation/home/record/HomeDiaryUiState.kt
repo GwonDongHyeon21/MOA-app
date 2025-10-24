@@ -7,6 +7,7 @@ data class HomeDiaryUiState(
     val screenState: HomeDiaryScreenState,
     val date: String,
     val diary: Diary?,
+    val diaryText: String,
     val emotion: Emotion?,
     val isLoading: Boolean,
     val isEditMode: Boolean,

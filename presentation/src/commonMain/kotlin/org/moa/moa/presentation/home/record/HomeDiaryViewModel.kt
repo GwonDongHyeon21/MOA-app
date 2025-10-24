@@ -3,6 +3,7 @@ package org.moa.moa.presentation.home.record
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moa.domain.model.request.CreateDiaryRequest
+import com.moa.domain.model.request.UpdateDiaryRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -23,6 +24,7 @@ class HomeDiaryViewModel(
             screenState = HomeDiaryScreenState.SUCCESS,
             date = today.toString(),
             diary = null,
+            diaryText = "",
             emotion = null,
             isLoading = true,
             isEditMode = false
@@ -35,7 +37,8 @@ class HomeDiaryViewModel(
             repo.todayDiary.collect { diary ->
                 diary?.let {
                     _uiState.value = _uiState.value.copy(
-                        diary = diary,
+                        diary = it,
+                        diaryText = it.content,
                         isLoading = false
                     )
                 } ?: run {
@@ -68,9 +71,25 @@ class HomeDiaryViewModel(
         _uiState.value = _uiState.value.copy(isEditMode = !_uiState.value.isEditMode)
     }
 
-    fun decideEmotion() {
+    fun changeDiaryText(text: String) {
+        _uiState.value = _uiState.value.copy(diaryText = text)
+    }
+
+    fun updateDiary() {
         viewModelScope.launch {
-//            repo.decideEmotion(_uiState.value.emotion?.label)
+            runCatching {
+                _uiState.value.diary?.let { diary->
+                    repo.updateDiary(
+                        UpdateDiaryRequest(
+                            id = diary.id,
+                            content = _uiState.value.diaryText,
+                            emotion = _uiState.value.emotion?.label
+                        )
+                    )
+                }
+            }.onFailure {
+                _uiState.value = _uiState.value.copy(screenState = HomeDiaryScreenState.ERROR)
+            }
         }
     }
 }

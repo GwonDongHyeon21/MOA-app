@@ -2,6 +2,7 @@ package org.moa.moa.repository
 
 import com.moa.domain.model.request.AddRecordRequest
 import com.moa.domain.model.request.CreateDiaryRequest
+import com.moa.domain.model.request.UpdateDiaryRequest
 import com.moa.domain.model.response.CreateDiaryResponse
 import com.moa.domain.model.response.Diary
 import com.moa.domain.model.response.RecordItem
@@ -47,6 +48,16 @@ class UiRecordRepositoryImpl(
             _diaries.value += response.diary
         }.onFailure {
             throw it
+        }
+    }
+
+    suspend fun updateDiary(diary: UpdateDiaryRequest) {
+        runCatching {
+            recordUseCase.updateDiary(diary)
+        }.onSuccess {
+            getDiaries()
+        }.onFailure {
+
         }
     }
 

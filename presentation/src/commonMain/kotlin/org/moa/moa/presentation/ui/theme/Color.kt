@@ -29,6 +29,7 @@ val GRAY6 = Color(0xFFF7F7F7)
 
 val GRAY7 = Color(0xFF474747)
 val GRAY8 = Color(0xFFD1D1D1)
+val GRAY9 = Color(0xFF525252)
 val WHITE = Color(0xFFFFFFFF)
 
 val IVORY2 = Color(0xFFEBEBEB)
