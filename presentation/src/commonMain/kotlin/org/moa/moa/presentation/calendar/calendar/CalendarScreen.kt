@@ -297,7 +297,7 @@ fun CalendarDaysSection(
             month = uiState.month,
             startOn = uiState.startOn,
             items = uiState.diaries,
-            selector = { record -> record.date },
+            selector = { diary -> diary.date },
             mapper = { date, diaries ->
                 DayInfo(
                     date = date,
@@ -372,7 +372,7 @@ fun BottomSheetContentSection(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         AsyncImage(
-                            model = it.images.first(),
+                            model = it.images.firstOrNull(),
                             contentDescription = "record_image",
                             modifier = Modifier
                                 .fillMaxHeight()

@@ -18,7 +18,7 @@ fun <T, R> buildMonthCells(
     startOn: DayOfWeek,
     items: List<T>,
     selector: (T) -> String,
-    mapper: (LocalDate, List<T>?) -> R,
+    mapper: (LocalDate, List<T>) -> R,
 ): List<R> {
     val firstDateOfMonth = LocalDate(year, month, 1)
     val shift = dayDistance(startOn, firstDateOfMonth.dayOfWeek)
