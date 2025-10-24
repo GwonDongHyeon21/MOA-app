@@ -97,7 +97,7 @@ fun GenderInput(
 
         Spacer(modifier = Modifier.height(12.dp))
         TextButton(
-            onClick = { onValueChange(null) },
+            onClick = { onValueChange(Gender.UNKNOWN) },
             content = {
                 Text(
                     text = Strings.gender_null,
@@ -108,10 +108,10 @@ fun GenderInput(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(15.dp))
-                .background(if (gender == null) MAIN else transparent)
+                .background(if (gender == Gender.UNKNOWN) MAIN else transparent)
                 .border(
                     width = 1.dp,
-                    color = if (gender == null) MAIN else GRAY2,
+                    color = if (gender == Gender.UNKNOWN) MAIN else GRAY2,
                     shape = RoundedCornerShape(15.dp)
                 )
         )
