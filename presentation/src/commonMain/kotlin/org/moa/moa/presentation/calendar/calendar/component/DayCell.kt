@@ -17,7 +17,7 @@ import org.moa.moa.presentation.home.home.model.Emotion.Companion.toEmotion
 import org.moa.moa.presentation.ui.theme.BLUE
 import org.moa.moa.presentation.ui.theme.GRAY8
 import org.moa.moa.presentation.ui.theme.RED2
-import org.moa.moa.util.emotionRes
+import org.moa.moa.presentation.util.emotionRes
 
 @Composable
 fun DayCell(

@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import org.moa.moa.presentation.home.detail.HomeDetailScreen
 import org.moa.moa.presentation.home.home.HomeScreen
-import org.moa.moa.presentation.home.record.HomeDiaryScreen
+import org.moa.moa.presentation.home.diary.HomeDiaryScreen
 
 fun NavGraphBuilder.homeNavigationGraph(navController: NavController) {
     composable(HomeNavigationItem.Home.route) {

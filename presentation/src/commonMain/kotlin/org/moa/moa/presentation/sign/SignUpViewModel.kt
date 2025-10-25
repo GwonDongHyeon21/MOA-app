@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.moa.moa.presentation.UiState
 import org.moa.moa.presentation.sign.platform.GoogleAuthCodeProvider
-import org.moa.moa.util.TokenUtils
+import org.moa.moa.presentation.util.TokenUtils
 
 class SignUpViewModel(
     private val googleAuthCodeProvider: GoogleAuthCodeProvider,

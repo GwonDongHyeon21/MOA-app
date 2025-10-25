@@ -59,6 +59,10 @@ object Strings {
     const val record_text_image ="텍스트와 이미지로 저장"
     const val record_text ="텍스트로 저장"
     const val record_image ="이미지로 저장"
+    const val edit_user = "내 정보 수정"
+    const val set_template = "템플릿 설정"
+    const val MY_PAGE = "MY_PAGE"
+    const val nickname = "닉네임"
 
     const val monday = "월"
     const val tuesday = "화"

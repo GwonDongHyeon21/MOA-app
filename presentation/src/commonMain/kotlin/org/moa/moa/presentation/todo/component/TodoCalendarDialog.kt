@@ -22,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,8 +46,9 @@ import org.moa.moa.presentation.ui.theme.GRAY8
 import org.moa.moa.presentation.ui.theme.IVORY
 import org.moa.moa.presentation.ui.theme.IVORY3
 import org.moa.moa.presentation.ui.theme.Strings
-import org.moa.moa.util.buildMonthCells
-import org.moa.moa.util.formatDateTime
+import org.moa.moa.presentation.ui.theme.textStyle2
+import org.moa.moa.presentation.util.buildMonthCells
+import org.moa.moa.presentation.util.formatDateTime
 
 private object TodoCalendarDialogDimens {
     const val DIALOG_HEIGHT_FRACTION = 0.8f
@@ -146,8 +146,7 @@ fun TodoCalendarDialogHeader(
 
         Text(
             text = headerDate,
-            fontSize = 17.sp,
-            fontWeight = FontWeight.SemiBold
+            style = textStyle2
         )
 
         IconButton(onClick = { onMonthChange(1) }) {

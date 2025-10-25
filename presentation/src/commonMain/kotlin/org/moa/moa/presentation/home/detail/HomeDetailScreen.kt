@@ -32,7 +32,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
@@ -59,8 +58,9 @@ import org.moa.moa.presentation.ui.theme.GRAY4
 import org.moa.moa.presentation.ui.theme.MAIN
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
-import org.moa.moa.util.formatDateTime
-import org.moa.moa.util.recordTypeToString
+import org.moa.moa.presentation.ui.theme.textStyle2
+import org.moa.moa.presentation.util.formatDateTime
+import org.moa.moa.presentation.util.recordTypeToString
 
 private object HomeDetailDimens {
     val topPadding = 30.dp
@@ -180,8 +180,7 @@ fun HomeDetailTimeImageSection(
 
     Text(
         text = timeText,
-        fontSize = 17.sp,
-        fontWeight = FontWeight.SemiBold,
+        style = textStyle2,
         modifier = Modifier
             .border(2.dp, MAIN, RoundedCornerShape(100.dp))
             .background(WHITE)

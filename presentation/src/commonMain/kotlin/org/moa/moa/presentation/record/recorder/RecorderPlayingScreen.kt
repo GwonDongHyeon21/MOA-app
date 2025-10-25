@@ -67,7 +67,7 @@ import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
 import org.moa.moa.presentation.ui.theme.textStyle1
 import org.moa.moa.presentation.ui.theme.transparent
-import org.moa.moa.util.formatRecordTime
+import org.moa.moa.presentation.util.formatRecordTime
 
 private object RecorderPlayingDimens {
     val playButton = 61.dp

@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import org.moa.moa.presentation.record.recorder.model.RecordMode
 import org.moa.moa.presentation.record.recorder.model.RecorderState
 import org.moa.moa.presentation.record.recorder.platform.readFileAsBytes
-import org.moa.moa.repository.UiRecordRepositoryImpl
+import org.moa.moa.usecaseimpl.UiRecordRepositoryImpl
 
 class RecorderViewModel(
     private val repo: UiRecordRepositoryImpl,
