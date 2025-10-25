@@ -1,4 +1,4 @@
-package org.moa.moa.presentation.home.record
+package org.moa.moa.presentation.home.diary
 
 import com.moa.domain.model.response.Diary
 import org.moa.moa.presentation.home.home.model.Emotion

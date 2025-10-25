@@ -1,4 +1,4 @@
-package org.moa.moa.presentation.home.record
+package org.moa.moa.presentation.home.diary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

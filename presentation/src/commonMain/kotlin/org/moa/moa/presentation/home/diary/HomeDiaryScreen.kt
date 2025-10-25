@@ -1,4 +1,4 @@
-package org.moa.moa.presentation.home.record
+package org.moa.moa.presentation.home.diary
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -54,9 +54,9 @@ import org.moa.moa.presentation.component.MOAErrorScreen
 import org.moa.moa.presentation.component.MOATopBar
 import org.moa.moa.presentation.home.home.model.Emotion
 import org.moa.moa.presentation.home.home.model.Emotion.Companion.toEmotion
-import org.moa.moa.presentation.home.record.HomeRecordDimens.ContentHorizontalPadding
-import org.moa.moa.presentation.home.record.HomeRecordDimens.emotionRoundedCornerShape
-import org.moa.moa.presentation.home.record.component.HomeRecordLoading
+import org.moa.moa.presentation.home.diary.HomeRecordDimens.ContentHorizontalPadding
+import org.moa.moa.presentation.home.diary.HomeRecordDimens.emotionRoundedCornerShape
+import org.moa.moa.presentation.home.diary.component.HomeRecordLoading
 import org.moa.moa.presentation.ui.theme.APP_HORIZONTAL_PADDING1
 import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
 import org.moa.moa.presentation.ui.theme.GRAY1

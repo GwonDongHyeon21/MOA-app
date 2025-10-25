@@ -1,4 +1,4 @@
-package org.moa.moa.presentation.home.record.component
+package org.moa.moa.presentation.home.diary.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
