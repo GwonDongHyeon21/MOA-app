@@ -8,3 +8,8 @@ val textStyle1 = TextStyle(
     fontSize = 17.sp,
     fontWeight = FontWeight.Medium,
 )
+
+val textStyle2 = TextStyle(
+    fontSize = 17.sp,
+    fontWeight = FontWeight.SemiBold,
+)
