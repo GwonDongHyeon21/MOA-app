@@ -12,6 +12,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.moa.moa.presentation.home.home.model.Emotion
 import org.moa.moa.presentation.home.home.model.Emotion.Companion.toEmotion
+import org.moa.moa.presentation.util.TokenUtils
 import org.moa.moa.usecaseimpl.UiRecordRepositoryImpl
 
 class HomeDiaryViewModel(
@@ -56,7 +57,7 @@ class HomeDiaryViewModel(
                 repo.createDiary(
                     CreateDiaryRequest(
                         date = today.toString(),
-                        persona = 0
+                        persona = TokenUtils.getPersona() ?: 0
                     )
                 )
             }.onFailure {
