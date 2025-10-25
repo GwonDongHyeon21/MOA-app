@@ -27,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moa.domain.model.response.Diary
@@ -54,6 +53,7 @@ import org.moa.moa.presentation.ui.theme.BOTTOM_PADDING_CENTER
 import org.moa.moa.presentation.ui.theme.GRAY1
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
+import org.moa.moa.presentation.ui.theme.textStyle2
 import org.moa.moa.presentation.util.emotionRes
 import org.moa.moa.presentation.util.formatDateTime
 
@@ -165,8 +165,7 @@ fun CalendarDetailHeaderSection(
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = Strings.todayRecord,
-                fontSize = 17.sp,
-                fontWeight = FontWeight.SemiBold
+                style = textStyle2
             )
             Text(
                 text = headerDate,

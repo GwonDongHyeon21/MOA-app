@@ -84,6 +84,7 @@ import org.moa.moa.presentation.ui.theme.GRAY4
 import org.moa.moa.presentation.ui.theme.MAIN
 import org.moa.moa.presentation.ui.theme.Strings
 import org.moa.moa.presentation.ui.theme.WHITE
+import org.moa.moa.presentation.ui.theme.textStyle2
 import org.moa.moa.presentation.util.buildMonthCells
 import org.moa.moa.presentation.util.emotionRes
 import org.moa.moa.presentation.util.formatDateTime
@@ -227,8 +228,7 @@ fun CalendarMonthHeaderSection(
 
             Text(
                 text = headerDate,
-                fontSize = 17.sp,
-                fontWeight = FontWeight.SemiBold
+                style = textStyle2
             )
 
 
